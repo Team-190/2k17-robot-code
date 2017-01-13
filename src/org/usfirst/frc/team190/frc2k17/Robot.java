@@ -1,12 +1,14 @@
 
-package org.usfirst.frc.team190.robot;
+package org.usfirst.frc.team190.frc2k17;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team190.robot.commands.ExampleCommand;
-import org.usfirst.frc.team190.robot.subsystems.ExampleSubsystem;
+
+import org.usfirst.frc.team190.frc2k17.commands.ExampleCommand;
+import org.usfirst.frc.team190.frc2k17.subsystems.ExampleSubsystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
