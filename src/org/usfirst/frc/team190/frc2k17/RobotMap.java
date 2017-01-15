@@ -30,4 +30,11 @@ public final class RobotMap {
 		DRIVE_ENCODER_RIGHT_A = 2,
 		DRIVE_ENCODER_RIGHT_B = 3;
 	}
+	
+	public static final class NetworkTable {
+		public static final class Kangaroo {
+			public static final String
+			VOICE_LOG = "voicelog";
+		}
+	}
 }
