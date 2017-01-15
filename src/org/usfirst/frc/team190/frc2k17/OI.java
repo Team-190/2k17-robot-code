@@ -1,7 +1,5 @@
 package org.usfirst.frc.team190.frc2k17;
 
-import org.usfirst.frc.team190.frc2k17.commands.ExampleCommand;
-
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
