@@ -45,6 +45,24 @@ public class Drivetrain extends Subsystem {
     public void shift(Gear gear){
     	// TODO
     }
+    
+    /**
+     * Drive the robot with a speed and rotational value
+     * @param speed the forward speed of the robot
+     * @param rotation the rotational value
+     */
+    public void arcadeDrive(double speed, double rotation) {
+    	// TODO: Implement arcadeDrive by passing the call to a RobotDrive object
+    }
+    
+    /**
+     * Drive each side of the robot individually
+     * @param leftSpeed the left speed of the robot
+     * @param rightSpeed the right speed of the robot
+     */
+    public void tankDrive(double leftSpeed, double rightSpeed) {
+    	// TODO: Implement tankDrive by passing the call to a RobotDrive object
+    }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

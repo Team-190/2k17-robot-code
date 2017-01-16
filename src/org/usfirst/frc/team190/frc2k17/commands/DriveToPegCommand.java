@@ -23,32 +23,28 @@ public class DriveToPegCommand extends Command {
     }
 
     protected void execute() {
+    	// Get the network table
     	NetworkTable grip = NetworkTable.getTable("/GRIP/frontCameraReport");	
 		
+    	// Get heights reported by GRIP
 		double[] heights = {0, 0};
 		heights = grip.getNumberArray("height", heights);
 		
 		double targetHeight = 93.0;
 		
+		// Check if GRIP is reporting values
 		if (heights.length >= 2) {
-			System.out.println("h1: " + heights[0]);
-			System.out.println("h2: " + heights[1]);
-			System.out.println("");
-			
+			// Compute the error between current and desired height
 			double error = (targetHeight - heights[0]);
 			double kP = SmartDashboard.getNumber("kP", 0.01);
 			
 			double output = (error * kP);
 			
-			NetworkTable table = NetworkTable.getTable("/kangaroo");
-			String[] currentMessagesArr = table.getStringArray("voice", new String[0]);
-			List<String> currentMessages = Arrays.asList(currentMessagesArr);
-			currentMessages.add("message");
-			table.putStringArray("voice", currentMessages.toArray(new String[currentMessages.size()]));
-			
-			
+			// Drive robot
+			Robot.drivetrain.arcadeDrive(output, 0);
 		} else {
-			
+			// Stop robot if GRIP is not reporting values
+			Robot.drivetrain.arcadeDrive(0, 0);
 		}
     }
     
