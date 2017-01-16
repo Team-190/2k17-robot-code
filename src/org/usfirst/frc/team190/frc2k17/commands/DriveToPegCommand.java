@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveToPegCommand extends Command {
+	
+	private boolean _finished = false;
+	private static final double OUTPUT_TOLERANCE = 0.1;
 
     public DriveToPegCommand() {
     	requires(Robot.drivetrain);
@@ -40,6 +43,10 @@ public class DriveToPegCommand extends Command {
 			
 			double output = (error * kP);
 			
+			if (output < OUTPUT_TOLERANCE) {
+				_finished = true;
+			}
+			
 			// Drive robot
 			Robot.drivetrain.arcadeDrive(output, 0);
 		} else {
@@ -50,7 +57,7 @@ public class DriveToPegCommand extends Command {
     
     // TODO: Implement finished method when the robot arrives at peg
     protected boolean isFinished() {
-        return false;
+        return _finished;
     }
 
     protected void end() {

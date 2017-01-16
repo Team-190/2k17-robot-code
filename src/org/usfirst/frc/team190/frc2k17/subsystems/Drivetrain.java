@@ -43,7 +43,7 @@ public class Drivetrain extends Subsystem {
      * @param gear the gear to shift into
      */
     public void shift(Gear gear){
-    	// TODO
+    	// TODO: Implement gear shifting
     }
     
     /**
