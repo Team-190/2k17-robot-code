@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveToPegCommand extends Command {
 	
 	private boolean _finished = false;
-	private static final double OUTPUT_TOLERANCE = 0.1;
 
     public DriveToPegCommand() {
     	requires(Robot.drivetrain);
@@ -43,7 +43,7 @@ public class DriveToPegCommand extends Command {
 			
 			double output = (error * kP);
 			
-			if (output < OUTPUT_TOLERANCE) {
+			if (output < RobotMap.Constants.DRIVE_TO_PEG_OUTPUT_TOLERANCE) {
 				_finished = true;
 			}
 			
@@ -55,14 +55,15 @@ public class DriveToPegCommand extends Command {
 		}
     }
     
-    // TODO: Implement finished method when the robot arrives at peg
     protected boolean isFinished() {
         return _finished;
     }
 
     protected void end() {
+    	Robot.drivetrain.arcadeDrive(0, 0);
     }
 
     protected void interrupted() {
+    	Robot.drivetrain.arcadeDrive(0, 0);
     }
 }

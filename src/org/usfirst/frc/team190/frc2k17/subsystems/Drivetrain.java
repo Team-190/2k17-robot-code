@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.CANSpeedController;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,7 +17,7 @@ public class Drivetrain extends Subsystem {
     
 	private final Encoder leftEncoder, rightEncoder;
 	private final CANSpeedController leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
-	
+	private final RobotDrive driveController;
 	/**
 	 * The gears that the transmission may be shifted into.
 	 */
@@ -36,6 +37,9 @@ public class Drivetrain extends Subsystem {
     	leftRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_LEFT_REAR);
     	rightFrontMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_FRONT);
     	rightRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR);
+    	
+    	// TODO Temporary code for use on 2k14 test-bot. Pass in proper CANTalons for actual robot
+    	driveController = new RobotDrive(0, 2, 1, 3);
     }
     
     /**
@@ -52,7 +56,7 @@ public class Drivetrain extends Subsystem {
      * @param rotation the rotational value
      */
     public void arcadeDrive(double speed, double rotation) {
-    	// TODO: Implement arcadeDrive by passing the call to a RobotDrive object
+    	driveController.arcadeDrive(speed, rotation);
     }
     
     /**
@@ -61,7 +65,7 @@ public class Drivetrain extends Subsystem {
      * @param rightSpeed the right speed of the robot
      */
     public void tankDrive(double leftSpeed, double rightSpeed) {
-    	// TODO: Implement tankDrive by passing the call to a RobotDrive object
+    	driveController.tankDrive(leftSpeed, rightSpeed);
     }
 
     public void initDefaultCommand() {

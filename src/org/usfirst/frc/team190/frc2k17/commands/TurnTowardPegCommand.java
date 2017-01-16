@@ -23,7 +23,15 @@ public class TurnTowardPegCommand extends Command {
     	// Get the network table
     	NetworkTable grip = NetworkTable.getTable("/GRIP/frontCameraReport");	
 		
+    	double[] centerXArray = grip.getNumberArray("centerX", new double[0]);
     	
+    	if (centerXArray.length >= 2) {
+    		double centerXActual = (centerXArray[0] + centerXArray[1]) / 2;
+    		
+    		
+    	} else {
+        	Robot.drivetrain.arcadeDrive(0, 0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
