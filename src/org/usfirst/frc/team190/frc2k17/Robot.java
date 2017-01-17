@@ -109,7 +109,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
-    	(new DriveToPegCommand()).start();
+    	(new PlaceGearCommand()).start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
