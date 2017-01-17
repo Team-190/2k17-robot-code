@@ -26,6 +26,6 @@ public class PlaceGearCommand extends CommandGroup {
         // arm.
     	
     	addSequential(new TurnTowardPegCommand());
-    	addSequential(new DriveToPegCommand());
+    	//addSequential(new DriveToPegCommand());
     }
 }

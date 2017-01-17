@@ -23,6 +23,7 @@ public class DriveToPegCommand extends Command {
     }
 
     protected void initialize() {
+    	SmartDashboard.putNumber("kP Driving", SmartDashboard.getNumber("kP Driving", 0.01));
     }
 
     protected void execute() {
@@ -39,7 +40,7 @@ public class DriveToPegCommand extends Command {
 		if (heights.length >= 2) {
 			// Compute the error between current and desired height
 			double error = (targetHeight - heights[0]);
-			double kP = SmartDashboard.getNumber("kP", 0.01);
+			double kP = SmartDashboard.getNumber("kP Driving", 0.01);
 			
 			double output = (error * kP);
 			

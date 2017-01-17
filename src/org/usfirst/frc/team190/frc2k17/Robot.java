@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team190.frc2k17.commands.PlaceGearCommand;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
@@ -47,6 +48,8 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(RobotMap.Constants.CAMERA_RESOLUTION_X,
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
+		
+		autonomousCommand = new PlaceGearCommand();
 		
         //logger.traceExit();
     }
