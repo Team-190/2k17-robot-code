@@ -17,21 +17,19 @@ public class NetworkTableLogAppender extends AbstractAppender {
 
 	protected NetworkTableLogAppender(String name, Filter filter, Layout<? extends Serializable> layout) {
 		super(name, filter, layout);
+		table = NetworkTable.getTable("/" + name);
 	}
 
 	public NetworkTableLogAppender(String name, Filter filter, Layout<? extends Serializable> layout,
 			boolean ignoreExceptions) {
 		super(name, filter, layout, ignoreExceptions);
-	}
-	
-	private void initNetworkTable() {
-		table = NetworkTable.getTable("/kangaroo");
+		table = NetworkTable.getTable("/" + name);
 	}
 
 	@Override
 	public void append(LogEvent event) {
 		List<String> messages = Arrays.asList(table.getStringArray(RobotMap.NetworkTable.Kangaroo.VOICE_LOG, new String[0]));
-		messages.add(event.toString());
+		messages.add(event.getMessage().getFormattedMessage());
 		table.putStringArray(RobotMap.NetworkTable.Kangaroo.VOICE_LOG, messages.toArray(new String[0]));
 	}
 
