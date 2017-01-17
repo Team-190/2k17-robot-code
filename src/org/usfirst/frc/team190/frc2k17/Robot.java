@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team190.frc2k17.commands.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.*;
+import org.usfirst.frc.team190.frc2k17.subsystems.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -108,6 +108,8 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
+    	
+    	(new DriveToPegCommand()).start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
