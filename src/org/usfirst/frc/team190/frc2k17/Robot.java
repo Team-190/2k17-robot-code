@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team190.frc2k17.commands.PlaceGearCommand;
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
-	//private static final Logger logger = LogManager.getLogger(Robot.class);
+	private static final Logger logger = LogManager.getLogger(Robot.class);
 	public static OI oi;
 
     Command autonomousCommand;
@@ -37,8 +37,8 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	//logger.traceEntry();
-    	//logger.info("Robot initializing.");
+    	logger.traceEntry();
+    	logger.info("Robot initializing.");
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
 		
 		autonomousCommand = new PlaceGearCommand();
 		
-        //logger.traceExit();
+        logger.traceExit();
     }
 	
 	/**
@@ -60,7 +60,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	//logger.info("Robot Disabled.");
+    	logger.info("Robot Disabled.");
     }
 	
 	public void disabledPeriodic() {
@@ -77,7 +77,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	//logger.info("Autonomous mode started.");
+    	logger.info("Autonomous mode started.");
         //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	//logger.info("Teleop mode started.");
+    	logger.info("Teleop mode started.");
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
