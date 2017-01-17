@@ -15,5 +15,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/2k17/lib/log4j-core-2.7-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
+	<classpathentry kind="var" path="cscore" sourcepath="cscore.sources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

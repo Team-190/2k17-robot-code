@@ -1,13 +1,15 @@
 
 package org.usfirst.frc.team190.frc2k17;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,24 +25,30 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
-	private static final Logger logger = LogManager.getLogger(Robot.class);
+	//private static final Logger logger = LogManager.getLogger(Robot.class);
 	public static OI oi;
 
     Command autonomousCommand;
-    SendableChooser chooser;
+    //SendableChooser chooser;
     
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	logger.traceEntry();
-    	logger.info("Robot initializing.");
+    	//logger.traceEntry();
+    	//logger.info("Robot initializing.");
 		oi = new OI();
-        chooser = new SendableChooser();
-//        chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-        logger.traceExit();
+        //chooser = new SendableChooser();
+        //chooser.addObject("My Auto", new MyAutoCommand());
+        //SmartDashboard.putData("Auto mode", chooser);
+		
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(RobotMap.Constants.CAMERA_RESOLUTION_X,
+							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
+		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
+		
+        //logger.traceExit();
     }
 	
 	/**
@@ -49,7 +57,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	logger.info("Robot Disabled.");
+    	//logger.info("Robot Disabled.");
     }
 	
 	public void disabledPeriodic() {
@@ -66,8 +74,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	logger.info("Autonomous mode started.");
-        autonomousCommand = (Command) chooser.getSelected();
+    	//logger.info("Autonomous mode started.");
+        //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -92,7 +100,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	logger.info("Teleop mode started.");
+    	//logger.info("Teleop mode started.");
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
