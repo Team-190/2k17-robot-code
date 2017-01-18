@@ -33,7 +33,9 @@ public final class RobotMap {
 	
 	public static final class NetworkTable {
 		public static final class Kangaroo {
-			public static final String VOICE_LOG = "voicelog";
+			public static final String
+			TABLE_NAME = "kangaroo",
+			VOICE_LOG = "voicelog";
 		}
 	}
 	

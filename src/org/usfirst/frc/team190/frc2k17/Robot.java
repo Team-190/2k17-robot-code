@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team190.frc2k17.commands.*;
@@ -26,7 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
-	private static final Logger logger = Logger.getLogger(Robot.class.getName());
+	private static final Logger logger = Logger.getLogger("Robot");
 	public static OI oi;
 
     Command autonomousCommand;
@@ -38,6 +40,9 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	logger.entering(this.getClass().getName(),"robotInit");
+    	Handler handler = new NetworkTableLogHandler(RobotMap.NetworkTable.Kangaroo.TABLE_NAME,RobotMap.NetworkTable.Kangaroo.VOICE_LOG);
+    	handler.setLevel(Level.INFO);
+    	logger.addHandler(handler);
     	logger.info("Robot initializing.");
 		oi = new OI();
         //chooser = new SendableChooser();
