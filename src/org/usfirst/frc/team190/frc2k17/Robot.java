@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import java.util.logging.Logger;
+
 import org.usfirst.frc.team190.frc2k17.commands.*;
 import org.usfirst.frc.team190.frc2k17.subsystems.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
-	private static final Logger logger = LogManager.getLogger(Robot.class);
+	private static final Logger logger = Logger.getLogger(Robot.class.getName());
 	public static OI oi;
 
     Command autonomousCommand;
@@ -37,7 +37,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	logger.traceEntry();
+    	logger.entering(this.getClass().getName(),"robotInit");
     	logger.info("Robot initializing.");
 		oi = new OI();
         //chooser = new SendableChooser();
@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
 		
 		autonomousCommand = new PlaceGearCommand();
 		
-        logger.traceExit();
+        logger.exiting(this.getClass().getName(), "robotInit");
     }
 	
 	/**
