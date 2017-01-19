@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
@@ -85,50 +86,48 @@ public class Drivetrain extends Subsystem {
 	 * Perform health checks and log warnings.
 	 */
 	private void diagnose() {
-		Robot.logger.entering(this.getClass().getName(),"diagnose");
 		if (leftFrontMotor.getStickyFaultOverTemp() != 0) {
-			Robot.logger.warning("Left front drivetrain motor has over-temperature sticky bit set.");
+			Logger.warn("Left front drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (leftFrontMotor.getStickyFaultUnderVoltage() != 0) {
-			Robot.logger.warning("Left front drivetrain motor has under-voltage sticky bit set.");
+			Logger.warn("Left front drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (leftRearMotor.getStickyFaultOverTemp() != 0) {
-			Robot.logger.warning("Left rear drivetrain motor has over-temperature sticky bit set.");
+			Logger.warn("Left rear drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (leftRearMotor.getStickyFaultUnderVoltage() != 0) {
-			Robot.logger.warning("Left rear drivetrain motor has under-voltage sticky bit set.");
+			Logger.warn("Left rear drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (rightFrontMotor.getStickyFaultOverTemp() != 0) {
-			Robot.logger.warning("Right front drivetrain motor has over-temperature sticky bit set.");
+			Logger.warn("Right front drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (rightFrontMotor.getStickyFaultUnderVoltage() != 0) {
-			Robot.logger.warning("Right front drivetrain motor has under-voltage sticky bit set.");
+			Logger.warn("Right front drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (rightRearMotor.getStickyFaultOverTemp() != 0) {
-			Robot.logger.warning("Right rear drivetrain motor has over-temperature sticky bit set.");
+			Logger.warn("Right rear drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (rightRearMotor.getStickyFaultUnderVoltage() != 0) {
-			Robot.logger.warning("Right rear drivetrain motor has under-voltage sticky bit set.");
+			Logger.warn("Right rear drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (!leftFrontMotor.isAlive()) {
-			Robot.logger.warning("Left front drivetrain motor is stopped by motor safety.");
+			Logger.warn("Left front drivetrain motor is stopped by motor safety.");
 		}
 		if (!leftRearMotor.isAlive()) {
-			Robot.logger.warning("Left rear drivetrain motor is stopped by motor safety.");
+			Logger.warn("Left rear drivetrain motor is stopped by motor safety.");
 		}
 		if (!rightFrontMotor.isAlive()) {
-			Robot.logger.warning("Right front drivetrain motor is stopped by motor safety.");
+			Logger.warn("Right front drivetrain motor is stopped by motor safety.");
 		}
 		if (!rightFrontMotor.isAlive()) {
-			Robot.logger.warning("Right rear drivetrain motor is stopped by motor safety.");
+			Logger.warn("Right rear drivetrain motor is stopped by motor safety.");
 		}
 		if (leftFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Robot.logger.severe("Left drivetrain encoder not present.");
+			Logger.severe("Left drivetrain encoder not present.");
 		}
 		if (rightFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Robot.logger.severe("Right drivetrain encoder not present.");
+			Logger.severe("Right drivetrain encoder not present.");
 		}
-		Robot.logger.exiting(this.getClass().getName(),"diagnose");
 	}
 
 	public void initDefaultCommand() {
