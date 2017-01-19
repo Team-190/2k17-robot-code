@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
-	private static final Logger logger = Logger.getLogger("Robot");
+	public static final Logger logger = Logger.getLogger("Robot");
 	public static OI oi;
 
     Command autonomousCommand;

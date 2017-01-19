@@ -24,11 +24,7 @@ public final class RobotMap {
 	}
 	
 	public static final class DIO {
-		public static final int
-		DRIVE_ENCODER_LEFT_A = 0,
-		DRIVE_ENCODER_LEFT_B = 1,
-		DRIVE_ENCODER_RIGHT_A = 2,
-		DRIVE_ENCODER_RIGHT_B = 3;
+		
 	}
 	
 	public static final class NetworkTable {
