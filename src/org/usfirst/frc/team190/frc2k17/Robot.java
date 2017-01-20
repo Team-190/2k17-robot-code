@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	Logger.info("Robot initializing.");
+    	Logger.defaultLogger.info("Robot initializing.");
     	Logger.resetTimestamp();
 		oi = new OI();
         //chooser = new SendableChooser();
@@ -55,7 +55,8 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	Logger.info("Robot Disabled.");
+    	Logger.defaultLogger.info("Robot Disabled.");
+    	Logger.kangarooVoice.info("disabled");
     }
 	
 	public void disabledPeriodic() {
@@ -72,7 +73,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Logger.info("Autonomous mode started.");
+    	Logger.defaultLogger.info("Autonomous mode started.");
         //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -98,7 +99,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	Logger.info("Teleop mode started.");
+    	Logger.defaultLogger.info("Teleop mode started.");
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
