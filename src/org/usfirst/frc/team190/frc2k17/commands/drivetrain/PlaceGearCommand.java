@@ -1,4 +1,4 @@
-package org.usfirst.frc.team190.frc2k17.commands;
+package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

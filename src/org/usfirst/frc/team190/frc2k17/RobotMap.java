@@ -20,7 +20,9 @@ public final class RobotMap {
 		DRIVE_MOTOR_LEFT_FRONT = 0,
 		DRIVE_MOTOR_LEFT_REAR = 1, 
 		DRIVE_MOTOR_RIGHT_FRONT = 2,
-		DRIVE_MOTOR_RIGHT_REAR = 3;
+		DRIVE_MOTOR_RIGHT_REAR = 3,
+		SHOOTER_MOTOR_FLYWHEEL = 4,
+		SHOOTER_MOTOR_FEED = 5;
 	}
 	
 	public static final class DIO {
