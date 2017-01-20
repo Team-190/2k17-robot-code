@@ -24,7 +24,7 @@ public class Logger {
 		public String getKangarooVoice() {
 			switch(this) {
 			case TRACE:
-				return "";
+				return "trace";
 			case DEBUG:
 				return "debug";
 			case INFO:
@@ -126,17 +126,18 @@ public class Logger {
 	
 	private static class NetworkTablesOutputter implements Outputter {
 		
+		private String tableName;
 		private String fieldName;
-		private NetworkTable table;
 
 		public NetworkTablesOutputter(String tableName, String fieldName) {
+			this.tableName = tableName;
 			this.fieldName = fieldName;
-			table = NetworkTable.getTable("/" + tableName);
 		}
 		
 		@Override
 		public void output(Message msg) {
-			List<String> messages = Arrays.asList(table.getStringArray(fieldName, new String[0]));
+			NetworkTable table = NetworkTable.getTable("/" + tableName);
+			ArrayList<String> messages = new ArrayList<String>(Arrays.asList(table.getStringArray(fieldName, new String[0])));
 			messages.add(msg.getLevel().getKangarooVoice() + " " + msg.getMessage());
 			table.putStringArray(fieldName, messages.toArray(new String[0]));
 		}
