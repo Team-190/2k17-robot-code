@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import java.util.Arrays;
 import java.util.List;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveToPegCommand extends Command {
 	
 	private boolean _finished = false;
+	private boolean alreadySpoke = false;
 
     public DriveToPegCommand() {
     	requires(Robot.drivetrain);
@@ -38,6 +40,10 @@ public class DriveToPegCommand extends Command {
 		
 		// Check if GRIP is reporting values
 		if (heights.length >= 2) {
+			if(!alreadySpoke) {
+				Logger.kangarooVoice.info("peg");
+				alreadySpoke = true;
+			}
 			// Compute the error between current and desired height
 			double error = (targetHeight - heights[0]);
 			double kP = SmartDashboard.getNumber("kP Driving", 0.01);
