@@ -53,7 +53,7 @@ public class Shooter extends Subsystem {
 			Logger.defaultLogger.warn("Shooter feed motor is stopped by motor safety.");
 		}
 		if (flywheelMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.severe("Shooter flywheel encoder not present.");
+			Logger.defaultLogger.warn("Shooter flywheel encoder not present.");
 		}
 	}
 

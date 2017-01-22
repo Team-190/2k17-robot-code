@@ -128,10 +128,10 @@ public class Drivetrain extends Subsystem {
 			Logger.defaultLogger.warn("Right rear drivetrain motor is stopped by motor safety.");
 		}
 		if (leftFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.severe("Left drivetrain encoder not present.");
+			Logger.defaultLogger.warn("Left drivetrain encoder not present.");
 		}
 		if (rightFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.severe("Right drivetrain encoder not present.");
+			Logger.defaultLogger.warn("Right drivetrain encoder not present.");
 		}
 	}
 	

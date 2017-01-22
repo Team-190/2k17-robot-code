@@ -1,5 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -8,6 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PlaceGearCommand extends CommandGroup {
 
     public PlaceGearCommand() {
+    	requires(Robot.drivetrain);
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
