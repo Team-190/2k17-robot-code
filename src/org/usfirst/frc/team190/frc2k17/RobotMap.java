@@ -38,10 +38,14 @@ public final class RobotMap {
 	}
 	
 	public static final class Constants {
-		public static final int CAMERA_RESOLUTION_X = 320;
-		public static final int CAMERA_RESOLUTION_Y = 240;
-		public static final int CAMERA_EXPOSURE = 0;
-		public static final double DRIVE_TO_PEG_OUTPUT_TOLERANCE = 0.1;
-		public static final double TURN_TO_PEG_OUTPUT_TOLERANCE = 3;
+		public static final int
+		CAMERA_RESOLUTION_X = 320,
+		CAMERA_RESOLUTION_Y = 240,
+		CAMERA_EXPOSURE = 0;
+		
+		public static final double
+		CAMERA_HFOV = 63.0,
+		DRIVE_TO_PEG_OUTPUT_TOLERANCE = 0.1,
+		TURN_TO_PEG_OUTPUT_TOLERANCE = 3;
 	}
 }

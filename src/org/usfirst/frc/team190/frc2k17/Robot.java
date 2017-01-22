@@ -57,7 +57,6 @@ public class Robot extends IterativeRobot {
      */
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
-    	Logger.kangarooVoice.info("disabled");
     }
 	
 	public void disabledPeriodic() {
@@ -106,9 +105,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
-    	(new PlaceGearCommand()).start();
-    	
-        if (autonomousCommand != null) autonomousCommand.cancel();
+    	if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**

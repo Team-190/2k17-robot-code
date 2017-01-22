@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.CANSpeedController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The robot's drivetrain.
@@ -80,6 +82,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		driveController.tankDrive(leftSpeed, rightSpeed);
+		
+		SmartDashboard.putNumber("Left Speed", leftSpeed);
+		SmartDashboard.putNumber("Right Speed", rightSpeed);
 	}
 	
 	/**
@@ -129,7 +134,7 @@ public class Drivetrain extends Subsystem {
 			Logger.defaultLogger.severe("Right drivetrain encoder not present.");
 		}
 	}
-
+	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
