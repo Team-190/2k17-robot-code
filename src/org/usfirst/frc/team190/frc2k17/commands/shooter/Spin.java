@@ -1,5 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -8,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Spin extends Command {
 
     public Spin() {
+    	requires(Robot.shooter);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

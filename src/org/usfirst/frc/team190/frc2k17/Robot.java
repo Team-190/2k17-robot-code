@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team190.frc2k17.commands.*;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.*;
 
@@ -25,6 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	public static final Drivetrain drivetrain = new Drivetrain();
+	public static final Shooter shooter = new Shooter();
+	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
 	public static OI oi;
 
     Command autonomousCommand;
@@ -74,6 +77,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+    	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
         //autonomousCommand = (Command) chooser.getSelected();
         
@@ -100,13 +104,14 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	Logger.kangarooVoice.info("teleop");
     	Logger.defaultLogger.info("Teleop mode started.");
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
-    	(new PlaceGearCommand()).start();
+    	(new DriveToPegCommand()).start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
