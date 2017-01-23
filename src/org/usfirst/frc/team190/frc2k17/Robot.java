@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team190.frc2k17.commands.*;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.*;
@@ -53,7 +54,7 @@ public class Robot extends IterativeRobot {
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
 		
-		autonomousCommand = new PlaceGearCommand();
+		autonomousCommand = new DriveToPegCommand();
     }
 	
 	/**
@@ -114,7 +115,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
-    	(new DriveToPegCommand()).start();
+    	(new ArcadeDriveCommand()).start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
