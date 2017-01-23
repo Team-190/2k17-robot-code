@@ -55,7 +55,7 @@ public class DriveToPegCommand extends Command {
 			}
 			
 			// Drive robot
-			Robot.drivetrain.arcadeDrive(output, 0);
+			Robot.drivetrain.arcadeDrive(output < RobotMap.Constants.DRIVE_TO_PEG_MAX_SPEED ? output : RobotMap.Constants.DRIVE_TO_PEG_MAX_SPEED, 0);
 		} else {
 			// Stop robot if GRIP is not reporting values
 			Robot.drivetrain.arcadeDrive(0, 0);

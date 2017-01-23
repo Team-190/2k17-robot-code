@@ -42,6 +42,7 @@ public final class RobotMap {
 		public static final int CAMERA_RESOLUTION_Y = 240;
 		public static final int CAMERA_EXPOSURE = 0;
 		public static final double DRIVE_TO_PEG_OUTPUT_TOLERANCE = 0.1;
+		public static final double DRIVE_TO_PEG_MAX_SPEED = 0.5;
 		public static final double TURN_TO_PEG_OUTPUT_TOLERANCE = 3;
 	}
 }
