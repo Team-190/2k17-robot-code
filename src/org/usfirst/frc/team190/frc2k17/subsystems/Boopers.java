@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Boopers extends Subsystem {
-
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	
+	//TODO: Create booper methods & commands
+	//    * forward
+	//    * reverse
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
