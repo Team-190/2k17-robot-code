@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Feed extends Command {
+public class ShooterFeed extends Command {
 
-    public Feed() {
+    public ShooterFeed() {
     	requires(Robot.shooterFeeder);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

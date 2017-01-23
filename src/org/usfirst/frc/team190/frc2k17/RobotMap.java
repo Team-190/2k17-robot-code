@@ -21,7 +21,12 @@ public final class RobotMap {
 		SHIFTERS_SHIFT_LOW = 1,
 		
 		GEAR_PUSH_OUT = 2,
-		GEAR_PUSH_IN = 3;
+		GEAR_PUSH_IN = 3,
+		
+		BOOPER_PUSH_OUT = 4,
+		BOOPER_PULL_IN = 5;
+		
+		
 	}
 	
 	public static final class CAN {
