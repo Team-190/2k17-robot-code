@@ -14,18 +14,43 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Shooter extends Subsystem {
     
-	private final CANTalon flywheelMotor, feedMotor;
+	private final CANTalon flywheelMotor1, flywheelMotor2, feedMotor;
+	private final int f = 0,
+					  p = 0,
+					  i = 0,
+					  d = 0;
 	
 	/**
 	 * Constructor initializes private fields.
 	 */
 	public Shooter() {
 		
-		flywheelMotor = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FLYWHEEL);
+		flywheelMotor1 = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FLYWHEEL1);
+		flywheelMotor2 = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FLYWHEEL2);
 		feedMotor = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FEED);
 		
-		flywheelMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		flywheelMotor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		flywheelMotor1.configEncoderCodesPerRev(256);
+		flywheelMotor1.configNominalOutputVoltage(+0.0f, -0.0f);
+		flywheelMotor1.configPeakOutputVoltage(+12.0f, 0.0f);
 		
+		flywheelMotor2.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		flywheelMotor2.configEncoderCodesPerRev(256);
+		flywheelMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+		flywheelMotor2.configPeakOutputVoltage(+12.0f, 0.0f);
+		
+		flywheelMotor1.setProfile(0);
+		flywheelMotor1.setF(f);
+		flywheelMotor1.setP(p);
+		flywheelMotor1.setI(i);
+		flywheelMotor1.setD(d);
+		
+		flywheelMotor2.setProfile(0);
+		flywheelMotor2.setF(f);
+		flywheelMotor2.setP(p);
+		flywheelMotor2.setI(i);
+		flywheelMotor2.setD(d);
+
 		diagnose();
 		
 	}
@@ -34,10 +59,10 @@ public class Shooter extends Subsystem {
 	 * Perform health checks and log warnings.
 	 */
 	private void diagnose() {
-		if (flywheelMotor.getStickyFaultOverTemp() != 0) {
+		if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
 			Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
 		}
-		if (flywheelMotor.getStickyFaultUnderVoltage() != 0) {
+		if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
 			Logger.defaultLogger.warn("Shooter flywheel motor has under-voltage sticky bit set.");
 		}
 		if (feedMotor.getStickyFaultOverTemp() != 0) {
@@ -46,13 +71,13 @@ public class Shooter extends Subsystem {
 		if (feedMotor.getStickyFaultUnderVoltage() != 0) {
 			Logger.defaultLogger.warn("Shooter feed motor has under-voltage sticky bit set.");
 		}
-		if (!flywheelMotor.isAlive()) {
+		if (!flywheelMotor1.isAlive()) {
 			Logger.defaultLogger.warn("Shooter flywheel motor is stopped by motor safety.");
 		}
 		if (!feedMotor.isAlive()) {
 			Logger.defaultLogger.warn("Shooter feed motor is stopped by motor safety.");
 		}
-		if (flywheelMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+		if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
 			Logger.defaultLogger.warn("Shooter flywheel encoder not present.");
 		}
 	}
