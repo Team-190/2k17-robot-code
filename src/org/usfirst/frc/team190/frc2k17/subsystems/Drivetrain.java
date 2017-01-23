@@ -2,6 +2,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
+
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
  * The robot's drivetrain.
@@ -23,6 +26,7 @@ public class Drivetrain extends Subsystem {
 	
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private final RobotDrive driveController;
+	private final DoubleSolenoid shifters;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -40,6 +44,8 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_LEFT_REAR);
 		rightFrontMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_FRONT);
 		rightRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR);
+		
+		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 		
 		leftFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		rightFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -63,7 +69,12 @@ public class Drivetrain extends Subsystem {
 	 * @param gear the gear to shift into
 	 */
 	public void shift(Gear gear){
-		// TODO: Implement gear shifting
+		
+		if(gear == Gear.HIGH){
+			shifters.set(Value.kForward);
+		}else if(gear == Gear.LOW){
+			shifters.set(Value.kReverse);
+		}
 	}
 	
 	/**

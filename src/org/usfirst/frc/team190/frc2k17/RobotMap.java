@@ -15,17 +15,30 @@ public final class RobotMap {
 		
 	}
 	
+	public static final class PCM {
+		public static final int
+		SHIFTERS_SHIFT_HIGH = 0,
+		SHIFTERS_SHIFT_LOW = 1,
+		
+		GEAR_PUSH_OUT = 2,
+		GEAR_PUSH_IN = 3;
+	}
+	
 	public static final class CAN {
 		public static final int
 		DRIVE_MOTOR_LEFT_FRONT = 0,
 		DRIVE_MOTOR_LEFT_REAR = 1, 
 		DRIVE_MOTOR_RIGHT_FRONT = 2,
 		DRIVE_MOTOR_RIGHT_REAR = 3,
-		SHOOTER_MOTOR_FLYWHEEL = 4,
-		SHOOTER_MOTOR_FEED = 5;
+		
+		SHOOTER_MOTOR_FLYWHEEL1 = 4,
+		SHOOTER_MOTOR_FLYWHEEL2 = 5,
+		SHOOTER_MOTOR_FEED = 6;
 	}
 	
 	public static final class DIO {
+		public static final int
+		GEAR_PUSHER_SENSOR = 0;
 		
 	}
 	
