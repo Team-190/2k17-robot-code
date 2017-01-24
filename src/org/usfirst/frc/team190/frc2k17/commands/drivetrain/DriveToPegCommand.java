@@ -1,12 +1,8 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;

@@ -1,21 +1,21 @@
 
 package org.usfirst.frc.team190.frc2k17;
 
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
+import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
+import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
-import org.usfirst.frc.team190.frc2k17.commands.*;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
-import org.usfirst.frc.team190.frc2k17.subsystems.*;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the

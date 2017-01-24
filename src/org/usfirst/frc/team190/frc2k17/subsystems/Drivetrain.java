@@ -2,22 +2,17 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
-
-import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.FeedbackDeviceStatus;
 
-import edu.wpi.first.wpilibj.CANSpeedController;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The robot's drivetrain.
