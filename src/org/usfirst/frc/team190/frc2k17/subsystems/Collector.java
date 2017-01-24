@@ -16,7 +16,7 @@ public class Collector extends Subsystem {
 	public Collector() {
 		collectorMotor = new CANTalon(RobotMap.CAN.COLLECTOR_MOTOR);
 	}
-
+	// TODO: implement speed control for collector
 	public void collect() {
 		collectorMotor.set(1);
 	}
@@ -29,5 +29,7 @@ public class Collector extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+    
+    // TODO: implement collector diagnose
 }
 

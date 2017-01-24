@@ -12,9 +12,12 @@ public class ShooterFeeder extends Subsystem {
 	//    * stop
 	//    * setSpeed (?)
 	
+	
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+	
+	//TODO: implement diagnose for shooter feeder
 }
 

@@ -31,6 +31,7 @@ public class Climber extends Subsystem {
     	climberMotor.set(-1.0);
     }
     
+    // TODO: Implement diagnose for climber
     
 }
 

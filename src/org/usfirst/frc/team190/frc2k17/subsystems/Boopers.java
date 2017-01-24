@@ -37,5 +37,7 @@ public class Boopers extends Subsystem {
     public void off() {
     	boopersDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
     }
+    
+    // TODO: implement diagnose for Boopers
 }
 
