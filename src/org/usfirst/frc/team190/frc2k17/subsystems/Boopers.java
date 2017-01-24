@@ -15,7 +15,7 @@ public class Boopers extends Subsystem {
 	private final DoubleSolenoid boopersDoubleSolenoid;
 	
 	public Boopers() {
-		boopersDoubleSolenoid = new DoubleSolenoid(RobotMap.PCM.BOOPER_PULL_IN, RobotMap.PCM.BOOPER_PUSH_OUT);
+		boopersDoubleSolenoid = new DoubleSolenoid(RobotMap.PCM.BOOPERS_PULL_IN, RobotMap.PCM.BOOPERS_PUSH_OUT);
 	}
 
 
