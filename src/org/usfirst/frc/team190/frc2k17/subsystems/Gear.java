@@ -17,7 +17,6 @@ public class Gear extends Subsystem {
     public Gear(){
     	
     	gearPusher = new DoubleSolenoid(RobotMap.PCM.GEAR_PUSH_IN, RobotMap.PCM.GEAR_PUSH_OUT);
-    	
     	gearPusherSensor = new DigitalInput(RobotMap.DIO.GEAR_PUSHER_SENSOR);
     	
     }
