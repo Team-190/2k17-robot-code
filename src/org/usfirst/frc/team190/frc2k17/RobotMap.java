@@ -38,7 +38,9 @@ public final class RobotMap {
 		
 		SHOOTER_MOTOR_FLYWHEEL1 = 4,
 		SHOOTER_MOTOR_FLYWHEEL2 = 5,
-		SHOOTER_MOTOR_FEED = 6;
+		SHOOTER_MOTOR_FEED = 6,
+		
+		CLIMBER_MOTOR = 7;
 	}
 	
 	public static final class DIO {
