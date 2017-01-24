@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveToPegCommand extends Command {
 	
-	private boolean _finished = false;
+	private boolean finished = false;
 	private boolean alreadySpoke = false;
 
     public DriveToPegCommand() {
@@ -47,7 +47,7 @@ public class DriveToPegCommand extends Command {
 			double output = (error * kP);
 			
 			if (output < RobotMap.Constants.DRIVE_TO_PEG_OUTPUT_TOLERANCE) {
-				_finished = true;
+				finished = true;
 			}
 			
 			// Drive robot
@@ -59,7 +59,7 @@ public class DriveToPegCommand extends Command {
     }
     
     protected boolean isFinished() {
-        return _finished;
+        return finished;
     }
 
     protected void end() {
