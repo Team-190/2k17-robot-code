@@ -7,12 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class BooperPullIn extends Command {
+public class BooperPushOutCommand extends Command {
 
-    public BooperPullIn() {
+    public BooperPushOutCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.boopers);
+    	
     }
 
     // Called just before this Command runs the first time
@@ -21,12 +22,12 @@ public class BooperPullIn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.boopers.reverse();
+    	Robot.boopers.forward();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	// TODO: implement isFinished for PullIn
+    	// TODO: implement isFinished for PushOut
         return false;
     }
 

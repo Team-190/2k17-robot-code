@@ -2,7 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperOff;
+import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperOffCommand;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -11,10 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Boopers extends Subsystem {
-	
-	//TODO: Create booper methods & commands
-	//    * forward
-	//    * reverse
+
 	private final DoubleSolenoid boopersDoubleSolenoid;
 	
 	public Boopers() {
@@ -26,7 +23,7 @@ public class Boopers extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new BooperOff());
+    	setDefaultCommand(new BooperOffCommand());
     }
     
     public void forward() {

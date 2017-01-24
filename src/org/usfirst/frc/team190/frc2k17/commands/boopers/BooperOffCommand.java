@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class BooperOff extends Command {
+public class BooperOffCommand extends Command {
 
-    public BooperOff() {
+    public BooperOffCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.boopers);
