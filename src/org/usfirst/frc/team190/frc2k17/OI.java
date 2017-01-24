@@ -1,6 +1,11 @@
 package org.usfirst.frc.team190.frc2k17;
 
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,6 +39,16 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	public static Joystick joystick1 = new Joystick(0);
+	public static Joystick joystick0;
+	
+	private Button driveToPegButton;
+	
+	private Command driveToPegCommand = new DriveToPegCommand();
+	
+	public OI() {
+		joystick0 = new Joystick(0);
+		driveToPegButton = new JoystickButton(joystick0, 3);
+		driveToPegButton.whenPressed(driveToPegCommand);
+	}
 }
 

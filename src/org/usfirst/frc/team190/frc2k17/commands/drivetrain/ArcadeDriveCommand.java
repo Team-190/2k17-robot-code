@@ -21,7 +21,7 @@ public class ArcadeDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(OI.joystick1.getY() * -1, OI.joystick1.getX() * -1);
+    	Robot.drivetrain.arcadeDrive(OI.joystick0.getY() * -1, OI.joystick0.getX() * -1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
