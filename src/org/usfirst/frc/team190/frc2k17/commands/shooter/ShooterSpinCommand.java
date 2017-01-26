@@ -21,6 +21,7 @@ public class ShooterSpinCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.shooter.ShooterOn(1500);		// Assumed value of 1500 RPM. NOT ACCURATE
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -30,6 +31,7 @@ public class ShooterSpinCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.shooter.ShooterOn(0);		// Stop Shooter when end() is called
     }
 
     // Called when another command which requires one or more of the same

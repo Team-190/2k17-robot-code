@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.FeedbackDeviceStatus;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -86,5 +87,14 @@ public class Shooter extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+    
+    public void ShooterOn(int flywheelSpeed){
+    	flywheelMotor1.changeControlMode(TalonControlMode.Speed);
+    	flywheelMotor2.changeControlMode(TalonControlMode.Speed);
+    	
+    	flywheelMotor1.set(flywheelSpeed);
+    	flywheelMotor2.set(flywheelSpeed);
+    }
+    
 }
 
