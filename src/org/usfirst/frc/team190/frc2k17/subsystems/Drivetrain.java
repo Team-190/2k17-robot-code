@@ -22,6 +22,10 @@ public class Drivetrain extends Subsystem {
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private final RobotDrive driveController;
 	private final DoubleSolenoid shifters;
+	private final int f = 0,
+			  p = 0,
+			  i = 0,
+			  d = 0;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -43,7 +47,14 @@ public class Drivetrain extends Subsystem {
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 		
 		leftFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		leftFrontMotor.configEncoderCodesPerRev(256);
+		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
+		leftFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
+		
 		rightFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		rightFrontMotor.configEncoderCodesPerRev(256);
+		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
+		rightFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
 		
 		// put left rear motor in slave mode, following the left front motor
 		leftRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -52,6 +63,18 @@ public class Drivetrain extends Subsystem {
 		// put right rear motor in slave mode, following the right front motor
 		rightRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
 		rightRearMotor.set(rightFrontMotor.getDeviceID());
+		
+		leftFrontMotor.setProfile(0);
+		leftFrontMotor.setF(f);
+		leftFrontMotor.setP(p);
+		leftFrontMotor.setI(i);
+		leftFrontMotor.setD(d);
+		
+		rightFrontMotor.setProfile(0);
+		rightFrontMotor.setF(f);
+		rightFrontMotor.setP(p);
+		rightFrontMotor.setI(i);
+		rightFrontMotor.setD(d);
 		
 		diagnose();
 		
