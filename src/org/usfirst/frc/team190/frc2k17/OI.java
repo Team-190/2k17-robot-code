@@ -40,6 +40,9 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 	
 	public static Joystick joystick0;
+	public static Joystick joystick1;
+	
+	public static Joystick joystick2;		// Assuming the Operator is using a Joystick
 	
 	private Button driveToPegButton;
 	
@@ -47,6 +50,10 @@ public class OI {
 	
 	public OI() {
 		joystick0 = new Joystick(0);
+		joystick1 = new Joystick(1);
+		
+		joystick2 = new Joystick(2);
+		
 		driveToPegButton = new JoystickButton(joystick0, 3);
 		driveToPegButton.whenPressed(driveToPegCommand);
 	}
