@@ -78,8 +78,7 @@ public class Drivetrain extends Subsystem {
 		
 		diagnose();
 		
-		// TODO Temporary code for use on 2k14 test-bot. Pass in proper CANTalons for actual robot
-		driveController = new RobotDrive(0, 2, 1, 3);
+		driveController = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 	}
 	
 	/**

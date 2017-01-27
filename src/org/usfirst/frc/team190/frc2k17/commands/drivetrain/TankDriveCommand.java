@@ -11,8 +11,7 @@ import org.usfirst.frc.team190.frc2k17.Robot;
 public class TankDriveCommand extends Command {
 
     public TankDriveCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
