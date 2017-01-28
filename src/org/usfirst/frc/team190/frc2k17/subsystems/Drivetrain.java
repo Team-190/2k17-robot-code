@@ -78,7 +78,7 @@ public class Drivetrain extends Subsystem {
 		
 		diagnose();
 		
-		driveController = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
+		driveController = new RobotDrive(leftFrontMotor, rightFrontMotor);
 	}
 	
 	/**
