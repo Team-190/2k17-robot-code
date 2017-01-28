@@ -36,7 +36,7 @@ public class Logger {
 			case SEVERE:
 				return "severe error";
 			case CRITICAL:
-				return "holy shit";
+				return "critical";
 			default:
 				return "";
 			}

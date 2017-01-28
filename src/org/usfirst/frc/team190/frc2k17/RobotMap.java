@@ -60,6 +60,26 @@ public final class RobotMap {
 	}
 	
 	public static final class Constants {
+		public static final class DriveTrain {
+			public static final double
+			DRIVE_PID_TURN_KP = 0.0,
+			DRIVE_PID_TURN_KI = 0.0,
+			DRIVE_PID_TURN_KD = 0.0,
+			
+			DRIVE_PID_DISTANCE_KP = 0.0,
+			DRIVE_PID_DISTANCE_KI = 0.0,
+			DRIVE_PID_DISTANCE_KD = 0.0,
+			
+			DRIVE_PID_SPEED_KP = 0.0, 
+			DRIVE_PID_SPEED_KI = 0.0, 
+			DRIVE_PID_SPEED_KD = 0.0,
+			DRIVE_PID_SPEED_KF = 0.0;
+			
+			public static final boolean
+			DRIVE_LEFT_INVERTED = true,
+			DRIVE_RIGHT_INVERTED = true;
+		}
+		
 		public static final int
 		CAMERA_RESOLUTION_X = 320,
 		CAMERA_RESOLUTION_Y = 240,

@@ -3,15 +3,19 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.FeedbackDeviceStatus;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -21,11 +25,8 @@ public class Drivetrain extends Subsystem {
 	
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private final RobotDrive driveController;
+	private AHRS navx = null;
 	private final DoubleSolenoid shifters;
-	private final int f = 0,
-			  p = 0,
-			  i = 0,
-			  d = 0;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -64,21 +65,36 @@ public class Drivetrain extends Subsystem {
 		rightRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
 		rightRearMotor.set(rightFrontMotor.getDeviceID());
 		
+		leftFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_LEFT_INVERTED);
+		rightFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_RIGHT_INVERTED);
+		
 		leftFrontMotor.setProfile(0);
-		leftFrontMotor.setF(f);
-		leftFrontMotor.setP(p);
-		leftFrontMotor.setI(i);
-		leftFrontMotor.setD(d);
+		leftFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
+		leftFrontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
+		leftFrontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
+		leftFrontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
 		
 		rightFrontMotor.setProfile(0);
-		rightFrontMotor.setF(f);
-		rightFrontMotor.setP(p);
-		rightFrontMotor.setI(i);
-		rightFrontMotor.setD(d);
+		rightFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
+		rightFrontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
+		rightFrontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KP);
+		rightFrontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
+		
+		try {
+			navx = new AHRS(SPI.Port.kMXP);
+		} catch (RuntimeException ex ) {
+			Logger.defaultLogger.error("Error instantiating navX-MXP:  " + ex.getMessage());
+		}
 		
 		diagnose();
 		
 		driveController = new RobotDrive(leftFrontMotor, rightFrontMotor);
+		
+		// Setup Live Window
+		LiveWindow.addActuator("Drive Train", "Left Motor Master", leftFrontMotor);
+		LiveWindow.addActuator("Drive Train", "Left Motor Follower", leftRearMotor);
+		LiveWindow.addActuator("Drive Train", "Right Motor Master", rightFrontMotor);
+		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
 	}
 	
 	/**
@@ -101,6 +117,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void arcadeDrive(double speed, double rotation) {
 		driveController.arcadeDrive(speed, rotation);
+		
+		SmartDashboard.putNumber("Left Speed", leftFrontMotor.get());
+		SmartDashboard.putNumber("Right Speed", rightFrontMotor.get());
 	}
 	
 	/**
@@ -164,8 +183,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		//setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new ArcadeDriveCommand());
 	}
 }
 
