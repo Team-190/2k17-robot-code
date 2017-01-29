@@ -12,6 +12,8 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,12 +23,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The robot's drivetrain.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements PIDOutput {
 	
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private final RobotDrive driveController;
 	private AHRS navx = null;
 	private final DoubleSolenoid shifters;
+	
+	private final PIDController turningControl;
+	private final PIDController distanceControl;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -86,6 +91,15 @@ public class Drivetrain extends Subsystem {
 			Logger.defaultLogger.error("Error instantiating navX-MXP:  " + ex.getMessage());
 		}
 		
+		turningControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
+										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, 
+										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, 
+										   navx, this);
+		
+		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
+		
+		distanceControl = null;
+		
 		diagnose();
 		
 		driveController = new RobotDrive(leftFrontMotor, rightFrontMotor);
@@ -95,6 +109,40 @@ public class Drivetrain extends Subsystem {
 		LiveWindow.addActuator("Drive Train", "Left Motor Follower", leftRearMotor);
 		LiveWindow.addActuator("Drive Train", "Right Motor Master", rightFrontMotor);
 		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
+	}
+	
+	/**
+	 * Get's the current heading from the NavX MXP
+	 * @return heading in degrees
+	 */
+	public double getNavxHeading() {
+		return navx.getAngle();
+	}
+	
+	/**
+	 * Enables the turning control loop and resets the NAVX heading
+	 * @param angle angle to turn to in degrees
+	 */
+	public void enableTurnControl(double angle) {
+		navx.reset();
+		
+		turningControl.setSetpoint(angle);
+		turningControl.enable();
+	}
+	
+	/**
+	 * Disables the turning control loop
+	 */
+	public void disableTurnControl() {
+		turningControl.disable();
+	}
+	
+	/**
+	 * Checks if the turning control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isTurnControlOnTarget() {
+		return turningControl.onTarget();
 	}
 	
 	/**
@@ -184,6 +232,16 @@ public class Drivetrain extends Subsystem {
 	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		// TODO: Create a more robust way to use the outputs of both PID loops
+		 if (turningControl.isEnabled()) {
+			 this.arcadeDrive(0, output);
+		 } else if (distanceControl.isEnabled()) {
+			 this.arcadeDrive(output, 0);
+		 }
 	}
 }
 

@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,7 +56,7 @@ public class Robot extends IterativeRobot {
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
 		
-		autonomousCommand = new PlaceGearCommand();
+		//autonomousCommand = new TurnToDegreesCommand(90);
     }
 	
 	/**
@@ -123,6 +125,8 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        SmartDashboard.putDouble("NavX MXP Heading", drivetrain.getNavxHeading());
     }
     
     /**

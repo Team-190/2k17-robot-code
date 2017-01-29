@@ -31,12 +31,12 @@ public final class RobotMap {
 	
 	public static final class CAN {
 		public static final int
-		DRIVE_MOTOR_LEFT_FRONT = 2,
-		DRIVE_MOTOR_LEFT_REAR = 3, 
-		DRIVE_MOTOR_RIGHT_FRONT = 4,
+		DRIVE_MOTOR_LEFT_FRONT = 3,
+		DRIVE_MOTOR_LEFT_REAR = 6, 
+		DRIVE_MOTOR_RIGHT_FRONT = 2,
 		DRIVE_MOTOR_RIGHT_REAR = 5,
 		
-		SHOOTER_MOTOR_FLYWHEEL1 = 6,
+		SHOOTER_MOTOR_FLYWHEEL1 = 4,
 		SHOOTER_MOTOR_FLYWHEEL2 = 7,
 		SHOOTER_MOTOR_FEED = 8,
 		
@@ -62,8 +62,8 @@ public final class RobotMap {
 	public static final class Constants {
 		public static final class DriveTrain {
 			public static final double
-			DRIVE_PID_TURN_KP = 0.0,
-			DRIVE_PID_TURN_KI = 0.0,
+			DRIVE_PID_TURN_KP = 0.001,
+			DRIVE_PID_TURN_KI = 0.001,
 			DRIVE_PID_TURN_KD = 0.0,
 			
 			DRIVE_PID_DISTANCE_KP = 0.0,
@@ -73,7 +73,9 @@ public final class RobotMap {
 			DRIVE_PID_SPEED_KP = 0.0, 
 			DRIVE_PID_SPEED_KI = 0.0, 
 			DRIVE_PID_SPEED_KD = 0.0,
-			DRIVE_PID_SPEED_KF = 0.0;
+			DRIVE_PID_SPEED_KF = 0.0,
+			
+			DRIVE_PID_TURN_TOLERANCE = 2.0; // Degrees
 			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = true,
