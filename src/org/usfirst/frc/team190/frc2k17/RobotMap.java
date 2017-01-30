@@ -12,7 +12,8 @@ public final class RobotMap {
 	}
 	
 	public static final class PWM {
-		
+		public static final int
+		CAMERA_LIGHT = 0;
 	}
 	
 	public static final class PCM {

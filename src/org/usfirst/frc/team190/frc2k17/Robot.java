@@ -5,6 +5,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.subsystems.CameraLight;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
@@ -34,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static final Collector collector = new Collector();
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
+	public static final CameraLight cameraLight = new CameraLight();
 	public static OI oi;
 
     Command autonomousCommand;
