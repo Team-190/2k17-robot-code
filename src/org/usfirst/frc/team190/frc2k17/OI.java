@@ -1,6 +1,8 @@
 package org.usfirst.frc.team190.frc2k17;
 
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -44,18 +46,20 @@ public class OI {
 	
 	public static Joystick joystick2;		// Assuming the Operator is using a Joystick
 	
-	private Button driveToPegButton;
-	
-	private Command driveToPegCommand = new DriveToPegCommand();
+	private Button testButton;
+	private Button testButton2;
 	
 	public OI() {
 		joystick0 = new Joystick(0);
 		joystick1 = new Joystick(1);
-		
+
 		joystick2 = new Joystick(2);
-		
-		driveToPegButton = new JoystickButton(joystick0, 3);
-		driveToPegButton.whenPressed(driveToPegCommand);
+
+		testButton = new JoystickButton(joystick0, 1);
+		testButton.whenPressed(new TurnToDegreesCommand(90));
+
+		testButton = new JoystickButton(joystick0, 5);
+		testButton.whenPressed(new DriveStraightForDistanceCommand(5));
 	}
 }
 

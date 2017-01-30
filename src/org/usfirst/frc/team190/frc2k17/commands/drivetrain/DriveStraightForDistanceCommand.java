@@ -7,24 +7,24 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TurnToDegreesCommand extends Command {
+public class DriveStraightForDistanceCommand extends Command {
 	
-	double degrees = 0.0;
+	double distance = 0.0;
 
-    public TurnToDegreesCommand(double degrees) {
+    public DriveStraightForDistanceCommand(double distance) {
         requires(Robot.drivetrain);
         
-        this.degrees = degrees;
+        this.distance = distance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.enableTurnControl(degrees);
+    	Robot.drivetrain.enableTurnControl(0);
     }
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(0, Robot.drivetrain.getTurningControlLoopOutput());
+    	Robot.drivetrain.arcadeDrive(Robot.oi.joystick0.getY(), Robot.drivetrain.getTurningControlLoopOutput());
     }
 
     // Make this return true when this Command no longer needs to run execute()

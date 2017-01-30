@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.SimplePIDOutput;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 
 import com.ctre.CANTalon;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The robot's drivetrain.
  */
-public class Drivetrain extends Subsystem implements PIDOutput {
+public class Drivetrain extends Subsystem {
 	
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private final RobotDrive driveController;
@@ -31,7 +32,9 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 	private final DoubleSolenoid shifters;
 	
 	private final PIDController turningControl;
+	private final SimplePIDOutput turningOutput;
 	private final PIDController distanceControl;
+	private final SimplePIDOutput distanceOutput;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -91,14 +94,19 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 			Logger.defaultLogger.error("Error instantiating navX-MXP:  " + ex.getMessage());
 		}
 		
+		turningOutput = new SimplePIDOutput();
 		turningControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, 
 										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, 
-										   navx, this);
+										   navx, turningOutput);
 		
 		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
 		
-		distanceControl = null;
+		distanceOutput = new SimplePIDOutput();
+		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
+											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI,
+											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD,
+											navx, distanceOutput);
 		
 		diagnose();
 		
@@ -109,6 +117,14 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 		LiveWindow.addActuator("Drive Train", "Left Motor Follower", leftRearMotor);
 		LiveWindow.addActuator("Drive Train", "Right Motor Master", rightFrontMotor);
 		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
+	}
+	
+	public double getTurningControlLoopOutput() {
+		return turningOutput.getPidOutput();
+	}
+	
+	public double getDistanceControlLoopOutput() {
+		return distanceOutput.getPidOutput();
 	}
 	
 	/**
@@ -232,16 +248,6 @@ public class Drivetrain extends Subsystem implements PIDOutput {
 	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
-	}
-
-	@Override
-	public void pidWrite(double output) {
-		// TODO: Create a more robust way to use the outputs of both PID loops
-		 if (turningControl.isEnabled()) {
-			 this.arcadeDrive(0, output);
-		 } else if (distanceControl.isEnabled()) {
-			 this.arcadeDrive(output, 0);
-		 }
 	}
 }
 
