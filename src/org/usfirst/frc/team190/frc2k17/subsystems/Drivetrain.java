@@ -55,15 +55,21 @@ public class Drivetrain extends Subsystem {
 		
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 		
-		leftFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		leftFrontMotor.configEncoderCodesPerRev(256);
+		leftFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		leftFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
 		
-		rightFrontMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		rightFrontMotor.configEncoderCodesPerRev(256);
+		rightFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		rightFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
+		
+		// put the left front motor in speed mode
+		leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+		leftFrontMotor.set(0);
+		
+		// put the right front motor in speed mode'
+		rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+		rightFrontMotor.set(0);
 		
 		// put left rear motor in slave mode, following the left front motor
 		leftRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -199,6 +205,14 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	/**
+	 * Send encoder values to SmartDashboard.
+	 */
+	public void outputEncoderValues() {
+		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getEncVelocity());
+		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getEncVelocity());
+	}
+	
+	/**
 	 * Perform health checks and log warnings.
 	 */
 	private void diagnose() {
@@ -240,9 +254,13 @@ public class Drivetrain extends Subsystem {
 		}
 		if (leftFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
 			Logger.defaultLogger.warn("Left drivetrain encoder not present.");
+		} else {
+			Logger.defaultLogger.debug("Left drivetrain encoder is present.");
 		}
 		if (rightFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
 			Logger.defaultLogger.warn("Right drivetrain encoder not present.");
+		} else {
+			Logger.defaultLogger.debug("Right drivetrain encoder is present.");
 		}
 	}
 	

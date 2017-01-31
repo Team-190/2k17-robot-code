@@ -1,6 +1,8 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.CameraLightOffCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.CameraLightOnCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -28,7 +30,11 @@ public class PlaceGearCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
+    	addSequential(new CameraLightOnCommand());
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());
+    	addSequential(new CameraLightOffCommand());
     }
+    
+    
 }

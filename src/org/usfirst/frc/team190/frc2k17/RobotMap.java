@@ -32,8 +32,8 @@ public final class RobotMap {
 	
 	public static final class CAN {
 		public static final int
-		DRIVE_MOTOR_LEFT_FRONT = 3,
-		DRIVE_MOTOR_LEFT_REAR = 6, 
+		DRIVE_MOTOR_LEFT_FRONT = 6,
+		DRIVE_MOTOR_LEFT_REAR = 3, 
 		DRIVE_MOTOR_RIGHT_FRONT = 2,
 		DRIVE_MOTOR_RIGHT_REAR = 5,
 		
@@ -71,10 +71,10 @@ public final class RobotMap {
 			DRIVE_PID_DISTANCE_KI = 0.0,
 			DRIVE_PID_DISTANCE_KD = 0.0,
 			
-			DRIVE_PID_SPEED_KP = 0.0, 
+			DRIVE_PID_SPEED_KP = 0.1, 
 			DRIVE_PID_SPEED_KI = 0.0, 
 			DRIVE_PID_SPEED_KD = 0.0,
-			DRIVE_PID_SPEED_KF = 0.0,
+			DRIVE_PID_SPEED_KF = 0.056,
 			
 			DRIVE_PID_TURN_TOLERANCE = 2.0; // Degrees
 			
