@@ -56,19 +56,21 @@ public class Drivetrain extends Subsystem {
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 		
 		leftFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		leftFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC);
 		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		leftFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
-		
+			
 		rightFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		rightFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC);
 		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		rightFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
 		
 		// put the left front motor in speed mode
-		leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+		//leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
 		leftFrontMotor.set(0);
 		
-		// put the right front motor in speed mode'
-		rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
+		// put the right front motor in speed mode
+		//rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
 		rightFrontMotor.set(0);
 		
 		// put left rear motor in slave mode, following the left front motor
@@ -208,8 +210,8 @@ public class Drivetrain extends Subsystem {
 	 * Send encoder values to SmartDashboard.
 	 */
 	public void outputEncoderValues() {
-		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getEncVelocity());
-		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getEncVelocity());
+		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getSpeed());
+		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getSpeed());
 	}
 	
 	/**
