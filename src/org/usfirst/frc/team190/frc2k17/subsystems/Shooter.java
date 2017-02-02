@@ -33,12 +33,12 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		flywheelMotor1.configEncoderCodesPerRev(256);
 		flywheelMotor1.configNominalOutputVoltage(+0.0f, -0.0f);
-		flywheelMotor1.configPeakOutputVoltage(+12.0f, 0.0f);
+		flywheelMotor1.configPeakOutputVoltage(+12.0f, -12.0f);
 		
 		flywheelMotor2.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		flywheelMotor2.configEncoderCodesPerRev(256);
 		flywheelMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
-		flywheelMotor2.configPeakOutputVoltage(+12.0f, 0.0f);
+		flywheelMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
 		
 		flywheelMotor1.setProfile(0);
 		flywheelMotor1.setF(f);

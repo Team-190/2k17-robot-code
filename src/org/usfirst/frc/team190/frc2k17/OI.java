@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17;
 
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveAtSpeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
@@ -51,15 +52,32 @@ public class OI {
 	
 	public OI() {
 		joystick0 = new Joystick(0);
+		
 		joystick1 = new Joystick(1);
 
 		joystick2 = new Joystick(2);
 
 		testButton = new JoystickButton(joystick0, 1);
-		testButton.whenPressed(new TurnToDegreesCommand(90));
+		testButton.whenPressed(new DriveAtSpeedCommand(300));
 
 		testButton = new JoystickButton(joystick0, 5);
 		testButton.whenPressed(new DriveStraightForDistanceCommand(5));
+	}
+	
+	public double getDriverJoystick1X() {
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getX() : joystick0.getX();
+	}
+	
+	public double getDriverJoystick1Y() {
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getY() : joystick0.getY();
+	}
+	
+	public double getDriverJoystick2X() {
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick0.getX() : joystick0.getX();
+	}
+	
+	public double getDriverJoystick2Y() {
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick0.getY() : joystick0.getY();
 	}
 }
 

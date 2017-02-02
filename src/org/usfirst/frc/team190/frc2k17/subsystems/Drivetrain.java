@@ -9,6 +9,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.FeedbackDeviceStatus;
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -58,12 +59,12 @@ public class Drivetrain extends Subsystem {
 		leftFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		leftFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC);
 		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-		leftFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
+		leftFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
 			
 		rightFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		rightFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC);
 		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-		rightFrontMotor.configPeakOutputVoltage(+12.0f, 0.0f);
+		rightFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
 		
 		// put the left front motor in speed mode
 		//leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
@@ -127,6 +128,31 @@ public class Drivetrain extends Subsystem {
 		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
 	}
 	
+	public void enableSpeedControl() {
+		leftFrontMotor.changeControlMode(TalonControlMode.Speed);
+		rightFrontMotor.changeControlMode(TalonControlMode.Speed);
+	}
+	
+	public void disableSpeedControl() {
+		leftFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
+		rightFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
+	}
+	
+	public void tankDriveAtSpeed(double leftSpeed, double rightSpeed) {
+		if (leftFrontMotor.getControlMode() == TalonControlMode.Speed &&
+			rightFrontMotor.getControlMode() == TalonControlMode.Speed) {
+			leftFrontMotor.set(leftSpeed);
+			rightFrontMotor.set(rightSpeed);
+
+			SmartDashboard.putNumber("Tank Drive Speed?", leftFrontMotor.getSpeed());
+		} else {
+			leftFrontMotor.set(0);
+			rightFrontMotor.set(0);
+			
+			SmartDashboard.putNumber("Tank Drive Speed?", 0);
+		}
+	}
+	
 	public double getTurningControlLoopOutput() {
 		return turningOutput.getPidOutput();
 	}
@@ -188,7 +214,12 @@ public class Drivetrain extends Subsystem {
 	 * @param rotation the rotational value
 	 */
 	public void arcadeDrive(double speed, double rotation) {
-		driveController.arcadeDrive(speed, rotation);
+		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
+			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
+			driveController.arcadeDrive(speed, rotation);
+		} else {
+			driveController.arcadeDrive(0, 0);
+		}
 		
 		SmartDashboard.putNumber("Left Speed", leftFrontMotor.get());
 		SmartDashboard.putNumber("Right Speed", rightFrontMotor.get());
@@ -200,7 +231,12 @@ public class Drivetrain extends Subsystem {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		driveController.tankDrive(leftSpeed, rightSpeed);
+		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
+			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
+			driveController.tankDrive(leftSpeed, rightSpeed);
+		} else {
+			driveController.tankDrive(0, 0);
+		}
 		
 		SmartDashboard.putNumber("Left Speed", leftSpeed);
 		SmartDashboard.putNumber("Right Speed", rightSpeed);

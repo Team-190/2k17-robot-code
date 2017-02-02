@@ -1,28 +1,30 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
-import org.usfirst.frc.team190.frc2k17.OI;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class ArcadeDriveCommand extends Command {
-
-    public ArcadeDriveCommand() {
-    	requires(Robot.drivetrain);
+public class DriveAtSpeedCommand extends Command {
+	
+	double speed;
+	
+    public DriveAtSpeedCommand(double speed) {
+        requires(Robot.drivetrain);
+        
+        this.speed = speed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drivetrain.enableSpeedControl();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(Robot.oi.getDriverJoystick1Y(), Robot.oi.getDriverJoystick1X());
-    	Robot.drivetrain.outputEncoderValues();
+    	Robot.drivetrain.tankDriveAtSpeed(speed, speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,10 +34,12 @@ public class ArcadeDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.drivetrain.disableSpeedControl();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.drivetrain.disableSpeedControl();
     }
 }
