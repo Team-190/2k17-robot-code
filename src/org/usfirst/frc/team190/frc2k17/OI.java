@@ -79,5 +79,9 @@ public class OI {
 	public double getDriverJoystick2Y() {
 		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick0.getY() : joystick0.getY();
 	}
+
+	public double getDriverJoystick1Throttle() {
+		return joystick0.getThrottle();
+	}
 }
 

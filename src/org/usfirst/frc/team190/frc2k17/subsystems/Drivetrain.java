@@ -15,8 +15,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -28,7 +26,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 	
 	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
-	private final RobotDrive driveController;
 	private AHRS navx = null;
 	private final DoubleSolenoid shifters;
 	
@@ -119,8 +116,6 @@ public class Drivetrain extends Subsystem {
 		
 		diagnose();
 		
-		driveController = new RobotDrive(leftFrontMotor, rightFrontMotor);
-		
 		// Setup Live Window
 		LiveWindow.addActuator("Drive Train", "Left Motor Master", leftFrontMotor);
 		LiveWindow.addActuator("Drive Train", "Left Motor Follower", leftRearMotor);
@@ -128,35 +123,44 @@ public class Drivetrain extends Subsystem {
 		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
 	}
 	
+	private double limit(double value) {
+		if (value >= 1.0) {
+			return 1.0;
+		} else if (value <= -1.0) {
+			return -1.0;
+		} else {
+			return value;
+		}
+	}
+	
+	/**
+	 * Enable speed control
+	 */
 	public void enableSpeedControl() {
 		leftFrontMotor.changeControlMode(TalonControlMode.Speed);
 		rightFrontMotor.changeControlMode(TalonControlMode.Speed);
 	}
 	
+	/**
+	 * Disable speed control
+	 */
 	public void disableSpeedControl() {
 		leftFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
 		rightFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
 	}
 	
-	public void tankDriveAtSpeed(double leftSpeed, double rightSpeed) {
-		if (leftFrontMotor.getControlMode() == TalonControlMode.Speed &&
-			rightFrontMotor.getControlMode() == TalonControlMode.Speed) {
-			leftFrontMotor.set(leftSpeed);
-			rightFrontMotor.set(rightSpeed);
-
-			SmartDashboard.putNumber("Tank Drive Speed?", leftFrontMotor.getSpeed());
-		} else {
-			leftFrontMotor.set(0);
-			rightFrontMotor.set(0);
-			
-			SmartDashboard.putNumber("Tank Drive Speed?", 0);
-		}
-	}
-	
+	/**
+	 * Get the output of the turning PID loop
+	 * @return Turning PID loop output
+	 */
 	public double getTurningControlLoopOutput() {
 		return turningOutput.getPidOutput();
 	}
 	
+	/**
+	 * Get the output of the distance PID loop
+	 * @return Distance PID loop output
+	 */
 	public double getDistanceControlLoopOutput() {
 		return distanceOutput.getPidOutput();
 	}
@@ -210,15 +214,44 @@ public class Drivetrain extends Subsystem {
 	
 	/**
 	 * Drive the robot with a speed and rotational value
-	 * @param speed the forward speed of the robot
-	 * @param rotation the rotational value
+	 * @param moveValue the forward speed of the robot
+	 * @param rotateValue the rotational value
 	 */
-	public void arcadeDrive(double speed, double rotation) {
+	public void arcadeDrive(double moveValue, double rotateValue) {
+		moveValue = limit(moveValue);
+		rotateValue = limit(rotateValue);
+		
 		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
 			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
-			driveController.arcadeDrive(speed, rotation);
+			
+			// Copied from WPILib
+			double leftMotorSpeed;
+		    double rightMotorSpeed;
+		    
+		    if (moveValue > 0.0) {
+		      if (rotateValue > 0.0) {
+		        leftMotorSpeed = moveValue - rotateValue;
+		        rightMotorSpeed = Math.max(moveValue, rotateValue);
+		      } else {
+		        leftMotorSpeed = Math.max(moveValue, -rotateValue);
+		        rightMotorSpeed = moveValue + rotateValue;
+		      }
+		    } else {
+		      if (rotateValue > 0.0) {
+		        leftMotorSpeed = -Math.max(-moveValue, rotateValue);
+		        rightMotorSpeed = moveValue + rotateValue;
+		      } else {
+		        leftMotorSpeed = moveValue - rotateValue;
+		        rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
+		      }
+		    }
+		    
+		    leftFrontMotor.set(leftMotorSpeed);
+		    rightFrontMotor.set(rightMotorSpeed);
+			
 		} else {
-			driveController.arcadeDrive(0, 0);
+			leftFrontMotor.set(0);
+			rightFrontMotor.set(0);
 		}
 		
 		SmartDashboard.putNumber("Left Speed", leftFrontMotor.get());
@@ -231,15 +264,36 @@ public class Drivetrain extends Subsystem {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
+		leftSpeed = limit(leftSpeed);
+		rightSpeed = limit(rightSpeed);
+		
 		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
 			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
-			driveController.tankDrive(leftSpeed, rightSpeed);
+			leftFrontMotor.set(leftSpeed);
+			rightFrontMotor.set(rightSpeed);
 		} else {
-			driveController.tankDrive(0, 0);
+			leftFrontMotor.set(0);
+			rightFrontMotor.set(0);
 		}
 		
 		SmartDashboard.putNumber("Left Speed", leftSpeed);
 		SmartDashboard.putNumber("Right Speed", rightSpeed);
+	}
+	
+	/**
+	 * Drive each side of the robot using speed control
+	 * @param leftSpeed left side speed in RPM
+	 * @param rightSpeed right side speed in RPM
+	 */
+	public void tankDriveAtSpeed(double leftSpeed, double rightSpeed) {
+		if (leftFrontMotor.getControlMode() == TalonControlMode.Speed &&
+			rightFrontMotor.getControlMode() == TalonControlMode.Speed) {
+			leftFrontMotor.set(leftSpeed);
+			rightFrontMotor.set(rightSpeed);
+		} else {
+			leftFrontMotor.set(0);
+			rightFrontMotor.set(0);
+		}
 	}
 	
 	/**
@@ -248,6 +302,8 @@ public class Drivetrain extends Subsystem {
 	public void outputEncoderValues() {
 		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getSpeed());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getSpeed());
+		SmartDashboard.putNumber("Left Velocity Error", leftFrontMotor.getClosedLoopError());
+		SmartDashboard.putNumber("Right Velocity Error", rightFrontMotor.getClosedLoopError());
 	}
 	
 	/**

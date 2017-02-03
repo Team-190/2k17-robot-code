@@ -71,20 +71,20 @@ public final class RobotMap {
 			DRIVE_PID_DISTANCE_KI = 0.0,
 			DRIVE_PID_DISTANCE_KD = 0.0,
 			
-			DRIVE_PID_SPEED_KP = 0.0, 
+			DRIVE_PID_SPEED_KP = 0.1, 
 			DRIVE_PID_SPEED_KI = 0.0, 
-			DRIVE_PID_SPEED_KD = 0.0,
-			DRIVE_PID_SPEED_KF = 0.347,
+			DRIVE_PID_SPEED_KD = 1.25,
+			DRIVE_PID_SPEED_KF = 0.37463378906249994,
 			
 			DRIVE_PID_TURN_TOLERANCE = 2.0; // Degrees
 			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
-			DRIVE_RIGHT_INVERTED = false;
+			DRIVE_RIGHT_INVERTED = true;
 
 			public static final boolean
 			INVERT_LEFT_ENC = true,
-			INVERT_RIGHT_ENC = false;
+			INVERT_RIGHT_ENC = true;
 		}
 		
 		public static final class OI {
