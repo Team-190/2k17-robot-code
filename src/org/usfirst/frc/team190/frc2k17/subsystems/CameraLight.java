@@ -22,7 +22,7 @@ public class CameraLight extends Subsystem {
     }
     
     public void turnOn() {
-    	spike.set(Value.kOn);
+    	spike.set(Value.kForward);
     }
     
     public void turnOff() {
