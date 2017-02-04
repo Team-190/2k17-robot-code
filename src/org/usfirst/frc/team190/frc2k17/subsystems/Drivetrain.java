@@ -9,12 +9,15 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.FeedbackDeviceStatus;
+import com.ctre.CANTalon.StatusFrameRate;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -33,6 +36,33 @@ public class Drivetrain extends Subsystem {
 	private final SimplePIDOutput turningOutput;
 	private final PIDController distanceControl;
 	private final SimplePIDOutput distanceOutput;
+	
+	private class RobotDistanceSource implements PIDSource {
+		
+		CANTalon leftTalon, rightTalon;
+		
+		public RobotDistanceSource(CANTalon left, CANTalon right) {
+			leftTalon = left;
+			rightTalon = right;
+		}
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+
+		@Override
+		public double pidGet() {
+			// TODO Auto-generated method stub
+			return (leftTalon.getEncPosition() + rightTalon.getEncPosition()) / 2;
+		}
+		
+	}
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -88,6 +118,10 @@ public class Drivetrain extends Subsystem {
 		leftFrontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
 		leftFrontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
 		
+		// TODO: Tune sides individually.
+		// Set one side to follower mode and turn the other to a proper speed
+		// on the ground, then set the other side to speed control and tune
+		// it with both on the same setpoint
 		rightFrontMotor.setProfile(0);
 		rightFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
 		rightFrontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
@@ -104,7 +138,8 @@ public class Drivetrain extends Subsystem {
 		turningControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, 
 										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, 
-										   navx, turningOutput);
+										   navx,
+										   turningOutput);
 		
 		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
 		
@@ -112,7 +147,11 @@ public class Drivetrain extends Subsystem {
 		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD,
-											navx, distanceOutput);
+											new RobotDistanceSource(leftFrontMotor, rightFrontMotor),
+											distanceOutput);
+		distanceControl.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
+										RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW);
+		distanceControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);
 		
 		diagnose();
 		
@@ -197,6 +236,33 @@ public class Drivetrain extends Subsystem {
 	 */
 	public boolean isTurnControlOnTarget() {
 		return turningControl.onTarget();
+	}
+	
+	/**
+	 * Enables the distance control loop and resets the encoder positions to zero
+	 * @param distance the distance to drive
+	 */
+	public void enableDistanceControl(double distance) {
+		leftFrontMotor.setPosition(0);
+		rightFrontMotor.setPosition(0);
+		
+		distanceControl.setSetpoint(distance);
+		distanceControl.enable();
+	}
+	
+	/**
+	 * Disables the distance control loop
+	 */
+	public void disableDistanceControl() {
+		distanceControl.disable();
+	}
+	
+	/**
+	 * Checks if the distance control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isDistanceControlOnTarget() {
+		return distanceControl.onTarget();
 	}
 	
 	/**

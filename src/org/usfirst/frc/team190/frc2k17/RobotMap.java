@@ -26,8 +26,6 @@ public final class RobotMap {
 		
 		BOOPERS_PUSH_OUT = 4,
 		BOOPERS_PULL_IN = 5;
-		
-		
 	}
 	
 	public static final class CAN {
@@ -67,16 +65,20 @@ public final class RobotMap {
 			DRIVE_PID_TURN_KI = 0.0001,
 			DRIVE_PID_TURN_KD = 0.0075,
 			
-			DRIVE_PID_DISTANCE_KP = 0.0,
+			DRIVE_PID_DISTANCE_KP = 14.0,
 			DRIVE_PID_DISTANCE_KI = 0.0,
 			DRIVE_PID_DISTANCE_KD = 0.0,
 			
 			DRIVE_PID_SPEED_KP = 0.1, 
-			DRIVE_PID_SPEED_KI = 0.0, 
+			DRIVE_PID_SPEED_KI = 0.0,
 			DRIVE_PID_SPEED_KD = 1.25,
 			DRIVE_PID_SPEED_KF = 0.37463378906249994,
 			
-			DRIVE_PID_TURN_TOLERANCE = 2.0; // Degrees
+			DRIVE_MAX_SPEED_LOW = 337,	// RPM, 70% of true max
+			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
+			
+			DRIVE_PID_TURN_TOLERANCE = 2.0, // Degrees
+			DRIVE_PID_DIST_TOLERANCE = 3.0; // Inches
 			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
