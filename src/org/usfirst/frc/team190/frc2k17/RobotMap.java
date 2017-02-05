@@ -86,7 +86,7 @@ public final class RobotMap {
 
 			public static final boolean
 			INVERT_LEFT_ENC = true,
-			INVERT_RIGHT_ENC = false;
+			INVERT_RIGHT_ENC = true;
 		}
 		
 		public static final class OI {
