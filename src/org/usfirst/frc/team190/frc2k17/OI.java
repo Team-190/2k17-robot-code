@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -60,8 +61,10 @@ public class OI {
 		testButton = new JoystickButton(joystick0, 1);
 		testButton.whenPressed(new DriveAtSpeedCommand(300));
 
-		testButton = new JoystickButton(joystick0, 5);
-		testButton.whenPressed(new DriveStraightForDistanceCommand(5));
+		//testButton = new JoystickButton(joystick0, 5);
+		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
+		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
+		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceCommand(120));
 	}
 	
 	public double getDriverJoystick1X() {
@@ -73,15 +76,15 @@ public class OI {
 	}
 	
 	public double getDriverJoystick2X() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick0.getX() : joystick0.getX();
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getX() : joystick1.getX();
 	}
 	
 	public double getDriverJoystick2Y() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick0.getY() : joystick0.getY();
+		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getY() : joystick1.getY();
 	}
 
 	public double getDriverJoystick1Throttle() {
-		return joystick0.getThrottle();
+		return joystick1.getThrottle();
 	}
 }
 

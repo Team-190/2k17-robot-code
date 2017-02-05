@@ -9,44 +9,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveStraightForDistanceCommand extends Command {
-	
-	double distance = 0.0;
+	private double distance;
 
+	/**
+	 * 
+	 * @param distance Distance to drive in inches
+	 */
     public DriveStraightForDistanceCommand(double distance) {
-        requires(Robot.drivetrain);
-        
-        this.distance = distance;
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.distance = distance;
+    	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	//Robot.drivetrain.enableTurnControl(0);
-    	Robot.drivetrain.enableSpeedControl();
-    	Robot.drivetrain.enableDistanceControl(distance);
+    	Robot.drivetrain.driveDistance(distance);
     }
-    
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double speed = Robot.drivetrain.getDistanceControlLoopOutput();
     	Robot.drivetrain.tankDriveAtSpeed(speed, speed);
-    	SmartDashboard.putNumber("Robot speed", speed);
+    	SmartDashboard.putNumber("Robot Speed (RPM)", speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.drivetrain.isDistanceControlOnTarget(); //Robot.drivetrain.isTurnControlOnTarget();
+        return Robot.drivetrain.isDistanceControlOnTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.disableSpeedControl();
     	Robot.drivetrain.disableDistanceControl();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrain.disableSpeedControl();
     	Robot.drivetrain.disableDistanceControl();
     }
 }

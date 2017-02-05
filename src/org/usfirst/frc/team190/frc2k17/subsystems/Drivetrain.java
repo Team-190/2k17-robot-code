@@ -5,6 +5,7 @@ import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.SimplePIDOutput;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -16,6 +17,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
@@ -28,7 +30,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final CANTalon leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor;
 	private AHRS navx = null;
 	private final DoubleSolenoid shifters;
 	
@@ -36,16 +37,12 @@ public class Drivetrain extends Subsystem {
 	private final SimplePIDOutput turningOutput;
 	private final PIDController distanceControl;
 	private final SimplePIDOutput distanceOutput;
+	private final SRXDrive srxdrive;
 	
 	private class RobotDistanceSource implements PIDSource {
-		
-		CANTalon leftTalon, rightTalon;
-		
-		public RobotDistanceSource(CANTalon left, CANTalon right) {
-			leftTalon = left;
-			rightTalon = right;
+		public RobotDistanceSource() {
+			
 		}
-
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
 			
@@ -59,10 +56,8 @@ public class Drivetrain extends Subsystem {
 		@Override
 		public double pidGet() {
 			// TODO Auto-generated method stub
-			double value = (leftTalon.getEncPosition() + rightTalon.getEncPosition()) / 2;
-			value *= 0.0123; // convert encoder ticks to inches (using 1024 ticks / rev and 4 inch wheels)
-			SmartDashboard.putNumber("Encoder averages (inches)", value);
-			return value;
+			return srxdrive.averageEncoderPositions();
+
 		}
 		
 	}
@@ -78,58 +73,8 @@ public class Drivetrain extends Subsystem {
 	 * Constructor initializes private fields.
 	 */
 	public Drivetrain(){
-		
-		leftFrontMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_LEFT_FRONT);
-		leftRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_LEFT_REAR);
-		rightFrontMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_FRONT);
-		rightRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR);
-		
+		srxdrive = new SRXDrive();
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
-		
-		leftFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		leftFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC);
-		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-		leftFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
-			
-		rightFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		rightFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC);
-		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-		rightFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
-		
-		// put the left front motor in speed mode
-		//leftFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-		leftFrontMotor.set(0);
-		
-		// put the right front motor in speed mode
-		//rightFrontMotor.changeControlMode(CANTalon.TalonControlMode.Speed);
-		rightFrontMotor.set(0);
-		
-		// put left rear motor in slave mode, following the left front motor
-		leftRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-		leftRearMotor.set(leftFrontMotor.getDeviceID());
-		
-		// put right rear motor in slave mode, following the right front motor
-		rightRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-		rightRearMotor.set(rightFrontMotor.getDeviceID());
-		
-		leftFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_LEFT_INVERTED);
-		rightFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_RIGHT_INVERTED);
-		
-		leftFrontMotor.setProfile(0);
-		leftFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
-		leftFrontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
-		leftFrontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
-		leftFrontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
-		
-		// TODO: Tune sides individually.
-		// Set one side to follower mode and turn the other to a proper speed
-		// on the ground, then set the other side to speed control and tune
-		// it with both on the same setpoint
-		rightFrontMotor.setProfile(0);
-		rightFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
-		rightFrontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
-		rightFrontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KP);
-		rightFrontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
 		
 		try {
 			navx = new AHRS(SPI.Port.kMXP);
@@ -150,19 +95,15 @@ public class Drivetrain extends Subsystem {
 		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
-											new RobotDistanceSource(leftFrontMotor, rightFrontMotor),
+											new RobotDistanceSource(),
 											distanceOutput);
 		distanceControl.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
 										RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW);
 		distanceControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);
 		
-		diagnose();
 		
-		// Setup Live Window
-		LiveWindow.addActuator("Drive Train", "Left Motor Master", leftFrontMotor);
-		LiveWindow.addActuator("Drive Train", "Left Motor Follower", leftRearMotor);
-		LiveWindow.addActuator("Drive Train", "Right Motor Master", rightFrontMotor);
-		LiveWindow.addActuator("Drive Train", "Right Motor Follower", rightRearMotor);
+		
+
 	}
 	
 	private double limit(double value) {
@@ -179,16 +120,16 @@ public class Drivetrain extends Subsystem {
 	 * Enable speed control
 	 */
 	public void enableSpeedControl() {
-		leftFrontMotor.changeControlMode(TalonControlMode.Speed);
-		rightFrontMotor.changeControlMode(TalonControlMode.Speed);
+		//leftFrontMotor.changeControlMode(TalonControlMode.Speed);
+		//rightFrontMotor.changeControlMode(TalonControlMode.Speed);
 	}
 	
 	/**
 	 * Disable speed control
 	 */
 	public void disableSpeedControl() {
-		leftFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
-		rightFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
+		//leftFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
+		//rightFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
 	}
 	
 	/**
@@ -246,11 +187,6 @@ public class Drivetrain extends Subsystem {
 	 * @param distance the distance to drive
 	 */
 	public void enableDistanceControl(double distance) {
-		leftFrontMotor.setPosition(0);
-		rightFrontMotor.setPosition(0);
-		
-		distanceControl.setSetpoint(distance);
-		distanceControl.enable();
 	}
 	
 	/**
@@ -281,51 +217,7 @@ public class Drivetrain extends Subsystem {
 		}
 	}
 	
-	/**
-	 * Drive the robot with a speed and rotational value
-	 * @param moveValue the forward speed of the robot
-	 * @param rotateValue the rotational value
-	 */
-	public void arcadeDrive(double moveValue, double rotateValue) {
-		moveValue = limit(moveValue);
-		rotateValue = limit(rotateValue);
-		
-		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
-			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
-			
-			// Copied from WPILib
-			double leftMotorSpeed;
-		    double rightMotorSpeed;
-		    
-		    if (moveValue > 0.0) {
-		      if (rotateValue > 0.0) {
-		        leftMotorSpeed = moveValue - rotateValue;
-		        rightMotorSpeed = Math.max(moveValue, rotateValue);
-		      } else {
-		        leftMotorSpeed = Math.max(moveValue, -rotateValue);
-		        rightMotorSpeed = moveValue + rotateValue;
-		      }
-		    } else {
-		      if (rotateValue > 0.0) {
-		        leftMotorSpeed = -Math.max(-moveValue, rotateValue);
-		        rightMotorSpeed = moveValue + rotateValue;
-		      } else {
-		        leftMotorSpeed = moveValue - rotateValue;
-		        rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
-		      }
-		    }
-		    
-		    leftFrontMotor.set(leftMotorSpeed);
-		    rightFrontMotor.set(rightMotorSpeed);
-			
-		} else {
-			leftFrontMotor.set(0);
-			rightFrontMotor.set(0);
-		}
-		
-		SmartDashboard.putNumber("Left Speed", leftFrontMotor.get());
-		SmartDashboard.putNumber("Right Speed", rightFrontMotor.get());
-	}
+
 	
 	/**
 	 * Drive each side of the robot individually
@@ -333,21 +225,14 @@ public class Drivetrain extends Subsystem {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		leftSpeed = limit(leftSpeed);
-		rightSpeed = limit(rightSpeed);
-		
-		if (leftFrontMotor.getControlMode() == TalonControlMode.PercentVbus &&
-			rightFrontMotor.getControlMode() == TalonControlMode.PercentVbus) {
-			leftFrontMotor.set(leftSpeed);
-			rightFrontMotor.set(rightSpeed);
-		} else {
-			leftFrontMotor.set(0);
-			rightFrontMotor.set(0);
-		}
-		
-		SmartDashboard.putNumber("Left Speed", leftSpeed);
-		SmartDashboard.putNumber("Right Speed", rightSpeed);
+		srxdrive.tankDrive(leftSpeed, rightSpeed);
 	}
+	
+	public void arcadeDrive(double moveValue, double rotateValue) {
+		srxdrive.arcadeDrive(moveValue, rotateValue);
+		
+	}
+	
 	
 	/**
 	 * Drive each side of the robot using speed control
@@ -355,80 +240,39 @@ public class Drivetrain extends Subsystem {
 	 * @param rightSpeed right side speed in RPM
 	 */
 	public void tankDriveAtSpeed(double leftSpeed, double rightSpeed) {
-		if (leftFrontMotor.getControlMode() == TalonControlMode.Speed &&
-			rightFrontMotor.getControlMode() == TalonControlMode.Speed) {
-			leftFrontMotor.set(leftSpeed);
-			rightFrontMotor.set(rightSpeed);
-		} else {
-			leftFrontMotor.set(0);
-			rightFrontMotor.set(0);
-		}
+		srxdrive.tankDriveRPM(leftSpeed, rightSpeed);
 	}
 	
 	/**
 	 * Send encoder values to SmartDashboard.
 	 */
+	
 	public void outputEncoderValues() {
-		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getSpeed());
-		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getSpeed());
-		SmartDashboard.putNumber("Left Velocity Error", leftFrontMotor.getClosedLoopError());
-		SmartDashboard.putNumber("Right Velocity Error", rightFrontMotor.getClosedLoopError());
+		srxdrive.outputEncoderValues();
 	}
 	
 	/**
-	 * Perform health checks and log warnings.
+	 * 
+	 * @param distance Distance to drive in inches
 	 */
-	private void diagnose() {
-		if (leftFrontMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Left front drivetrain motor has over-temperature sticky bit set.");
-		}
-		if (leftFrontMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Left front drivetrain motor has under-voltage sticky bit set.");
-		}
-		if (leftRearMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Left rear drivetrain motor has over-temperature sticky bit set.");
-		}
-		if (leftRearMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Left rear drivetrain motor has under-voltage sticky bit set.");
-		}
-		if (rightFrontMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Right front drivetrain motor has over-temperature sticky bit set.");
-		}
-		if (rightFrontMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Right front drivetrain motor has under-voltage sticky bit set.");
-		}
-		if (rightRearMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Right rear drivetrain motor has over-temperature sticky bit set.");
-		}
-		if (rightRearMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Right rear drivetrain motor has under-voltage sticky bit set.");
-		}
-		if (!leftFrontMotor.isAlive()) {
-			Logger.defaultLogger.warn("Left front drivetrain motor is stopped by motor safety.");
-		}
-		if (!leftRearMotor.isAlive()) {
-			Logger.defaultLogger.warn("Left rear drivetrain motor is stopped by motor safety.");
-		}
-		if (!rightFrontMotor.isAlive()) {
-			Logger.defaultLogger.warn("Right front drivetrain motor is stopped by motor safety.");
-		}
-		if (!rightFrontMotor.isAlive()) {
-			Logger.defaultLogger.warn("Right rear drivetrain motor is stopped by motor safety.");
-		}
-		if (leftFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.warn("Left drivetrain encoder not present.");
-		} else {
-			Logger.defaultLogger.debug("Left drivetrain encoder is present.");
-		}
-		if (rightFrontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.warn("Right drivetrain encoder not present.");
-		} else {
-			Logger.defaultLogger.debug("Right drivetrain encoder is present.");
-		}
+	public void driveDistance(double distance) {
+		srxdrive.zeroEncoderPositions();
+		double tickstoDrive = inchesToTicks(distance);
+		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
+		distanceControl.setSetpoint(tickstoDrive);
+		distanceControl.enable();
+	}
+	
+	private double inchesToTicks(double inches) {
+		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
+	}
+	
+	private double ticksToInches(double ticks) {
+		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
 	}
 	
 	public void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDriveCommand());
+		setDefaultCommand(new TankDriveCommand());
 	}
 }
 

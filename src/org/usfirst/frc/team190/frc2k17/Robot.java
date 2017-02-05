@@ -59,7 +59,8 @@ public class Robot extends IterativeRobot {
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
 		
-		autonomousCommand = new DriveStraightForDistanceCommand(120);
+		//autonomousCommand = new DriveStraightForDistanceCommand();
+		
     }
 	
 	/**
