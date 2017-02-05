@@ -61,9 +61,9 @@ public final class RobotMap {
 	public static final class Constants {
 		public static final class DriveTrain {
 			public static final double
-			DRIVE_PID_TURN_KP = 0.005,// 0.01125,
-			DRIVE_PID_TURN_KI = 0.00025,
-			DRIVE_PID_TURN_KD = 0.0075, //0.0075,
+			DRIVE_PID_TURN_KP = 2.0,//0.01125,
+			DRIVE_PID_TURN_KI = 0.0, //0.00025,
+			DRIVE_PID_TURN_KD = 0.0, //0.0075, //0.0075,
 			
 			DRIVE_PID_DISTANCE_KP = 14.0,
 			DRIVE_PID_DISTANCE_KI = 0.0,
@@ -86,7 +86,7 @@ public final class RobotMap {
 
 			public static final boolean
 			INVERT_LEFT_ENC = true,
-			INVERT_RIGHT_ENC = true;
+			INVERT_RIGHT_ENC = false;
 		}
 		
 		public static final class OI {

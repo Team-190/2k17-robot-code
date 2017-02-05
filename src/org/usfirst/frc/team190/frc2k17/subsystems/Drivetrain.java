@@ -59,7 +59,10 @@ public class Drivetrain extends Subsystem {
 		@Override
 		public double pidGet() {
 			// TODO Auto-generated method stub
-			return (leftTalon.getEncPosition() + rightTalon.getEncPosition()) / 2;
+			double value = (leftTalon.getEncPosition() + rightTalon.getEncPosition()) / 2;
+			value *= 0.0123; // convert encoder ticks to inches (using 1024 ticks / rev and 4 inch wheels)
+			SmartDashboard.putNumber("Encoder averages (inches)", value);
+			return value;
 		}
 		
 	}

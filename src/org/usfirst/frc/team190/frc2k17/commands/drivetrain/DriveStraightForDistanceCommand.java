@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -28,6 +29,7 @@ public class DriveStraightForDistanceCommand extends Command {
     protected void execute() {
     	double speed = Robot.drivetrain.getDistanceControlLoopOutput();
     	Robot.drivetrain.tankDriveAtSpeed(speed, speed);
+    	SmartDashboard.putNumber("Robot speed", speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

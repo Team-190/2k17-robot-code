@@ -2,6 +2,7 @@
 package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
@@ -58,7 +59,7 @@ public class Robot extends IterativeRobot {
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
 		
-		autonomousCommand = new TurnToDegreesCommand(90);
+		autonomousCommand = new DriveStraightForDistanceCommand(120);
     }
 	
 	/**
