@@ -147,9 +147,9 @@ public class Drivetrain extends Subsystem {
 		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
 		
 		distanceOutput = new SimplePIDOutput();
-		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
-											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI,
-											RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD,
+		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP,
+											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI,
+											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(leftFrontMotor, rightFrontMotor),
 											distanceOutput);
 		distanceControl.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
