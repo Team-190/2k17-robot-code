@@ -2,13 +2,11 @@ package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveAtSpeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -49,7 +47,6 @@ public class OI {
 	public static Joystick joystick2;		// Assuming the Operator is using a Joystick
 	
 	private Button testButton;
-	private Button testButton2;
 	
 	public OI() {
 		joystick0 = new Joystick(0);

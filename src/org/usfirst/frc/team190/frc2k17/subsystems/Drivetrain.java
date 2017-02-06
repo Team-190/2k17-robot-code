@@ -2,16 +2,14 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.SimplePIDOutput;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The robot's drivetrain.
@@ -23,6 +21,7 @@ public class Drivetrain extends Subsystem {
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
+	private final AHRS navx;
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -36,7 +35,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public Drivetrain(){
 		srxdrive = new SRXDrive();
-		turningController = new TurningController(srxdrive);
+		navx = new AHRS(SPI.Port.kMXP);
+		
+		turningController = new TurningController(navx);
 		distanceController = new DistanceController(srxdrive);
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 	}

@@ -1,25 +1,20 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
-import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.SPI;
 
 public class TurningController implements DriveController {
 
-	private final SRXDrive srxdrive;
 	private final PIDController turningControl;
 	private AHRS navx = null;
 	
 	private double loopOutput = 0;
 	
-	public TurningController(SRXDrive drive) {
-		srxdrive = drive;
-		navx = new AHRS(SPI.Port.kMXP);
+	public TurningController(AHRS navx) {
+		this.navx = navx;
 
 		turningControl = new PIDController(
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
