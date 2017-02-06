@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 	
 	private final DoubleSolenoid shifters;
-	private final TurningController turningController;
-	private final DistanceController distanceController;
+	private final DriveController turningController;
+	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
 	
@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem {
 	 * @return Distance PID loop output
 	 */
 	public double getDistanceControlLoopOutput() {
-		return distanceController.getDistanceControlLoopOutput();
+		return distanceController.getLoopOutput();
 	}
 	
 	/**
@@ -54,14 +54,14 @@ public class Drivetrain extends Subsystem {
 	 * @param distance the distance to drive
 	 */
 	public void enableDistanceControl(double distance) {
-		distanceController.enableDistanceControl(distance);
+		distanceController.enable(distance);
 	}
 	
 	/**
 	 * Disables the distance control loop
 	 */
 	public void disableDistanceControl() {
-		distanceController.disableDistanceControl();
+		distanceController.disable();
 	}
 	
 	/**
@@ -69,7 +69,14 @@ public class Drivetrain extends Subsystem {
 	 * @return true if the loop is on target
 	 */
 	public boolean isDistanceControlOnTarget() {
-		return distanceController.isDistanceControlOnTarget();
+		return distanceController.isOnTarget();
+	}
+	
+	/**
+	 * Drives the robot based off the driving control loop's output
+	 */
+	public void controlDistance() {
+		arcadeDrive(getDistanceControlLoopOutput(), 0);
 	}
 	
 	/**
@@ -77,7 +84,7 @@ public class Drivetrain extends Subsystem {
 	 * @return Turning PID loop output
 	 */
 	public double getTurningControlLoopOutput() {
-		return distanceController.getDistanceControlLoopOutput();
+		return turningController.getLoopOutput();
 	}
 	
 	/**
@@ -101,6 +108,20 @@ public class Drivetrain extends Subsystem {
 	 */
 	public boolean isTurningControlOnTarget() {
 		return turningController.isOnTarget();
+	}
+	
+	/**
+	 * Drives the robot based off the turning control loop's output
+	 */
+	public void controlTurning() {
+		arcadeDrive(0, getTurningControlLoopOutput());
+	}
+	
+	/**
+	 * Drives the robot based off the output of the turning and driving control loops
+	 */
+	public void controlTurningAndDistance() {
+		arcadeDrive(getTurningControlLoopOutput(), getTurningControlLoopOutput());
 	}
 	
 	/**

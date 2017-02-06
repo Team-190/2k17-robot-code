@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DistanceController {
+public class DistanceController implements DriveController {
 	
 	SRXDrive srxdrive;
 	private final PIDController distancePID;
-	private final SimplePIDOutput distanceOutput;
+	private double loopOutput = 0;
 
 	private class RobotDistanceSource implements PIDSource {
 		public RobotDistanceSource() {
@@ -37,12 +37,12 @@ public class DistanceController {
 	
 	public DistanceController(SRXDrive drive) {
 		srxdrive = drive;
-		distanceOutput = new SimplePIDOutput();
 		distancePID = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(),
-											distanceOutput);
+											output -> this.loopOutput = output);
+		
 		distancePID.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
 										RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW);
 		distancePID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);		
@@ -52,15 +52,15 @@ public class DistanceController {
 	 * Get the output of the distance PID loop
 	 * @return Distance PID loop output
 	 */
-	public double getDistanceControlLoopOutput() {
-		return distanceOutput.getPidOutput();
+	public double getLoopOutput() {
+		return loopOutput;
 	}
 	
 	/**
 	 * Enables the distance control loop and resets the encoder positions to zero
 	 * @param distance the distance to drive in inches
 	 */
-	public void enableDistanceControl(double distance) {
+	public void enable(double distance) {
 		srxdrive.zeroEncoderPositions();
 		double tickstoDrive = Robot.drivetrain.inchesToTicks(distance);
 		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
@@ -71,7 +71,7 @@ public class DistanceController {
 	/**
 	 * Disables the distance control loop
 	 */
-	public void disableDistanceControl() {
+	public void disable() {
 		distancePID.disable();
 	}
 	
@@ -79,7 +79,7 @@ public class DistanceController {
 	 * Checks if the distance control loop is on target
 	 * @return true if the loop is on target
 	 */
-	public boolean isDistanceControlOnTarget() {
+	public boolean isOnTarget() {
 		return distancePID.onTarget();
 	}
 }

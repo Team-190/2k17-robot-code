@@ -9,21 +9,22 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 
-public class TurningController {
+public class TurningController implements DriveController {
 
 	private final SRXDrive srxdrive;
 	private final PIDController turningControl;
 	private AHRS navx = null;
 	
+	private double loopOutput = 0;
+	
 	public TurningController(SRXDrive drive) {
 		srxdrive = drive;
-
 		navx = new AHRS(SPI.Port.kMXP);
 
 		turningControl = new PIDController(
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, navx,
-				output -> srxdrive.arcadeDrive(0, -output));
+				output -> this.loopOutput = output);
 		
 		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
 	}
@@ -34,6 +35,14 @@ public class TurningController {
 	 */
 	public boolean isOnTarget() {
 		return turningControl.onTarget();
+	}
+	
+	/**
+	 * Gets the output of the loop
+	 * @return loop output
+	 */
+	public double getLoopOutput() {
+		return loopOutput;
 	}
 
 	/**
