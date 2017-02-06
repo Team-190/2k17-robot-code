@@ -19,12 +19,11 @@ public class TurnToDegreesCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.enableTurnControl(degrees);
+    	Robot.drivetrain.turnToHeading(degrees);
     }
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(0, -Robot.drivetrain.getTurningControlLoopOutput());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -34,12 +33,11 @@ public class TurnToDegreesCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.disableTurnControl();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrain.disableTurnControl();
+    	end();
     }
 }

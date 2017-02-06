@@ -128,9 +128,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        
-        SmartDashboard.putDouble("NavX MXP Heading", drivetrain.getNavxHeading());
+        Scheduler.getInstance().run();        
     }
     
     /**

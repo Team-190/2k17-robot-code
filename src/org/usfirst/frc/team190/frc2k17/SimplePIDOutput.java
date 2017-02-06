@@ -14,5 +14,4 @@ public class SimplePIDOutput implements PIDOutput {
 	public void pidWrite(double output) {
 		pidOutput = output;
 	}
-	
 }

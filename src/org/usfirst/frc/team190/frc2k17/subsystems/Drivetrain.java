@@ -1,28 +1,16 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
-import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.SimplePIDOutput;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.FeedbackDeviceStatus;
-import com.ctre.CANTalon.StatusFrameRate;
-import com.ctre.CANTalon.TalonControlMode;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -30,37 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private AHRS navx = null;
 	private final DoubleSolenoid shifters;
+	private final TurningController turningController;
+	private final DistanceController distanceController;
 	
-	private final PIDController turningControl;
-	private final SimplePIDOutput turningOutput;
-	private final PIDController distanceControl;
-	private final SimplePIDOutput distanceOutput;
 	private final SRXDrive srxdrive;
-	
-	private class RobotDistanceSource implements PIDSource {
-		public RobotDistanceSource() {
-			
-		}
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			
-		}
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-
-		@Override
-		public double pidGet() {
-			// TODO Auto-generated method stub
-			return srxdrive.averageEncoderPositions();
-
-		}
-		
-	}
 	
 	/**
 	 * The gears that the transmission may be shifted into.
@@ -74,36 +36,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public Drivetrain(){
 		srxdrive = new SRXDrive();
+		turningController = new TurningController(srxdrive);
+		distanceController = new DistanceController(srxdrive);
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
-		
-		try {
-			navx = new AHRS(SPI.Port.kMXP);
-		} catch (RuntimeException ex ) {
-			Logger.defaultLogger.error("Error instantiating navX-MXP:  " + ex.getMessage());
-		}
-		
-		turningOutput = new SimplePIDOutput();
-		turningControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
-										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, 
-										   RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, 
-										   navx,
-										   turningOutput);
-		
-		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
-		
-		distanceOutput = new SimplePIDOutput();
-		distanceControl = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP,
-											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI,
-											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
-											new RobotDistanceSource(),
-											distanceOutput);
-		distanceControl.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
-										RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW);
-		distanceControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);
-		
-		
-		
-
 	}
 	
 	private double limit(double value) {
@@ -114,6 +49,10 @@ public class Drivetrain extends Subsystem {
 		} else {
 			return value;
 		}
+	}
+	
+	public void turnToHeading(double degrees) {
+		turningController.turnToHeading(degrees);
 	}
 	
 	/**
@@ -132,55 +71,15 @@ public class Drivetrain extends Subsystem {
 		//rightFrontMotor.changeControlMode(TalonControlMode.PercentVbus);
 	}
 	
-	/**
-	 * Get the output of the turning PID loop
-	 * @return Turning PID loop output
-	 */
-	public double getTurningControlLoopOutput() {
-		return turningOutput.getPidOutput();
-	}
 	
 	/**
 	 * Get the output of the distance PID loop
 	 * @return Distance PID loop output
 	 */
 	public double getDistanceControlLoopOutput() {
-		return distanceOutput.getPidOutput();
+		return distanceController.getDistanceControlLoopOutput();
 	}
 	
-	/**
-	 * Get's the current heading from the NavX MXP
-	 * @return heading in degrees
-	 */
-	public double getNavxHeading() {
-		return navx.getAngle();
-	}
-	
-	/**
-	 * Enables the turning control loop and resets the NAVX heading
-	 * @param angle angle to turn to in degrees
-	 */
-	public void enableTurnControl(double angle) {
-		navx.reset();
-		
-		turningControl.setSetpoint(angle);
-		turningControl.enable();
-	}
-	
-	/**
-	 * Disables the turning control loop
-	 */
-	public void disableTurnControl() {
-		turningControl.disable();
-	}
-	
-	/**
-	 * Checks if the turning control loop is on target
-	 * @return true if the loop is on target
-	 */
-	public boolean isTurnControlOnTarget() {
-		return turningControl.onTarget();
-	}
 	
 	/**
 	 * Enables the distance control loop and resets the encoder positions to zero
@@ -193,7 +92,7 @@ public class Drivetrain extends Subsystem {
 	 * Disables the distance control loop
 	 */
 	public void disableDistanceControl() {
-		distanceControl.disable();
+		distanceController.disableDistanceControl();
 	}
 	
 	/**
@@ -201,7 +100,7 @@ public class Drivetrain extends Subsystem {
 	 * @return true if the loop is on target
 	 */
 	public boolean isDistanceControlOnTarget() {
-		return distanceControl.onTarget();
+		return distanceController.isDistanceControlOnTarget();
 	}
 	
 	/**
@@ -256,18 +155,15 @@ public class Drivetrain extends Subsystem {
 	 * @param distance Distance to drive in inches
 	 */
 	public void driveDistance(double distance) {
+		distanceController.driveDistance(distance);
 		srxdrive.zeroEncoderPositions();
-		double tickstoDrive = inchesToTicks(distance);
-		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
-		distanceControl.setSetpoint(tickstoDrive);
-		distanceControl.enable();
 	}
 	
-	private double inchesToTicks(double inches) {
+	public double inchesToTicks(double inches) {
 		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
 	}
 	
-	private double ticksToInches(double ticks) {
+	public double ticksToInches(double ticks) {
 		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
 	}
 	
