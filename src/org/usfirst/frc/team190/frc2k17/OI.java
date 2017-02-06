@@ -65,6 +65,7 @@ public class OI {
 		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
 		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceCommand(120));
+		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 	}
 	
 	public double getDriverJoystick1X() {
