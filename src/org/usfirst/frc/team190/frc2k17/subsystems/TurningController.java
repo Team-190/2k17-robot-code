@@ -14,36 +14,42 @@ public class TurningController {
 	private final SRXDrive srxdrive;
 	private final PIDController turningControl;
 	private AHRS navx = null;
-	private final PIDOutput turningOutput;
-
+	
 	public TurningController(SRXDrive drive) {
 		srxdrive = drive;
 
-//		try {
-			navx = new AHRS(SPI.Port.kMXP);
-//		} catch (RuntimeException ex) {
-//			Logger.defaultLogger.error("Error instantiating navX-MXP:  " + ex.getMessage());
-//		}
+		navx = new AHRS(SPI.Port.kMXP);
 
 		turningControl = new PIDController(
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, navx,
 				output -> srxdrive.arcadeDrive(0, -output));
+		
 		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
 	}
 
 	/**
 	 * Checks if the turning control loop is on target
-	 * 
 	 * @return true if the loop is on target
 	 */
-	public boolean isTurnControlOnTarget() {
+	public boolean isOnTarget() {
 		return turningControl.onTarget();
 	}
 
-	public void turnToHeading(double degrees) {
+	/**
+	 * Enables the control loop
+	 * @param degrees
+	 */
+	public void enable(double degrees) {
 		navx.reset();
 		turningControl.setSetpoint(degrees);
 		turningControl.enable();
+	}
+	
+	/**
+	 * Disables the control loop
+	 */
+	public void disable() {
+		turningControl.disable();
 	}
 }

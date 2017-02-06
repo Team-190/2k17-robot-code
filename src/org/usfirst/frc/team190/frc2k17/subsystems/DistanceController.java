@@ -58,9 +58,14 @@ public class DistanceController {
 	
 	/**
 	 * Enables the distance control loop and resets the encoder positions to zero
-	 * @param distance the distance to drive
+	 * @param distance the distance to drive in inches
 	 */
 	public void enableDistanceControl(double distance) {
+		srxdrive.zeroEncoderPositions();
+		double tickstoDrive = Robot.drivetrain.inchesToTicks(distance);
+		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
+		distancePID.setSetpoint(tickstoDrive);
+		distancePID.enable();
 	}
 	
 	/**
@@ -76,13 +81,5 @@ public class DistanceController {
 	 */
 	public boolean isDistanceControlOnTarget() {
 		return distancePID.onTarget();
-	}
-	
-	public void driveDistance(double inches) {
-		srxdrive.zeroEncoderPositions();
-		double tickstoDrive = Robot.drivetrain.inchesToTicks(inches);
-		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
-		distancePID.setSetpoint(tickstoDrive);
-		distancePID.enable();
 	}
 }
