@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drivetrain extends Subsystem {
 	
 	private final DoubleSolenoid shifters;
-	private final DriveController turningController;
+	private final TurningController turningController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
@@ -74,13 +74,6 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	/**
-	 * Drives the robot based off the driving control loop's output
-	 */
-	public void controlDistance() {
-		arcadeDrive(getDistanceControlLoopOutput(), 0);
-	}
-	
-	/**
 	 * Get the output of the turning PID loop
 	 * @return Turning PID loop output
 	 */
@@ -111,6 +104,13 @@ public class Drivetrain extends Subsystem {
 		return turningController.isOnTarget();
 	}
 	
+	/**
+	 * Drives the robot based off the driving control loop's output
+	 */
+	public void controlDistance() {
+		arcadeDrive(getDistanceControlLoopOutput(), 0);
+	}
+
 	/**
 	 * Drives the robot based off the turning control loop's output
 	 */
@@ -167,16 +167,30 @@ public class Drivetrain extends Subsystem {
 		srxdrive.outputEncoderValues();
 	}
 	
-	public double inchesToTicks(double inches) {
+	public static double inchesToTicks(double inches) {
 		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
 	}
 	
-	public double ticksToInches(double ticks) {
+	public static double ticksToInches(double ticks) {
 		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
 	}
 	
 	public void initDefaultCommand() {
 		setDefaultCommand(new TankDriveCommand());
+	}
+	
+	/**
+	 * Swap turning PID values to the ones for maintaining heading while driving.
+	 */
+	public void enableMaintainHeadingPidValues() {
+		turningController.enableMaintainHeading();
+	}
+	
+	/**
+	 * Swap turning PID values to the normal ones.
+	 */
+	public void disableMaintainHeadingPidValues() {
+		turningController.disableMaintainHeading();
 	}
 }
 

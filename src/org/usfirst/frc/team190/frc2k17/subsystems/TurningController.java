@@ -59,4 +59,19 @@ public class TurningController implements DriveController {
 		turningControl.disable();
 		SmartDashboard.putNumber("Turning PID loop output", 0);
 	}
+	
+	/**
+	 * Swap PID values to the ones for maintaining heading while driving. 
+	 */
+	public void enableMaintainHeading() {
+		turningControl.setPID(RobotMap.Constants.DriveTrain.DRIVE_PID_HEADING_CORRECTION_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_HEADING_CORRECTION_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_HEADING_CORRECTION_KD);
+	}
+	
+	/**
+	 * Swap PID values back to the normal turning ones.
+	 */
+	public void disableMaintainHeading() {
+		turningControl.setPID(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD);
+	}
+	
 }
