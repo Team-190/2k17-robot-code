@@ -5,6 +5,7 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurningController implements DriveController {
 
@@ -37,6 +38,7 @@ public class TurningController implements DriveController {
 	 * @return loop output
 	 */
 	public double getLoopOutput() {
+		SmartDashboard.putNumber("Turning PID loop output", loopOutput);
 		return loopOutput;
 	}
 
@@ -55,5 +57,6 @@ public class TurningController implements DriveController {
 	 */
 	public void disable() {
 		turningControl.disable();
+		SmartDashboard.putNumber("Turning PID loop output", 0);
 	}
 }
