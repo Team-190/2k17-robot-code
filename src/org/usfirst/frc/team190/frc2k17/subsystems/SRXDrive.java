@@ -23,12 +23,10 @@ public class SRXDrive {
 		rightRearMotor = new CANTalon(RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR);
 
 		leftFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		//leftFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC);
 		leftFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		leftFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
 			
 		rightFrontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		rightFrontMotor.reverseSensor(RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC);
 		rightFrontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
 		rightFrontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
 		
@@ -40,10 +38,8 @@ public class SRXDrive {
 		rightRearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
 		rightRearMotor.set(rightFrontMotor.getDeviceID());
 		
-		
 		leftFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_LEFT_INVERTED);
-		rightFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_RIGHT_INVERTED);
-		
+		rightFrontMotor.setInverted(RobotMap.Constants.DriveTrain.DRIVE_RIGHT_INVERTED);		
 		
 		leftFrontMotor.setProfile(0);
 		leftFrontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
@@ -92,20 +88,19 @@ public class SRXDrive {
 		//TODO: Adjust for proper gear
 		leftSpeed *= RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW;
 		rightSpeed *= RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW;
-		tankDriveRPM(leftSpeed, rightSpeed);
-
-		
-		
+		driveMotors(leftSpeed, rightSpeed);		
 	}
 	
-	public void tankDriveRPM(double leftSpeed, double rightSpeed) {
+	/**
+	 * Drive the TalonSRX closed-loop speed control
+	 * @param leftSpeed left speed in RPM
+	 * @param rightSpeed right speed in RPM
+	 */
+	private void driveMotors(double leftSpeed, double rightSpeed) {
 		leftFrontMotor.set(leftSpeed);
 		rightFrontMotor.set(rightSpeed);
 		SmartDashboard.putNumber("Left Speed", leftSpeed);
 		SmartDashboard.putNumber("Right Speed", rightSpeed);
-		/*System.out.println("Left encoder: " + leftFrontMotor.getEncPosition());
-		System.out.println("Right encoder: " + rightFrontMotor.getEncPosition());
-		System.out.println("Average encoders: " + averageEncoderPositions());*/
 	}
 	
 	/**
@@ -116,7 +111,6 @@ public class SRXDrive {
 	public void tankDrive(Joystick leftJoy, Joystick rightJoy) {
 		tankDrive(leftJoy.getY(), rightJoy.getY());
 	}
-	
 	
 	/**
 	 * Drive the robot with a speed and rotational value
@@ -152,20 +146,65 @@ public class SRXDrive {
 	    
 	}
 	
+	/**
+	 * Log Encoder Values to Smart Dashboard
+	 */
 	public void outputEncoderValues() {
-		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", leftFrontMotor.getSpeed());
-		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", rightFrontMotor.getSpeed());
+		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", getLeftEncoderSpeed());
+		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", getRightEncoderSpeed());
 		SmartDashboard.putNumber("Left Velocity Error", leftFrontMotor.getClosedLoopError());
 		SmartDashboard.putNumber("Right Velocity Error", rightFrontMotor.getClosedLoopError());
 	}
 	
+	/**
+	 * Gets the left encoder's position
+	 * @return encoder position in ticks
+	 */
+	public double getLeftEncoderPosition() {
+		double value = leftFrontMotor.getEncPosition();
+		return (RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC ? -value : value);
+	}
+	
+	/**
+	 * Gets the right encoder's position
+	 * @return encoder position in ticks
+	 */
+	public double getRightEncoderPosition() {
+		double value = rightFrontMotor.getEncPosition();
+		return (RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC ? -value : value);
+	}
+	
+	/**
+	 * Gets the left encoder's velocity
+	 * @return encoder position in rpm
+	 */
+	public double getLeftEncoderSpeed() {
+		double value = leftFrontMotor.getSpeed();
+		return (RobotMap.Constants.DriveTrain.INVERT_LEFT_ENC ? -value : value);
+	}
+	
+	/**
+	 * Gets the right encoder's velocity
+	 * @return encoder velocity in rpm
+	 */
+	public double getRightEncoderSpeed() {
+		double value = rightFrontMotor.getSpeed();
+		return (RobotMap.Constants.DriveTrain.INVERT_RIGHT_ENC ? -value : value);
+	}
+	
+	/**
+	 * Get average encoder position
+	 * @return average position of both encoders in ticks
+	 */
 	public double averageEncoderPositions() {
-		double value = (-1.0 * leftFrontMotor.getEncPosition() + rightFrontMotor.getEncPosition()) / 2;
+		double value = (getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
 		SmartDashboard.putNumber("Encoder averages (ticks)", value);
-		System.out.println("The value of avg encoders: " + value);
 		return value;
 	}
 	
+	/**
+	 * Reset encoders
+	 */
 	public void zeroEncoderPositions() {
 		leftFrontMotor.setEncPosition(0);
 		rightFrontMotor.setEncPosition(0);

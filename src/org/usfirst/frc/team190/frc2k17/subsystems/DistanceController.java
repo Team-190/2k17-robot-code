@@ -30,7 +30,7 @@ public class DistanceController implements DriveController {
 		@Override
 		public double pidGet() {
 			// TODO Auto-generated method stub
-			return srxdrive.averageEncoderPositions();
+			return Drivetrain.ticksToInches(srxdrive.averageEncoderPositions());
 		}
 	}
 	
@@ -62,9 +62,7 @@ public class DistanceController implements DriveController {
 	 */
 	public void enable(double distance) {
 		srxdrive.zeroEncoderPositions();
-		double tickstoDrive = Robot.drivetrain.inchesToTicks(distance);
-		SmartDashboard.putNumber("Goal encoder ticks", tickstoDrive);
-		distancePID.setSetpoint(tickstoDrive);
+		distancePID.setSetpoint(distance);
 		distancePID.enable();
 	}
 	

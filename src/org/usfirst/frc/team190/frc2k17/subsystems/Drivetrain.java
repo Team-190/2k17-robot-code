@@ -150,16 +150,6 @@ public class Drivetrain extends Subsystem {
 		srxdrive.arcadeDrive(moveValue, rotateValue);
 	}
 	
-	
-	/**
-	 * Drive each side of the robot using speed control
-	 * @param leftSpeed left side speed in RPM
-	 * @param rightSpeed right side speed in RPM
-	 */
-	public void tankDriveAtSpeed(double leftSpeed, double rightSpeed) {
-		srxdrive.tankDriveRPM(leftSpeed, rightSpeed);
-	}
-	
 	/**
 	 * Send encoder values to SmartDashboard.
 	 */

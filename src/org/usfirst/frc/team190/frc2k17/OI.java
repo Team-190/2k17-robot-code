@@ -1,6 +1,5 @@
 package org.usfirst.frc.team190.frc2k17;
 
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveAtSpeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
@@ -56,8 +55,7 @@ public class OI {
 		joystick2 = new Joystick(2);
 
 		testButton = new JoystickButton(joystick0, 1);
-		testButton.whenPressed(new DriveAtSpeedCommand(300));
-
+		
 		//testButton = new JoystickButton(joystick0, 5);
 		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
 		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
