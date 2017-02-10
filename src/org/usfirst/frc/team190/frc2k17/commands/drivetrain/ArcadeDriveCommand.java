@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,7 +21,9 @@ public class ArcadeDriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.drivetrain.arcadeDrive(Robot.oi.getDriverJoystick1Y(), Robot.oi.getDriverJoystick1X());
-    	Robot.drivetrain.outputEncoderValues();
+
+    	SmartDashboard.putNumber("Joystick1 X", Robot.oi.getDriverJoystick1X());
+    	SmartDashboard.putNumber("Joystick1 Y", Robot.oi.getDriverJoystick1Y());
     }
 
     // Make this return true when this Command no longer needs to run execute()

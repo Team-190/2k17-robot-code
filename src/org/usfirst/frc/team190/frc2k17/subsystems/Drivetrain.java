@@ -2,6 +2,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The robot's drivetrain.
@@ -116,6 +118,8 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void controlTurning() {
 		arcadeDrive(0, getTurningControlLoopOutput());
+
+    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
 	}
 	
 	/**
@@ -123,6 +127,8 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void controlTurningAndDistance() {
 		arcadeDrive(getTurningControlLoopOutput(), getTurningControlLoopOutput());
+		
+    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 	}
 	
 	/**
@@ -166,7 +172,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void initDefaultCommand() {
-		setDefaultCommand(new TankDriveCommand());
+		setDefaultCommand(new ArcadeDriveCommand());
 	}
 	
 	/**
