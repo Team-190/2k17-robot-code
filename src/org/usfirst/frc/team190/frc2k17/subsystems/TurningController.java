@@ -59,6 +59,7 @@ public class TurningController implements DriveController {
 	public void disable() {
 		turningControl.disable();
 		SmartDashboard.putNumber("Turning PID loop output", 0);
+		//resetError();
 	}
 	
 	/**
@@ -75,4 +76,7 @@ public class TurningController implements DriveController {
 		turningControl.setPID(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD);
 	}
 	
+	private void resetError() {
+		loopOutput = 0;
+	}
 }
