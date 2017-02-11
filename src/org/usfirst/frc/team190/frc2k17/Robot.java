@@ -12,6 +12,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -25,7 +26,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Drivetrain drivetrain = new Drivetrain();
+	public static Preferences prefs;
+	
+	public static Drivetrain drivetrain;
 	public static final Shooter shooter = new Shooter();
 	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
 	public static final Collector collector = new Collector();
@@ -33,10 +36,10 @@ public class Robot extends IterativeRobot {
 	public static final Boopers boopers = new Boopers();
 	public static final CameraLight cameraLight = new CameraLight();
 	public static OI oi;
-
+	
     Command autonomousCommand;
     //SendableChooser chooser;
-    
+        
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -44,6 +47,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
     	Logger.resetTimestamp();
+    	// prefs must not be initialized statically. Do not move from robotInit().
+    	// prefs MUST be initialized before drivetrain. Do not change order.
+    	prefs = Preferences.getInstance();
+    	drivetrain = new Drivetrain();
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());

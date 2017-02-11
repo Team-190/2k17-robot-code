@@ -99,8 +99,8 @@ public class SRXDrive {
 	private void driveMotors(double leftSpeed, double rightSpeed) {
 		leftFrontMotor.set(leftSpeed);
 		rightFrontMotor.set(rightSpeed);
-		SmartDashboard.putNumber("Left Speed", leftSpeed);
-		SmartDashboard.putNumber("Right Speed", rightSpeed);
+		SmartDashboard.putNumber("Left drivetrain motor output", leftSpeed);
+		SmartDashboard.putNumber("Right drivetrain motor output", rightSpeed);
 	}
 	
 	/**

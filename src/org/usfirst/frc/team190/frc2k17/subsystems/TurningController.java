@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -10,20 +11,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurningController implements DriveController {
 
-	private final PIDController turningControl;
+	private final PIDController turningPID;
 	private AHRS navx = null;
 	
 	private double loopOutput = 0;
 	
 	public TurningController(AHRS navx) {
 		this.navx = navx;
-
-		turningControl = new PIDController(
-				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
+		// the RobotMap PID values are only defaults
+		turningPID = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
 				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, navx,
 				output -> this.loopOutput = output);
-		
-		turningControl.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
+		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP);
+		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI);
+		Robot.prefs.putDouble("Turning PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD);
+		turningPID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
+		// set the real PID values
+		getSmartDashboardPidValues();
 	}
 
 	/**
@@ -31,7 +35,7 @@ public class TurningController implements DriveController {
 	 * @return true if the loop is on target
 	 */
 	public boolean isOnTarget() {
-		return turningControl.onTarget();
+		return turningPID.onTarget();
 	}
 	
 	/**
@@ -49,15 +53,26 @@ public class TurningController implements DriveController {
 	 */
 	public void enable(double degrees) {
 		navx.reset();
-		turningControl.setSetpoint(degrees);
-		turningControl.enable();
+		getSmartDashboardPidValues();
+		turningPID.setSetpoint(degrees);
+		turningPID.enable();
 	}
 	
 	/**
 	 * Disables the control loop
 	 */
 	public void disable() {
-		turningControl.disable();
+		turningPID.disable();
 		SmartDashboard.putNumber("Turning PID loop output", 0);
+	}
+	
+	/**
+	 * Get and use PID values from SmartDashboard.
+	 */
+	public void getSmartDashboardPidValues() {
+		turningPID.setPID(
+				Robot.prefs.getDouble("Turning PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP),
+				Robot.prefs.getDouble("Turning PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI),
+				Robot.prefs.getDouble("Turning PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD));
 	}
 }

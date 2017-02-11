@@ -36,15 +36,20 @@ public class DistanceController implements DriveController {
 	
 	public DistanceController(SRXDrive drive) {
 		srxdrive = drive;
+		// the RobotMap PID values are only defaults
 		distancePID = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI,
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(),
 											output -> this.loopOutput = output);
-
+		Robot.prefs.putDouble("Distance PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP);
+		Robot.prefs.putDouble("Distance PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI);
+		Robot.prefs.putDouble("Distance PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD);
 		distancePID.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX,
 				RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX);
-		distancePID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);		
+		distancePID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);
+		// set the real PID values
+		getSmartDashboardPidValues();
 	}
 	
 	/**
@@ -62,6 +67,7 @@ public class DistanceController implements DriveController {
 	 */
 	public void enable(double distance) {
 		srxdrive.zeroEncoderPositions();
+		getSmartDashboardPidValues();
 		distancePID.setSetpoint(distance);
 		distancePID.enable();
 	}
@@ -80,5 +86,15 @@ public class DistanceController implements DriveController {
 	 */
 	public boolean isOnTarget() {
 		return distancePID.onTarget();
+	}
+	
+	/**
+	 * Get and use PID values from SmartDashboard.
+	 */
+	public void getSmartDashboardPidValues() {
+		distancePID.setPID(
+				Robot.prefs.getDouble("Distance PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP),
+				Robot.prefs.getDouble("Distance PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI),
+				Robot.prefs.getDouble("Distance PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
 	}
 }
