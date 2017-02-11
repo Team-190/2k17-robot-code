@@ -41,9 +41,9 @@ public class DistanceController implements DriveController {
 											RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(),
 											output -> this.loopOutput = output);
-		
-		distancePID.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW,
-										RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW);
+
+		distancePID.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX,
+				RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX);
 		distancePID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);		
 	}
 	
