@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoDriveToHopperCommand extends CommandGroup {
+public class AutoDriveToHopperTurnCommand extends CommandGroup {
 
-    public AutoDriveToHopperCommand() {
+    public AutoDriveToHopperTurnCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

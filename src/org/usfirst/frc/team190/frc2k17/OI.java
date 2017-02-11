@@ -1,7 +1,8 @@
 package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
-import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCommand;
+import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
@@ -66,7 +67,8 @@ public class OI {
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
-		SmartDashboard.putData("Drive to Hopper", new AutoDriveToHopperCommand());
+		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
+		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
 	}
 	
 	public double getDriverJoystick1X() {

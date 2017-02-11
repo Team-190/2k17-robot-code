@@ -126,7 +126,7 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
-		arcadeDrive(getTurningControlLoopOutput(), getTurningControlLoopOutput());
+		arcadeDrive(getDistanceControlLoopOutput(), getTurningControlLoopOutput());
 		
     	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 	}
