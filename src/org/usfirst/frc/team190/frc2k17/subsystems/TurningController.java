@@ -1,5 +1,8 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
@@ -13,8 +16,9 @@ public class TurningController implements DriveController {
 
 	private final PIDController turningPID;
 	private AHRS navx = null;
-	
+
 	private double loopOutput = 0;
+	private Instant onTargetSince;
 	
 	public TurningController(AHRS navx) {
 		this.navx = navx;
@@ -35,7 +39,8 @@ public class TurningController implements DriveController {
 	 * @return true if the loop is on target
 	 */
 	public boolean isOnTarget() {
-		return turningPID.onTarget();
+		return (turningPID.onTarget() && Duration.between(onTargetSince, Instant.now())
+				.compareTo(Duration.ofMillis(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_WAIT)) > 0);
 	}
 	
 	/**
@@ -44,6 +49,13 @@ public class TurningController implements DriveController {
 	 */
 	public double getLoopOutput() {
 		SmartDashboard.putNumber("Turning PID loop output", loopOutput);
+		if (turningPID.onTarget()) {
+			if (onTargetSince == null) {
+				onTargetSince = Instant.now();
+			}
+		} else {
+			onTargetSince = null;
+		}
 		return -loopOutput;
 	}
 
