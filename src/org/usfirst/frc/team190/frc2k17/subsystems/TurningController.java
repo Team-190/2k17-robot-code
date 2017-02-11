@@ -63,13 +63,6 @@ public class TurningController implements DriveController {
 	}
 	
 	/**
-	 * Get and use PID values from SmartDashboard.
-	 */
-	public void getSmartDashboardPidValues() {
-		//turningControl.setPID(SmartDashboard.getNumber(""))
-	}
-	
-	/**
 	 * Swap PID values to the ones for maintaining heading while driving. 
 	 */
 	public void enableMaintainHeading() {
