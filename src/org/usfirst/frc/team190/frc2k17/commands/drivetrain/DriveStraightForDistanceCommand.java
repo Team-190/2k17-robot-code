@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveStraightForDistanceCommand extends Command {
 	private double distance;
-
+	//TODO: Add heading correction (stay at 0 degrees)
 	/**
 	 * 
 	 * @param distance Distance to drive in inches
