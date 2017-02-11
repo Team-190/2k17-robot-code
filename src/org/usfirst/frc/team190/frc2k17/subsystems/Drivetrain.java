@@ -174,19 +174,5 @@ public class Drivetrain extends Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
 	}
-	
-	/**
-	 * Swap turning PID values to the ones for maintaining heading while driving.
-	 */
-	public void enableMaintainHeadingPidValues() {
-		turningController.enableMaintainHeading();
-	}
-	
-	/**
-	 * Swap turning PID values to the normal ones.
-	 */
-	public void disableMaintainHeadingPidValues() {
-		turningController.disableMaintainHeading();
-	}
 }
 
