@@ -61,15 +61,15 @@ public final class RobotMap {
 	public static final class Constants {
 		public static final class DriveTrain {
 			public static final double
-			DRIVE_PID_TURN_KP = 0.00470, // max speed at 180 deg of error
-			DRIVE_PID_TURN_KI = 0.00002,
-			DRIVE_PID_TURN_KD = 0.0,
+			DRIVE_PID_TURN_KP = 0.00525, // max speed at 180 deg of error
+			DRIVE_PID_TURN_KI = 0.00000,
+			DRIVE_PID_TURN_KD = 0.00000,
 			
 			DRIVE_PID_HEADING_CORRECTION_KP = 0.0,
 			DRIVE_PID_HEADING_CORRECTION_KI = 0.0,
 			DRIVE_PID_HEADING_CORRECTION_KD = 0.0,
 			
-			DRIVE_PID_DISTANCE_KP = 0.0139, //8, //10, //12,
+			DRIVE_PID_DISTANCE_KP = 4.68430, //8, //10, //12,
 			DRIVE_PID_DISTANCE_KI = 0.0,
 			DRIVE_PID_DISTANCE_KD = 0.0,
 			
@@ -81,10 +81,12 @@ public final class RobotMap {
 			DRIVE_MAX_SPEED_LOW = 337,	// RPM, 70% of true max
 			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
 			
-			DRIVE_PID_TURN_TOLERANCE = 1.0, // Degrees
+			DRIVE_PID_TURN_TOLERANCE = 3.0, // Degrees
 			DRIVE_PID_DIST_TOLERANCE = 3.0, // Inches
 			
-			INCHES_PER_TICK = 0.003;
+			INCHES_PER_TICK = 0.003,
+			
+			DRIVE_PID_MAX = 0.5;
 			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
