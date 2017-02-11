@@ -68,6 +68,9 @@ public class DistanceController implements DriveController {
 	public void enable(double distance) {
 		srxdrive.zeroEncoderPositions();
 		getSmartDashboardPidValues();
+		loopOutput = 0;
+		// reset *before* enabling
+		distancePID.reset();
 		distancePID.setSetpoint(distance);
 		distancePID.enable();
 	}

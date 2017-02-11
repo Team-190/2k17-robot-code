@@ -66,6 +66,9 @@ public class TurningController implements DriveController {
 	public void enable(double degrees) {
 		navx.reset();
 		getSmartDashboardPidValues();
+		loopOutput = 0;
+		// reset *before* enabling
+		turningPID.reset();
 		turningPID.setSetpoint(degrees);
 		turningPID.enable();
 	}
