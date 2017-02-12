@@ -35,7 +35,6 @@ public class TurnTowardPegCommand extends Command {
     		double distanceFromCenter = centerXAvg - cameraHalfWidth;
     		
     		degreesToTurn = Math.toDegrees(Math.atan((distanceFromCenter / cameraHalfWidth) * Math.tan(Math.toRadians(RobotMap.Constants.CAMERA_HFOV / 2))));
-        	Robot.drivetrain.enableTurningControl(degreesToTurn);
 
     		Logger.defaultLogger.info("Peg found, degreesToTurn set to " + degreesToTurn);
     		Logger.kangarooVoice.info(String.format("%1$.3f", degreesToTurn) + " degrees");
@@ -51,17 +50,17 @@ public class TurnTowardPegCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.drivetrain.isTurningControlOnTarget();
+        return _finished || (degreesToTurn == 0);
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.disableTurningControl();
+    	Robot.drivetrain.arcadeDrive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
+    	Robot.drivetrain.arcadeDrive(0, 0);
     }
 }
