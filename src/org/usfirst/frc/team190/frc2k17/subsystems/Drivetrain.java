@@ -145,13 +145,18 @@ public class Drivetrain extends Subsystem {
 	
 	/**
 	 * Drive each side of the robot individually
-	 * @param leftSpeed the left speed of the robot
-	 * @param rightSpeed the right speed of the robot
+	 * @param leftSpeed (-1 to 1) the left speed of the robot
+	 * @param rightSpeed (-1 to 1) the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		srxdrive.tankDrive(leftSpeed, rightSpeed);
 	}
 	
+	/**
+	 * Drive with arcade drive
+	 * @param moveValue the speed to drive (-1 to 1)
+	 * @param rotateValue the amount of turn (-1 to 1)
+	 */
 	public void arcadeDrive(double moveValue, double rotateValue) {
 		srxdrive.arcadeDrive(moveValue, rotateValue);
 	}
@@ -162,15 +167,6 @@ public class Drivetrain extends Subsystem {
 	public void outputEncoderValues() {
 		srxdrive.outputEncoderValues();
 	}
-	
-	public static double inchesToTicks(double inches) {
-		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
-	}
-	
-	public static double ticksToInches(double ticks) {
-		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
-	}
-	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
 	}

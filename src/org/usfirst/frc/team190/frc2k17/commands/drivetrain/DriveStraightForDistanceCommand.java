@@ -8,22 +8,22 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightForDistanceCommand extends Command {
-	private double distance;
+	private double inches;
 	//TODO: Add heading correction (stay at 0 degrees)
 	/**
 	 * 
-	 * @param distance Distance to drive in inches
+	 * @param inches Distance to drive in inches
 	 */
-    public DriveStraightForDistanceCommand(double distance) {
+    public DriveStraightForDistanceCommand(double inches) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this.distance = distance;
+    	this.inches = inches;
     	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.enableDistanceControl(distance);
+    	Robot.drivetrain.enableDistanceControl(inches);
     }
 
     // Called repeatedly when this Command is scheduled to run

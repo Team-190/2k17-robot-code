@@ -29,8 +29,7 @@ public class DistanceController implements DriveController {
 
 		@Override
 		public double pidGet() {
-			// TODO Auto-generated method stub
-			return Drivetrain.ticksToInches(srxdrive.averageEncoderPositions());
+			return srxdrive.averageEncoderPositions();
 		}
 	}
 	
@@ -63,15 +62,15 @@ public class DistanceController implements DriveController {
 	
 	/**
 	 * Enables the distance control loop and resets the encoder positions to zero
-	 * @param distance the distance to drive in inches
+	 * @param inches the distance to drive in inches
 	 */
-	public void enable(double distance) {
+	public void enable(double inches) {
 		srxdrive.zeroEncoderPositions();
 		getSmartDashboardPidValues();
 		loopOutput = 0;
 		// reset *before* enabling
 		distancePID.reset();
-		distancePID.setSetpoint(distance);
+		distancePID.setSetpoint(inches);
 		distancePID.enable();
 	}
 	
