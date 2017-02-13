@@ -20,7 +20,7 @@ public class Drivetrain extends Subsystem {
 	
 	private final DoubleSolenoid shifters;
 	private final TurningController turningController;
-	private final DriveController distanceController;
+	private final DistanceController distanceController;
 	
 	private final SRXDrive srxdrive;
 	private final AHRS navx;
@@ -42,14 +42,6 @@ public class Drivetrain extends Subsystem {
 		turningController = new TurningController(navx);
 		distanceController = new DistanceController(srxdrive);
 		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
-	}
-	
-	/**
-	 * Get the output of the distance PID loop
-	 * @return Distance PID loop output
-	 */
-	public double getDistanceControlLoopOutput() {
-		return distanceController.getLoopOutput();
 	}
 	
 	/**
@@ -75,13 +67,6 @@ public class Drivetrain extends Subsystem {
 		return distanceController.isOnTarget();
 	}
 	
-	/**
-	 * Get the output of the turning PID loop
-	 * @return Turning PID loop output
-	 */
-	public double getTurningControlLoopOutput() {
-		return turningController.getLoopOutput();
-	}
 	
 	/**
 	 * Enables the turning control loop and resets the navx positions to zero
@@ -110,14 +95,14 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the driving control loop's output
 	 */
 	public void controlDistance() {
-		arcadeDrive(getDistanceControlLoopOutput(), 0);
+		arcadeDrive(distanceController.getLoopOutput(), 0);
 	}
 
 	/**
 	 * Drives the robot based off the turning control loop's output
 	 */
 	public void controlTurning() {
-		arcadeDrive(0, getTurningControlLoopOutput());
+		arcadeDrive(0, turningController.getLoopOutput());
 
     	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
 	}
@@ -126,7 +111,7 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
-		arcadeDrive(getDistanceControlLoopOutput(), getTurningControlLoopOutput());
+		arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
 		
     	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 	}

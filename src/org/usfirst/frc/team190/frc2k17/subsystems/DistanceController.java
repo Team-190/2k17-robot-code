@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DistanceController implements DriveController {
+public class DistanceController {
 	
 	SRXDrive srxdrive;
 	private final PIDController distancePID;
 	private double loopOutput = 0;
 
+	/**
+	 * A source for the PID distance controller using values in inches
+	 *
+	 */
 	private class RobotDistanceSource implements PIDSource {
 		public RobotDistanceSource() {
 		}
@@ -27,6 +31,9 @@ public class DistanceController implements DriveController {
 			return PIDSourceType.kDisplacement;
 		}
 
+		/**
+		 * Return the encoder positions in inches
+		 */
 		@Override
 		public double pidGet() {
 			return srxdrive.averageEncoderPositions();
@@ -47,7 +54,7 @@ public class DistanceController implements DriveController {
 		distancePID.setOutputRange(-RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX,
 				RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_MAX);
 		distancePID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_DIST_TOLERANCE);
-		// set the real PID values
+		// TODO:set the real PID values
 		getSmartDashboardPidValues();
 	}
 	

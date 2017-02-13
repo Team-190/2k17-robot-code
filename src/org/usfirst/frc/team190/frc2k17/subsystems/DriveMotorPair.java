@@ -12,42 +12,44 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class DriveMotorPair {
 	
-	private CANTalon frontMotor;
-	private CANTalon rearMotor;
+	private CANTalon master;
+	private CANTalon slave;
 	private String name;
 	private boolean inverted;
 
-	public DriveMotorPair(String name, int frontID, int rearID, boolean inverted) {
-		frontMotor = new CANTalon(frontID);
-		frontMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		frontMotor.configNominalOutputVoltage(+0.0f, -0.0f);
-		frontMotor.configPeakOutputVoltage(+12.0f, -12.0f);
-		frontMotor.setInverted(inverted);
-		frontMotor.setProfile(0);
-		frontMotor.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KP);
-		frontMotor.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
-		frontMotor.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
-		frontMotor.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
-		frontMotor.changeControlMode(TalonControlMode.Speed);
-		LiveWindow.addActuator("Drive Train", name + " motor", frontMotor);
+	public DriveMotorPair(String name, int masterID, int slaveID, boolean inverted) {
+		master = new CANTalon(masterID);
+		master.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		master.configNominalOutputVoltage(+0.0f, -0.0f);
+		master.configPeakOutputVoltage(+12.0f, -12.0f);
+		master.setInverted(inverted);
+		//TODO: set the reverseSensor() on the encoders. I believe it's opposite the inverted flag.
+		//TODO: after setting reverseSensor(), delete the corrections in the position functions
+		master.setProfile(0);
+		master.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KP);
+		master.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
+		master.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
+		master.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
+		master.changeControlMode(TalonControlMode.Speed);
+		LiveWindow.addActuator("Drive Train", name + " motor", master);
 		
-		rearMotor = new CANTalon(rearID);
-		rearMotor.changeControlMode(CANTalon.TalonControlMode.Follower);
-		rearMotor.set(frontMotor.getDeviceID());
+		slave = new CANTalon(slaveID);
+		slave.changeControlMode(CANTalon.TalonControlMode.Follower);
+		slave.set(master.getDeviceID());
 		this.name = name;
 		this.inverted = inverted;
 	}
 
 	public void set(double speed) {
-		frontMotor.set(speed);
+		master.set(speed);
 	}
 	
 	public double getSpeed() {
-		return frontMotor.getSpeed();
+		return master.getSpeed();
 	}
 	
 	public double getClosedLoopError() {
-		return frontMotor.getClosedLoopError();
+		return master.getClosedLoopError();
 	}
 	
 	/**
@@ -55,12 +57,12 @@ public class DriveMotorPair {
 	 * @return encoder position in inches
 	 */
 	public double getEncoderPosition() {
-		double pos = ticksToInches(frontMotor.getEncPosition());
+		double pos = ticksToInches(master.getEncPosition());
 		return inverted ? pos : -pos;
 	}
 	
 	public void setEncoderPosition(int position) {
-		frontMotor.setEncPosition(position);
+		master.setEncPosition(position);
 	}
 	
 	private double inchesToTicks(double inches) {
@@ -72,25 +74,25 @@ public class DriveMotorPair {
 	}
 	
 	public void diagnose() {
-		if (frontMotor.getStickyFaultOverTemp() != 0) {
+		if (master.getStickyFaultOverTemp() != 0) {
 			Logger.defaultLogger.warn(name + "front drivetrain motor has over-temperature sticky bit set.");
 		}
-		if (frontMotor.getStickyFaultUnderVoltage() != 0) {
+		if (master.getStickyFaultUnderVoltage() != 0) {
 			Logger.defaultLogger.warn(name + " front drivetrain motor has under-voltage sticky bit set.");
 		}
-		if (rearMotor.getStickyFaultOverTemp() != 0) {
+		if (slave.getStickyFaultOverTemp() != 0) {
 			Logger.defaultLogger.warn(name + " rear drivetrain motor has over-temperature sticky bit set.");
 		}
-		if (rearMotor.getStickyFaultUnderVoltage() != 0) {
+		if (slave.getStickyFaultUnderVoltage() != 0) {
 			Logger.defaultLogger.warn(name + " rear drivetrain motor has under-voltage sticky bit set.");
 		}
-		if (!frontMotor.isAlive()) {
+		if (!master.isAlive()) {
 			Logger.defaultLogger.warn(name + " front drivetrain motor is stopped by motor safety.");
 		}
-		if (!rearMotor.isAlive()) {
+		if (!slave.isAlive()) {
 			Logger.defaultLogger.warn(name + " rear drivetrain motor is stopped by motor safety.");
 		}
-		if (frontMotor.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+		if (master.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
 			Logger.defaultLogger.warn(name + " drivetrain encoder not present.");
 		} else {
 			Logger.defaultLogger.debug(name + " drivetrain encoder is present.");
