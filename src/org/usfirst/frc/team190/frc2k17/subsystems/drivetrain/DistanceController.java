@@ -49,13 +49,14 @@ public class DistanceController implements DriveController{
 											RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(),
 											output -> this.loopOutput = output);
+		distancePID.setOutputRange(-RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX,
+				RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX);
+		distancePID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.DRIVE_PID_DIST_TOLERANCE);
 		// reset SmartDashboard values to the RobotMap values
 		Robot.prefs.putDouble("Distance PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KP);
 		Robot.prefs.putDouble("Distance PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KI);
 		Robot.prefs.putDouble("Distance PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KD);
-		distancePID.setOutputRange(-RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX,
-				RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX);
-		distancePID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.DRIVE_PID_DIST_TOLERANCE);
+		Robot.prefs.putDouble("Distance PID MAX", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX);
 	}
 	
 	/**
@@ -107,5 +108,8 @@ public class DistanceController implements DriveController{
 				Robot.prefs.getDouble("Distance PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KP),
 				Robot.prefs.getDouble("Distance PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KI),
 				Robot.prefs.getDouble("Distance PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KD));
+		distancePID.setOutputRange(
+				-Robot.prefs.getDouble("Distance PID MAX", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX),
+				Robot.prefs.getDouble("Distance PID MAX", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX));
 	}
 }
