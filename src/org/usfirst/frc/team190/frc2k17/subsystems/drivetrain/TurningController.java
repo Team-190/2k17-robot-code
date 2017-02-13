@@ -52,7 +52,7 @@ public class TurningController implements DriveController {
 		if (turningPID.onTarget()) {
 			if (onTargetSince == null) {
 				onTargetSince = Instant.now();
-				Logger.defaultLogger.trace("Turning PID is on target. Waiting for " + RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_WAIT + " milliseconds.");
+				Logger.defaultLogger.trace("Turning PID is on target. Waiting for " + RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_WAIT + " milliseconds.");
 			}
 		} else if (onTargetSince != null){
 			onTargetSince = null;
