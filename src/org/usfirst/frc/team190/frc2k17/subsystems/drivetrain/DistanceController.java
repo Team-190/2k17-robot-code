@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DistanceController {
+public class DistanceController implements DriveController{
 	
 	SRXDrive srxdrive;
 	private final PIDController distancePID;
