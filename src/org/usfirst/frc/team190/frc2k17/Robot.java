@@ -29,12 +29,12 @@ public class Robot extends IterativeRobot {
 	public static Preferences prefs;
 	
 	public static Drivetrain drivetrain;
+	public static GearCamera gearCamera;
 	public static final Shooter shooter = new Shooter();
 	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
 	public static final Collector collector = new Collector();
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
-	public static final GearCamera gearCamera = new GearCamera();
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot {
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
     	drivetrain = new Drivetrain();
+    	// gearCamera must not be initialized statically. Do not move from robotInit().
+    	gearCamera = new GearCamera();
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
