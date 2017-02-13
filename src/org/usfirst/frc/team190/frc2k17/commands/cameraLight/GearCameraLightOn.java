@@ -5,22 +5,21 @@ import org.usfirst.frc.team190.frc2k17.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Turn on the gear camera light
  */
-public class CameraLightOnCommand extends Command {
+public class GearCameraLightOn extends Command {
 
-    public CameraLightOnCommand() {
-        requires(Robot.cameraLight);
+    public GearCameraLightOn() {
+        requires(Robot.gearCamera);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.cameraLight.turnOn();
+    	Robot.gearCamera.lightOn();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return true;
     }
-
 }

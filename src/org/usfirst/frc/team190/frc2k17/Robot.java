@@ -2,7 +2,7 @@
 package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
-import org.usfirst.frc.team190.frc2k17.subsystems.CameraLight;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
 import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
 	public static final Collector collector = new Collector();
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
-	public static final CameraLight cameraLight = new CameraLight();
+	public static final GearCamera gearCamera = new GearCamera();
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -60,9 +60,6 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(RobotMap.Constants.CAMERA_RESOLUTION_X,
 							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
 		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
-		
-		//autonomousCommand = new DriveStraightForDistanceCommand();
-		
     }
 	
 	/**
