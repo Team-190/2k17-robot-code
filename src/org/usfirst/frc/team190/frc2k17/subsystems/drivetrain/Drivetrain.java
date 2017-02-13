@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 	
 	private final DoubleSolenoid shifters;
-	private final TurningController turningController;
-	private final DistanceController distanceController;
+	private final DriveController turningController;
+	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
 	private final AHRS navx;

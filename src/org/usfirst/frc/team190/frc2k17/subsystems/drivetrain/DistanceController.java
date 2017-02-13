@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
@@ -48,14 +49,13 @@ public class DistanceController {
 											RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KD,
 											new RobotDistanceSource(),
 											output -> this.loopOutput = output);
+		// reset SmartDashboard values to the RobotMap values
 		Robot.prefs.putDouble("Distance PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KP);
 		Robot.prefs.putDouble("Distance PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KI);
 		Robot.prefs.putDouble("Distance PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_KD);
 		distancePID.setOutputRange(-RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX,
 				RobotMap.Constants.Drivetrain.DRIVE_PID_DISTANCE_MAX);
 		distancePID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.DRIVE_PID_DIST_TOLERANCE);
-		// TODO:set the real PID values
-		getSmartDashboardPidValues();
 	}
 	
 	/**
@@ -79,6 +79,7 @@ public class DistanceController {
 		distancePID.reset();
 		distancePID.setSetpoint(inches);
 		distancePID.enable();
+		Logger.defaultLogger.debug("Distance PID enabled.");
 	}
 	
 	/**
@@ -87,6 +88,7 @@ public class DistanceController {
 	public void disable() {
 		distancePID.disable();
 		SmartDashboard.putNumber("Distance PID loop output", 0);
+		Logger.defaultLogger.debug("Distance PID disabled.");
 	}
 	
 	/**
