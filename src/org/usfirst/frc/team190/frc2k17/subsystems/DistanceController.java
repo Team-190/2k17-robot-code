@@ -1,9 +1,9 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.PIDController;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
