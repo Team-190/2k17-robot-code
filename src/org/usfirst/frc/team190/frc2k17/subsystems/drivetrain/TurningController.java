@@ -1,14 +1,15 @@
-package org.usfirst.frc.team190.frc2k17.subsystems;
+package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import java.time.Duration;
 import java.time.Instant;
 
-import org.usfirst.frc.team190.frc2k17.PIDController;
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,15 +24,14 @@ public class TurningController implements DriveController {
 	public TurningController(AHRS navx) {
 		this.navx = navx;
 		// the RobotMap PID values are only defaults
-		turningPID = new PIDController(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP,
-				RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD, navx,
+		turningPID = new PIDController(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP,
+				RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI, RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD, navx,
 				output -> this.loopOutput = output);
-		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP);
-		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI);
-		Robot.prefs.putDouble("Turning PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD);
-		turningPID.setAbsoluteTolerance(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_TOLERANCE);
-		// set the real PID values
-		getSmartDashboardPidValues();
+		// reset SmartDashboard values to the RobotMap values
+		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP);
+		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI);
+		Robot.prefs.putDouble("Turning PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD);
+		turningPID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_TOLERANCE);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class TurningController implements DriveController {
 	 */
 	public boolean isOnTarget() {
 		return (turningPID.onTarget() && Duration.between(onTargetSince, Instant.now())
-				.compareTo(Duration.ofMillis(RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_WAIT)) > 0);
+				.compareTo(Duration.ofMillis(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_WAIT)) > 0);
 	}
 	
 	/**
@@ -52,9 +52,11 @@ public class TurningController implements DriveController {
 		if (turningPID.onTarget()) {
 			if (onTargetSince == null) {
 				onTargetSince = Instant.now();
+				Logger.defaultLogger.trace("Turning PID is on target. Waiting for " + RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_WAIT + " milliseconds.");
 			}
-		} else {
+		} else if (onTargetSince != null){
 			onTargetSince = null;
+			Logger.defaultLogger.trace("Turning PID is *no longer* on target.");
 		}
 		return -loopOutput;
 	}
@@ -71,6 +73,7 @@ public class TurningController implements DriveController {
 		turningPID.reset();
 		turningPID.setSetpoint(degrees);
 		turningPID.enable();
+		Logger.defaultLogger.debug("Turning PID enabled.");
 	}
 	
 	/**
@@ -79,6 +82,7 @@ public class TurningController implements DriveController {
 	public void disable() {
 		turningPID.disable();
 		SmartDashboard.putNumber("Turning PID loop output", 0);
+		Logger.defaultLogger.debug("Turning PID disabled.");
 	}
 	
 	/**
@@ -86,8 +90,8 @@ public class TurningController implements DriveController {
 	 */
 	public void getSmartDashboardPidValues() {
 		turningPID.setPID(
-				Robot.prefs.getDouble("Turning PID P", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KP),
-				Robot.prefs.getDouble("Turning PID I", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KI),
-				Robot.prefs.getDouble("Turning PID D", RobotMap.Constants.DriveTrain.DRIVE_PID_TURN_KD));
+				Robot.prefs.getDouble("Turning PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP),
+				Robot.prefs.getDouble("Turning PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI),
+				Robot.prefs.getDouble("Turning PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD));
 	}
 }

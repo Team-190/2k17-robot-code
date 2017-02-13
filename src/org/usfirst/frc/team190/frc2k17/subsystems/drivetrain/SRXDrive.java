@@ -1,4 +1,4 @@
-package org.usfirst.frc.team190.frc2k17.subsystems;
+package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
@@ -10,11 +10,11 @@ public class SRXDrive {
 	private DriveMotorPair left = new DriveMotorPair("Left motors",
 												RobotMap.CAN.DRIVE_MOTOR_LEFT_FRONT,
 												RobotMap.CAN.DRIVE_MOTOR_LEFT_REAR,
-												RobotMap.Constants.DriveTrain.DRIVE_LEFT_INVERTED);
+												RobotMap.Constants.Drivetrain.DRIVE_LEFT_INVERTED);
 	private DriveMotorPair right= new DriveMotorPair("Right motors",
 												RobotMap.CAN.DRIVE_MOTOR_RIGHT_FRONT,
 												RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR,
-												RobotMap.Constants.DriveTrain.DRIVE_RIGHT_INVERTED);
+												RobotMap.Constants.Drivetrain.DRIVE_RIGHT_INVERTED);
 	
 	public SRXDrive() {
 		diagnose();
@@ -37,8 +37,8 @@ public class SRXDrive {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		leftSpeed = limit(leftSpeed) * RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW;
-		rightSpeed = limit(rightSpeed) * RobotMap.Constants.DriveTrain.DRIVE_MAX_SPEED_LOW;
+		leftSpeed = limit(leftSpeed) * RobotMap.Constants.Drivetrain.DRIVE_MAX_SPEED_LOW;
+		rightSpeed = limit(rightSpeed) * RobotMap.Constants.Drivetrain.DRIVE_MAX_SPEED_LOW;
 		//TODO: Adjust for proper gear
 		driveMotorsRPM(leftSpeed, rightSpeed);		
 	}

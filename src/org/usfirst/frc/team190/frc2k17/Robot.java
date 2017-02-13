@@ -5,9 +5,9 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
-import org.usfirst.frc.team190.frc2k17.subsystems.Drivetrain;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
+import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -29,12 +29,12 @@ public class Robot extends IterativeRobot {
 	public static Preferences prefs;
 	
 	public static Drivetrain drivetrain;
+	public static GearCamera gearCamera;
 	public static final Shooter shooter = new Shooter();
 	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
 	public static final Collector collector = new Collector();
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
-	public static final GearCamera gearCamera = new GearCamera();
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot {
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
     	drivetrain = new Drivetrain();
+    	// gearCamera must not be initialized statically. Do not move from robotInit().
+    	gearCamera = new GearCamera();
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());

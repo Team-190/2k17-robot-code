@@ -1,5 +1,5 @@
 
-package org.usfirst.frc.team190.frc2k17.subsystems;
+package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 	
 	private final DoubleSolenoid shifters;
-	private final TurningController turningController;
-	private final DistanceController distanceController;
+	private final DriveController turningController;
+	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
 	private final AHRS navx;

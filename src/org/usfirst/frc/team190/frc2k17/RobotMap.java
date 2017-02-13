@@ -59,7 +59,7 @@ public final class RobotMap {
 	}
 	
 	public static final class Constants {
-		public static final class DriveTrain {
+		public static final class Drivetrain {
 			public static final double
 			DRIVE_PID_TURN_KP = 0.00686, // max speed at 180 deg of error
 			DRIVE_PID_TURN_KI = 0.00035,

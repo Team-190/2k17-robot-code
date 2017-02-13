@@ -1,4 +1,4 @@
-package org.usfirst.frc.team190.frc2k17.subsystems;
+package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
@@ -26,10 +26,10 @@ public class DriveMotorPair {
 		//TODO: set the reverseSensor() on the encoders. I believe it's opposite the inverted flag.
 		//TODO: after setting reverseSensor(), delete the corrections in the position functions
 		master.setProfile(0);
-		master.setP(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KP);
-		master.setI(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KI);
-		master.setD(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KD);
-		master.setF(RobotMap.Constants.DriveTrain.DRIVE_PID_SPEED_KF);
+		master.setP(RobotMap.Constants.Drivetrain.DRIVE_PID_SPEED_KP);
+		master.setI(RobotMap.Constants.Drivetrain.DRIVE_PID_SPEED_KI);
+		master.setD(RobotMap.Constants.Drivetrain.DRIVE_PID_SPEED_KD);
+		master.setF(RobotMap.Constants.Drivetrain.DRIVE_PID_SPEED_KF);
 		master.changeControlMode(TalonControlMode.Speed);
 		LiveWindow.addActuator("Drive Train", name + " motor", master);
 		
@@ -66,11 +66,11 @@ public class DriveMotorPair {
 	}
 	
 	private double inchesToTicks(double inches) {
-		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
+		return inches / RobotMap.Constants.Drivetrain.INCHES_PER_TICK;
 	}
 	
 	private double ticksToInches(double ticks) {
-		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
+		return ticks * RobotMap.Constants.Drivetrain.INCHES_PER_TICK;
 	}
 	
 	public void diagnose() {
