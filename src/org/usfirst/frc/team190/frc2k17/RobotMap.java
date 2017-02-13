@@ -64,11 +64,13 @@ public final class RobotMap {
 			DRIVE_PID_TURN_KP = 0.00686, // max speed at 180 deg of error
 			DRIVE_PID_TURN_KI = 0.00035,
 			DRIVE_PID_TURN_KD = 0.00019,
+			DRIVE_PID_TURN_I_ERROR_LIMIT = 10.0,
 			
 			DRIVE_PID_DISTANCE_KP = 0.0139, //8, //10, //12,
 			DRIVE_PID_DISTANCE_KI = 0.0,
 			DRIVE_PID_DISTANCE_KD = 0.0,
 			DRIVE_PID_DISTANCE_MAX = 1.0, // The max percentage of motor power from distance PID
+			DRIVE_PID_DISTANCE_I_ERROR_LIMIT = 4.0,
 			
 			DRIVE_PID_SPEED_KP = 0.1, 
 			DRIVE_PID_SPEED_KI = 0.0,
@@ -79,7 +81,7 @@ public final class RobotMap {
 			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
 			
 			DRIVE_PID_TURN_TOLERANCE = 2.0, // Degrees
-			DRIVE_PID_DIST_TOLERANCE = 3.0, // Inches
+			DRIVE_PID_DIST_TOLERANCE = 0.5, // Inches
 			
 			INCHES_PER_TICK = 0.003;
 			

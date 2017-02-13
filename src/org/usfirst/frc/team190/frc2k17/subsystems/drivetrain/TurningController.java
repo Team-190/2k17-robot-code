@@ -4,12 +4,12 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
+import org.usfirst.frc.team190.frc2k17.PIDController;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,6 +27,7 @@ public class TurningController implements DriveController {
 		turningPID = new PIDController(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP,
 				RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI, RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD, navx,
 				output -> this.loopOutput = output);
+		turningPID.setMaxErrorToIntegrate(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_I_ERROR_LIMIT);
 		// reset SmartDashboard values to the RobotMap values
 		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP);
 		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI);
