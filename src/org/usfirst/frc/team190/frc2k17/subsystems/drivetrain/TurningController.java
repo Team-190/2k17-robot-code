@@ -19,7 +19,7 @@ public class TurningController implements DriveController {
 	private AHRS navx = null;
 
 	private double loopOutput = 0;
-	private Instant onTargetSince;
+	private Instant onTargetSince, enabledAt;
 	
 	public TurningController(AHRS navx) {
 		this.navx = navx;
@@ -75,6 +75,7 @@ public class TurningController implements DriveController {
 		turningPID.setSetpoint(degrees);
 		turningPID.enable();
 		Logger.defaultLogger.debug("Turning PID enabled.");
+		enabledAt = Instant.now();
 	}
 	
 	/**
@@ -83,7 +84,8 @@ public class TurningController implements DriveController {
 	public void disable() {
 		turningPID.disable();
 		SmartDashboard.putNumber("Turning PID loop output", 0);
-		Logger.defaultLogger.debug("Turning PID disabled.");
+		assert enabledAt != null;
+		Logger.defaultLogger.debug("Turning PID disabled. Ran for " + Duration.between(enabledAt, Instant.now()).toMillis() + " milliseconds.");
 	}
 	
 	/**
