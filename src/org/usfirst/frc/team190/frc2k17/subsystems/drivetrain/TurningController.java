@@ -40,7 +40,7 @@ public class TurningController implements DriveController {
 	 * @return true if the loop is on target
 	 */
 	public boolean isOnTarget() {
-		return (turningPID.onTarget() && Duration.between(onTargetSince, Instant.now())
+		return (turningPID.onTarget() && onTargetSince != null && Duration.between(onTargetSince, Instant.now())
 				.compareTo(Duration.ofMillis(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_WAIT)) > 0);
 	}
 	
