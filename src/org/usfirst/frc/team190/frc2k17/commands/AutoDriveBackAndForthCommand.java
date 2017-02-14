@@ -30,8 +30,10 @@ public class AutoDriveBackAndForthCommand extends CommandGroup {
         // arm.
     	requires(Robot.drivetrain);
     	addSequential(new DriveStraightForDistanceCommand(120));
-    	addSequential(new TurnToDegreesCommand(180));
+    	addSequential(new TurnToDegreesCommand(90));
+    	addSequential(new TurnToDegreesCommand(90));
     	addSequential(new DriveStraightForDistanceCommand(120));
-    	addSequential(new TurnToDegreesCommand(-180));
+    	addSequential(new TurnToDegreesCommand(-90));
+    	addSequential(new TurnToDegreesCommand(-90));
     }
 }
