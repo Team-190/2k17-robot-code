@@ -4,8 +4,13 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
@@ -71,6 +76,11 @@ public class OI {
 		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
 		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
 		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+		SmartDashboard.putData("Camera light on", new GearCameraLightOn());
+		SmartDashboard.putData("Camera light off", new GearCameraLightOff());
+		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
+		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
+		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
 	}
 	
 	public double getDriverJoystick1X() {

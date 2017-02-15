@@ -80,7 +80,7 @@ public final class RobotMap {
 			DRIVE_MAX_SPEED_LOW = 337,	// RPM, 70% of true max
 			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
 			
-			DRIVE_PID_TURN_TOLERANCE = 2.0, // Degrees
+			DRIVE_PID_TURN_TOLERANCE = 1.0, // Degrees
 			DRIVE_PID_DIST_TOLERANCE = 0.5, // Inches
 			
 			INCHES_PER_TICK = 0.003;
