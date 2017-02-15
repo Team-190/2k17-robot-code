@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Make the robot turn towards the peg using the two retro-reflective stripes on either
@@ -22,10 +23,13 @@ public class TurnTowardPegCommand extends Command {
     	degreesToTurn = Robot.gearCamera.getAngleToPeg();
     	wasPegVisible = Robot.gearCamera.isPegVisible();
     	Robot.drivetrain.enableTurningControl(degreesToTurn);
+
+    	SmartDashboard.putNumber("Degrees to turn", degreesToTurn);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	SmartDashboard.putNumber("Camera Theoretical Angle", Robot.gearCamera.getAngleToPeg());
     	Robot.drivetrain.controlTurning();
     }
 

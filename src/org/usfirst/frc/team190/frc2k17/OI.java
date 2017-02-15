@@ -72,6 +72,7 @@ public class OI {
 		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
+		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
 		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
 		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
 		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());

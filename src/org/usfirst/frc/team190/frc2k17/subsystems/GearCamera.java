@@ -59,11 +59,11 @@ public class GearCamera extends Subsystem {
     		double centerXAvg = (centerXArray[0] + centerXArray[1]) / 2.0;
     		double distanceFromCenter = centerXAvg - cameraHalfWidth;
     		
-    		degreesToTurn = Math.toDegrees(Math.atan((distanceFromCenter / cameraHalfWidth) * Math.tan(Math.toRadians(RobotMap.Constants.CAMERA_HFOV / 2))));
+    		//Math.toDegrees(Math.atan((distanceFromCenter / cameraHalfWidth) * Math.tan(Math.toRadians(RobotMap.Constants.CAMERA_HFOV / 2))));
+    		degreesToTurn = (centerXAvg / RobotMap.Constants.CAMERA_RESOLUTION_X * RobotMap.Constants.CAMERA_HFOV) - (RobotMap.Constants.CAMERA_HFOV / 2);
     		
     		double h = heightArray[0];
     		inchesToDrive = 12.0 * (-0.0001599959* h*h*h + 0.0225971104 * h*h - 1.116489553 * h + 22.7077288336) - 12;
-    		
         	pegIsVisible = true;
 
     		Logger.defaultLogger.info("Peg found, degreesToTurn set to " + degreesToTurn);
@@ -73,8 +73,6 @@ public class GearCamera extends Subsystem {
     		inchesToDrive = 0;
     		Logger.defaultLogger.info("Peg not seen, degreesToTurn not set.");
     	}
-    	SmartDashboard.putNumber("Degrees to turn", degreesToTurn);
-    	SmartDashboard.putNumber("Inches to drive", inchesToDrive);
     }
     
     public boolean isPegVisible() {
