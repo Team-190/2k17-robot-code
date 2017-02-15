@@ -66,9 +66,9 @@ public final class RobotMap {
 			DRIVE_PID_TURN_KD = 0.04,
 			DRIVE_PID_TURN_I_ERROR_LIMIT = 5,
 			
-			DRIVE_PID_DISTANCE_KP = 0.01, //8, //10, //12,
-			DRIVE_PID_DISTANCE_KI = 0.0001,
-			DRIVE_PID_DISTANCE_KD = 0.0,
+			DRIVE_PID_DISTANCE_KP = 0.023, //8, //10, //12,
+			DRIVE_PID_DISTANCE_KI = 0.002,
+			DRIVE_PID_DISTANCE_KD = 0.02,
 			DRIVE_PID_DISTANCE_MAX = 1.0, // The max percentage of motor power from distance PID
 			DRIVE_PID_DISTANCE_I_ERROR_LIMIT = 4.0,
 			

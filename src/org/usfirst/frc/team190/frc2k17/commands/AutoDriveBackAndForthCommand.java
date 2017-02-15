@@ -1,7 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.commands;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -29,10 +29,10 @@ public class AutoDriveBackAndForthCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	requires(Robot.drivetrain);
-    	addSequential(new DriveStraightForDistanceCommand(120));
+    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(120));
     	addSequential(new TurnToDegreesCommand(90));
     	addSequential(new TurnToDegreesCommand(90));
-    	addSequential(new DriveStraightForDistanceCommand(120));
+    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(120));
     	addSequential(new TurnToDegreesCommand(-90));
     	addSequential(new TurnToDegreesCommand(-90));
     }

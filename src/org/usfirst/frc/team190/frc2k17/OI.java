@@ -6,7 +6,7 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
@@ -70,7 +70,7 @@ public class OI {
 		//testButton = new JoystickButton(joystick0, 5);
 		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
 		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
-		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceCommand(120));
+		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
 		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
