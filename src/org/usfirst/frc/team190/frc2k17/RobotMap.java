@@ -81,9 +81,6 @@ public final class RobotMap {
 				SPEED_KD = 1.25,
 				SPEED_KF = 0.37463378906249994,
 				
-				MAX_SPEED_LOW = 337,
-				MAX_SPEED_HIGH = 600,
-				
 				INCHES_PER_TICK = 0.003;
 				
 				public static final long
@@ -98,6 +95,10 @@ public final class RobotMap {
 				TRACK_WIDTH = 2; // feet
 				
 			}
+
+			public static final double
+			MAX_SPEED_LOW = 337,
+			MAX_SPEED_HIGH = 600;
 			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
