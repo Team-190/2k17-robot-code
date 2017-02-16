@@ -90,6 +90,15 @@ public final class RobotMap {
 				DRIVE_PID_TURN_WAIT = 100; // milliseconds
 				
 			}
+			
+			public static final class Curve {
+				
+				public static final double
+				TIME_STEP = 0.02, // seconds
+				TRACK_WIDTH = 2; // feet
+				
+			}
+			
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
 			DRIVE_RIGHT_INVERTED = true;
