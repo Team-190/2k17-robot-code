@@ -37,8 +37,8 @@ public class SRXDrive {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		leftSpeed = limit(leftSpeed) * RobotMap.Constants.Drivetrain.DRIVE_MAX_SPEED_LOW;
-		rightSpeed = limit(rightSpeed) * RobotMap.Constants.Drivetrain.DRIVE_MAX_SPEED_LOW;
+		leftSpeed = limit(leftSpeed) * RobotMap.Constants.Drivetrain.PID.MAX_SPEED_LOW;
+		rightSpeed = limit(rightSpeed) * RobotMap.Constants.Drivetrain.PID.MAX_SPEED_LOW;
 		//TODO: Adjust for proper gear
 		driveMotorsRPM(leftSpeed, rightSpeed);		
 	}

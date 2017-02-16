@@ -24,15 +24,15 @@ public class TurningController implements DriveController {
 	public TurningController(AHRS navx) {
 		this.navx = navx;
 		// the RobotMap PID values are only defaults
-		turningPID = new PIDController(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP,
-				RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI, RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD, navx,
+		turningPID = new PIDController(RobotMap.Constants.Drivetrain.PID.TURN_KP,
+				RobotMap.Constants.Drivetrain.PID.TURN_KI, RobotMap.Constants.Drivetrain.PID.TURN_KD, navx,
 				output -> this.loopOutput = output);
-		turningPID.setMaxErrorToIntegrate(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_I_ERROR_LIMIT);
+		turningPID.setMaxErrorToIntegrate(RobotMap.Constants.Drivetrain.PID.TURN_I_ERROR_LIMIT);
 		// reset SmartDashboard values to the RobotMap values
-		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP);
-		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI);
-		Robot.prefs.putDouble("Turning PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD);
-		turningPID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_TOLERANCE);
+		Robot.prefs.putDouble("Turning PID P", RobotMap.Constants.Drivetrain.PID.TURN_KP);
+		Robot.prefs.putDouble("Turning PID I", RobotMap.Constants.Drivetrain.PID.TURN_KI);
+		Robot.prefs.putDouble("Turning PID D", RobotMap.Constants.Drivetrain.PID.TURN_KD);
+		turningPID.setAbsoluteTolerance(RobotMap.Constants.Drivetrain.PID.TURN_TOLERANCE);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class TurningController implements DriveController {
 		if (turningPID.onTarget()) {
 			if (onTargetSince == null) {
 				onTargetSince = Instant.now();
-				Logger.defaultLogger.trace("Turning PID is on target. Waiting for " + RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_WAIT + " milliseconds.");
+				Logger.defaultLogger.trace("Turning PID is on target. Waiting for " + RobotMap.Constants.Drivetrain.PID.DRIVE_PID_TURN_WAIT + " milliseconds.");
 			}
 		} else if (onTargetSince != null){
 			onTargetSince = null;
@@ -94,8 +94,8 @@ public class TurningController implements DriveController {
 	 */
 	public void getSmartDashboardPidValues() {
 		turningPID.setPID(
-				Robot.prefs.getDouble("Turning PID P", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KP),
-				Robot.prefs.getDouble("Turning PID I", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KI),
-				Robot.prefs.getDouble("Turning PID D", RobotMap.Constants.Drivetrain.DRIVE_PID_TURN_KD));
+				Robot.prefs.getDouble("Turning PID P", RobotMap.Constants.Drivetrain.PID.TURN_KP),
+				Robot.prefs.getDouble("Turning PID I", RobotMap.Constants.Drivetrain.PID.TURN_KI),
+				Robot.prefs.getDouble("Turning PID D", RobotMap.Constants.Drivetrain.PID.TURN_KD));
 	}
 }
