@@ -4,6 +4,7 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
+import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperPushOutCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
@@ -14,6 +15,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,10 +54,20 @@ public class OI {
 	
 	public static FilteredJoystick joystick0;
 	public static FilteredJoystick joystick1;
+	public static XboxController joystick2;
+
 	
-	public static Joystick joystick2;		// Assuming the Operator is using a Joystick
+	private Button aButton;
+	private Button bButton;
+	private Button xButton;
+	private Button yButton;
 	
-	private Button testButton;
+	private Button lbButton;
+	private Button rbButton;
+	
+	private Button backButton;
+	private Button startButton;
+	
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
@@ -63,9 +75,24 @@ public class OI {
 		
 		joystick1 = new FilteredJoystick(1);
 
-		joystick2 = new Joystick(2);
-
-		testButton = new JoystickButton(joystick0, 1);
+		joystick2 = new XboxController(2);
+		
+		aButton = new JoystickButton(joystick2, 1);
+		bButton = new JoystickButton(joystick2, 2);
+		xButton = new JoystickButton(joystick2, 3);
+		yButton = new JoystickButton(joystick2, 4);
+		
+		lbButton = new JoystickButton(joystick2, 5);
+		rbButton = new JoystickButton(joystick2, 6);
+		
+		backButton = new JoystickButton(joystick2, 7);
+		startButton = new JoystickButton(joystick2, 8);
+		
+		
+		aButton.whileHeld(new BooperPushOutCommand()); 
+		
+		
+		
 		
 		//testButton = new JoystickButton(joystick0, 5);
 		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
