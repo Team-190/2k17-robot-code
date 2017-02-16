@@ -76,7 +76,7 @@ public class OI {
 		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
 		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
 		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
-		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand(10));
 		SmartDashboard.putData("Camera light on", new GearCameraLightOn());
 		SmartDashboard.putData("Camera light off", new GearCameraLightOff());
 		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
