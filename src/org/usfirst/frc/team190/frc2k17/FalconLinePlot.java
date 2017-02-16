@@ -760,7 +760,7 @@ class FalconLinePlot extends JPanel implements ClipboardOwner{
         
         menu.add(item);
     	
-        item = new JMenuItem("Desktop ScreenShot");
+        /*item = new JMenuItem("Desktop ScreenShot");
         item.addActionListener(new ActionListener() 
         {
           public void actionPerformed(ActionEvent e) 
@@ -784,7 +784,7 @@ class FalconLinePlot extends JPanel implements ClipboardOwner{
           }
         });
         
-        menu.add(item);
+        menu.add(item);*/
     }
 
     class PopupTriggerListener extends MouseAdapter {
