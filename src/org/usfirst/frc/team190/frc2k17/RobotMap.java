@@ -60,34 +60,36 @@ public final class RobotMap {
 	
 	public static final class Constants {
 		public static final class Drivetrain {
-			public static final double
-			DRIVE_PID_TURN_KP = 0.015,
-			DRIVE_PID_TURN_KI = 0.002,
-			DRIVE_PID_TURN_KD = 0.04,
-			DRIVE_PID_TURN_I_ERROR_LIMIT = 5,
-			
-			DRIVE_PID_DISTANCE_KP = 0.023, //8, //10, //12,
-			DRIVE_PID_DISTANCE_KI = 0.002,
-			DRIVE_PID_DISTANCE_KD = 0.02,
-			DRIVE_PID_DISTANCE_MAX = 1.0, // The max percentage of motor power from distance PID
-			DRIVE_PID_DISTANCE_I_ERROR_LIMIT = 4.0,
-			
-			DRIVE_PID_SPEED_KP = 0.1, 
-			DRIVE_PID_SPEED_KI = 0.0,
-			DRIVE_PID_SPEED_KD = 1.25,
-			DRIVE_PID_SPEED_KF = 0.37463378906249994,
-			
-			DRIVE_MAX_SPEED_LOW = 337,	// RPM, 70% of true max
-			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
-			
-			DRIVE_PID_TURN_TOLERANCE = 0.5, // Degrees
-			DRIVE_PID_DIST_TOLERANCE = 0.5, // Inches
-			
-			INCHES_PER_TICK = 0.003;
-			
-			public static final long
-			DRIVE_PID_TURN_WAIT = 100; // milliseconds
-			
+			public static final class PID {
+
+				public static final double
+				TURN_KP = 0.015,
+				TURN_KI = 0.002,
+				TURN_KD = 0.04,
+				TURN_I_ERROR_LIMIT = 5,
+				TURN_TOLERANCE = 0.5,
+				
+				DISTANCE_KP = 0.023,
+				DISTANCE_KI = 0.002,
+				DISTANCE_KD = 0.02,
+				DISTANCE_MAX = 1.0,
+				DISTANCE_I_ERROR_LIMIT = 4.0,
+				DISTANCE_TOLERANCE = 0.5,
+				
+				SPEED_KP = 0.1,
+				SPEED_KI = 0.0,
+				SPEED_KD = 1.25,
+				SPEED_KF = 0.37463378906249994,
+				
+				MAX_SPEED_LOW = 337,
+				MAX_SPEED_HIGH = 600,
+				
+				INCHES_PER_TICK = 0.003;
+				
+				public static final long
+				DRIVE_PID_TURN_WAIT = 100; // milliseconds
+				
+			}
 			public static final boolean
 			DRIVE_LEFT_INVERTED = false,
 			DRIVE_RIGHT_INVERTED = true;
