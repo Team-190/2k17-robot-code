@@ -1,8 +1,8 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -14,9 +14,9 @@ public class PlaceGearCommand extends CommandGroup {
     public PlaceGearCommand() {
     	requires(Robot.drivetrain);
     	
-    	addSequential(new GearCameraLightOn());
+    	addSequential(new GearCameraLightOnCommand());
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());
-    	addSequential(new GearCameraLightOff());
+    	addSequential(new GearCameraLightOffCommand());
     } 
 }

@@ -5,8 +5,8 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperPushOutCommand;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
@@ -72,31 +72,22 @@ public class OI {
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
 		joystick0.setDeadband(0.05); // TODO: Put constant in robotmap
-		
 		joystick1 = new FilteredJoystick(1);
-
 		joystick2 = new XboxController(2);
 		
 		aButton = new JoystickButton(joystick2, 1);
 		bButton = new JoystickButton(joystick2, 2);
 		xButton = new JoystickButton(joystick2, 3);
 		yButton = new JoystickButton(joystick2, 4);
-		
 		lbButton = new JoystickButton(joystick2, 5);
 		rbButton = new JoystickButton(joystick2, 6);
-		
 		backButton = new JoystickButton(joystick2, 7);
 		startButton = new JoystickButton(joystick2, 8);
+
+		rbButton.whileHeld(new BooperPushOutCommand());
+		backButton.toggleWhenPressed(new GearCameraLightOnCommand());
 		
 		
-		aButton.whileHeld(new BooperPushOutCommand()); 
-		
-		
-		
-		
-		//testButton = new JoystickButton(joystick0, 5);
-		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
-		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
@@ -104,8 +95,8 @@ public class OI {
 		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
 		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
 		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
-		SmartDashboard.putData("Camera light on", new GearCameraLightOn());
-		SmartDashboard.putData("Camera light off", new GearCameraLightOff());
+		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
+		SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
 		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());

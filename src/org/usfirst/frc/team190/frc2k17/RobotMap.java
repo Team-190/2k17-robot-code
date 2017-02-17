@@ -24,8 +24,7 @@ public final class RobotMap {
 		GEAR_PUSH_OUT = 2,
 		GEAR_PUSH_IN = 3,
 		
-		BOOPERS_PUSH_OUT = 4,
-		BOOPERS_PULL_IN = 5;
+		BOOPERS_PUSH_OUT = 4;
 	}
 	
 	public static final class CAN {
@@ -41,7 +40,9 @@ public final class RobotMap {
 		
 		COLLECTOR_MOTOR = 9,
 		
-		CLIMBER_MOTOR = 10;
+		CLIMBER_MOTOR = 10,
+		
+		PCM = 20;
 	}
 	
 	public static final class DIO {
