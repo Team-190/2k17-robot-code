@@ -3,6 +3,7 @@ package org.usfirst.frc.team190.frc2k17;
 
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
@@ -35,6 +36,7 @@ public class Robot extends IterativeRobot {
 	public static final Collector collector = new Collector();
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
+	public static final GearPlacer gearPlacer = new GearPlacer();
 	public static OI oi;
 	
     Command autonomousCommand;
