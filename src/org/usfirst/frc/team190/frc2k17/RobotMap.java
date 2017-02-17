@@ -92,9 +92,9 @@ public final class RobotMap {
 				
 				public static final double
 				TIME_STEP = 0.02, // seconds
-				TRACK_WIDTH = 0.833, // feet
+				TRACK_WIDTH = 19.5, // inches
 				WHEEL_DIAMETER = 4, // inches
-				WHEEL_CIRCUMFERENCE = 2 * 3.14159265 * ( WHEEL_DIAMETER / 2);
+				WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
 			}
 
 			public static final double

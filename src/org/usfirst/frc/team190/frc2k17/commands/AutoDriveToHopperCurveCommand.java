@@ -51,7 +51,7 @@ public class AutoDriveToHopperCurveCommand extends Command {
 		Logger.defaultLogger.trace("Falcon output: left " + df.format(path.smoothLeftVelocity[step][1]) + " in/sec, " + df.format(leftRPM)
 				+ " RPM, " + df.format(leftRatio * 100) + " percent; right " + df.format(path.smoothRightVelocity[step][1]) + " in/sec, "
 				+ df.format(rightRPM) + " RPM, " + df.format(rightRatio * 100) + " percent.");
-		if(leftRatio > 1 || rightRatio > 1) {
+		if(Math.abs(leftRatio) > 1 || Math.abs(rightRatio) > 1) {
 			Logger.defaultLogger.error("Falcon output has exceeded robot capability.");
 		}
     	Robot.drivetrain.tankDrive(leftRatio, rightRatio);
