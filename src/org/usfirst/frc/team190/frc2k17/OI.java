@@ -4,15 +4,9 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
-<<<<<<< HEAD
-import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperPushOutCommand;
+import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
-=======
-import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
->>>>>>> branch 'dev' of ssh://git@bitbucket.org/team190/robot-code.git
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
@@ -91,21 +85,10 @@ public class OI {
 		backButton = new JoystickButton(joystick2, 7);
 		startButton = new JoystickButton(joystick2, 8);
 
-		rbButton.whileHeld(new BooperPushOutCommand());
+		rbButton.whileHeld(new BooperSetCommand(Boopers.State.EXTENDED));
 		backButton.toggleWhenPressed(new GearCameraLightOnCommand());
 		
 		
-<<<<<<< HEAD
-=======
-		aButton.whileHeld(new BooperSetCommand(Boopers.State.EXTENDED)); 
-		
-		
-		
-		
-		//testButton = new JoystickButton(joystick0, 5);
-		//testButton.whenPressed(new DriveStraightForDistanceCommand(5));
-		//SmartDashboard.putData("Drive for Distance", new DriveStraightForDistanceCommand(name, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KP, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KI, RobotMap.Constants.DriveTrain.DRIVE_PID_DISTANCE_KD));
->>>>>>> branch 'dev' of ssh://git@bitbucket.org/team190/robot-code.git
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
