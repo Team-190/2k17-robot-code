@@ -11,25 +11,40 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Boopers extends Subsystem {
 
-	private final Solenoid boopersSingleSolenoid;
+	private final Solenoid solenoid;
 	
-	public Boopers() {
-		boopersSingleSolenoid = new Solenoid(RobotMap.CAN.PCM, RobotMap.PCM.BOOPERS_PUSH_OUT);
+	public enum State {
+		EXTENDED(true), RETRACTED(false);
+		
+		private final boolean enabled;
+		
+		private State(boolean enabled) {
+			this.enabled = enabled;
+		}
+		
+		private boolean get() {
+			return enabled;
+		}
 	}
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    public void on() {
-    	boopersSingleSolenoid.set(true);
-    }
-    
-    public void off() {
-    	boopersSingleSolenoid.set(false);
-    }
-    
-    // TODO: implement diagnose for Boopers
+	public Boopers() {
+		solenoid = new Solenoid(RobotMap.CAN.PCM, RobotMap.PCM.BOOPERS);
+	}
+
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		// setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new BooperToggleCommand());
+	}
+
+	public void toggle() {
+		solenoid.set(!solenoid.get());
+	}
+	
+    public void set(final State state) {
+		solenoid.set(state.get());
+	}
+
+	// TODO: implement diagnose for Boopers
 }
 
