@@ -24,8 +24,7 @@ public final class RobotMap {
 		GEAR_PUSH_OUT = 2,
 		GEAR_PUSH_IN = 3,
 		
-		BOOPERS_PUSH_OUT = 4,
-		BOOPERS_PULL_IN = 5;
+		BOOPERS = 4;
 	}
 	
 	public static final class CAN {
