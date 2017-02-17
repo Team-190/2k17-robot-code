@@ -1,4 +1,5 @@
 package org.usfirst.frc.team190.frc2k17;
+import com.ctre.CANTalon.FeedbackDevice;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -99,6 +100,9 @@ public final class RobotMap {
 			public static final boolean
 			INVERT_LEFT_ENC = true,
 			INVERT_RIGHT_ENC = false;
+			
+			public static int TICKS_PER_REV = 1024*(36/12);//explicity show math to show gear ratio
+			public static FeedbackDevice DRIVE_FEEDBACK_DEV = FeedbackDevice.QuadEncoder;
 		}
 		
 		public static final class OI {
