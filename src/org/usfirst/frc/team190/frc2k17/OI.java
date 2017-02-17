@@ -4,7 +4,7 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
-import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperPushOutCommand;
+import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOn;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
@@ -12,6 +12,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
+import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
@@ -89,7 +90,7 @@ public class OI {
 		startButton = new JoystickButton(joystick2, 8);
 		
 		
-		aButton.whileHeld(new BooperPushOutCommand()); 
+		aButton.whileHeld(new BooperSetCommand(Boopers.State.EXTENDED)); 
 		
 		
 		
