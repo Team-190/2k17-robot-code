@@ -28,17 +28,27 @@ public class AutoDriveToHopperCurveCommand extends Command {
     	this.duration = duration;
         double[][] waypoints = new double[][]{
         	{0, 0},
-        	{192.1, 0},
+        	{192.1, 0}
         };
         path = new FalconPathPlanner(waypoints);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Logger.defaultLogger.debug(this.getClass().getName() + " initializing.");
+    	Logger.defaultLogger.debug(this.getClass().getSimpleName() + " initializing.");
     	step = 0;
 		path.calculate(duration, RobotMap.Constants.Drivetrain.Curve.TIME_STEP,
 				RobotMap.Constants.Drivetrain.Curve.TRACK_WIDTH);
+		double sum = 0;
+		for(int i = 0; i < path.smoothLeftVelocity.length; i++) {
+			sum += path.smoothLeftVelocity[i][1] * RobotMap.Constants.Drivetrain.Curve.TIME_STEP;
+		}
+		Logger.defaultLogger.debug("The left side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
+		sum = 0;
+		for(int i = 0; i < path.smoothRightVelocity.length; i++) {
+			sum += path.smoothRightVelocity[i][1] * RobotMap.Constants.Drivetrain.Curve.TIME_STEP;
+		}
+		Logger.defaultLogger.debug("The right side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -61,7 +71,7 @@ public class AutoDriveToHopperCurveCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if(!(step < path.smoothLeftVelocity.length && step < path.smoothRightVelocity.length)) {
-        	Logger.defaultLogger.debug(this.getClass().getName() + " finished.");
+        	Logger.defaultLogger.debug(this.getClass().getSimpleName() + " finished.");
         	return true;
         }
         return false;
