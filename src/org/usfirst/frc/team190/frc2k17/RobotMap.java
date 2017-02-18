@@ -19,8 +19,7 @@ public final class RobotMap {
 	
 	public static final class PCM {
 		public static final int
-		SHIFTERS_SHIFT_HIGH = 0,
-		SHIFTERS_SHIFT_LOW = 1,
+		SHIFTER = 0,
 		
 		GEAR_PUSHER = 2,
 		
