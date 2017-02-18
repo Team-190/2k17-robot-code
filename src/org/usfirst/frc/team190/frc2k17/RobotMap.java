@@ -1,4 +1,5 @@
 package org.usfirst.frc.team190.frc2k17;
+import com.ctre.CANTalon.FeedbackDevice;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -18,14 +19,11 @@ public final class RobotMap {
 	
 	public static final class PCM {
 		public static final int
-		SHIFTERS_SHIFT_HIGH = 0,
-		SHIFTERS_SHIFT_LOW = 1,
+		SHIFTER = 0,
 		
-		GEAR_PUSH_OUT = 2,
-		GEAR_PUSH_IN = 3,
+		GEAR_PUSHER = 2,
 		
-		BOOPERS_PUSH_OUT = 4,
-		BOOPERS_PULL_IN = 5;
+		BOOPERS = 4;
 	}
 	
 	public static final class CAN {
@@ -41,12 +39,15 @@ public final class RobotMap {
 		
 		COLLECTOR_MOTOR = 9,
 		
-		CLIMBER_MOTOR = 10;
+		CLIMBER_MOTOR = 10,
+		
+		PCM = 20;
 	}
 	
 	public static final class DIO {
 		public static final int
-		GEAR_PUSHER_SENSOR = 0;
+		PEG_LIMIT_SWITCH = 0,
+		GEAR_PLACER_FULLY_EXTENDED = 1;
 		
 	}
 	
@@ -108,6 +109,9 @@ public final class RobotMap {
 			public static final boolean
 			INVERT_LEFT_ENC = true,
 			INVERT_RIGHT_ENC = false;
+			
+			public static int TICKS_PER_REV = 1024*(36/12);//explicity show math to show gear ratio
+			public static FeedbackDevice DRIVE_FEEDBACK_DEV = FeedbackDevice.QuadEncoder;
 		}
 		
 		public static final class OI {
@@ -119,7 +123,8 @@ public final class RobotMap {
 		public static final int
 		CAMERA_RESOLUTION_X = 320,
 		CAMERA_RESOLUTION_Y = 240,
-		CAMERA_EXPOSURE = 0;
+		CAMERA_EXPOSURE = 0,
+		GEAR_PLACER_SET_TIMEOUT = 1000; // milliseconds
 		
 		public static final double
 		CAMERA_HFOV = 54.8,

@@ -3,7 +3,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOff;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
@@ -41,6 +41,17 @@ public class GearCamera extends Subsystem {
      */
     public void lightOff() {
     	spike.set(Value.kOff);
+    }
+    
+    /**
+     * Toggle the status of the ring light.
+     */
+    public void lightToggle() {
+    	if(spike.get() == Value.kOff) {
+    		spike.set(Value.kForward);
+    	} else {
+    		spike.set(Value.kOff);
+    	}
     }
     
     /**

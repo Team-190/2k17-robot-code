@@ -19,7 +19,14 @@ public class DriveMotorPair {
 
 	public DriveMotorPair(String name, int masterID, int slaveID, boolean inverted) {
 		master = new CANTalon(masterID);
-		master.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		
+		master.setFeedbackDevice(RobotMap.Constants.Drivetrain.DRIVE_FEEDBACK_DEV);
+		if(RobotMap.Constants.Drivetrain.DRIVE_FEEDBACK_DEV == FeedbackDevice.QuadEncoder)
+		{
+			//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
+			master.configEncoderCodesPerRev(RobotMap.Constants.Drivetrain.TICKS_PER_REV);
+		}
+		
 		master.configNominalOutputVoltage(+0.0f, -0.0f);
 		master.configPeakOutputVoltage(+12.0f, -12.0f);
 		master.setInverted(inverted);
