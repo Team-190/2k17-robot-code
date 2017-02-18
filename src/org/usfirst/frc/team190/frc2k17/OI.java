@@ -13,6 +13,7 @@ import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberLowerCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
@@ -20,6 +21,7 @@ import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
@@ -98,7 +100,8 @@ public class OI {
 		aButton.whileHeld(new ShooterFeedCommand());
 		xButton.whenPressed(new KickGearCommand());
 		startButton.whenPressed(new GearPlacerToggleCommand());
-		
+		bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
+		bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));

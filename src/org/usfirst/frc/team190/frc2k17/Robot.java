@@ -9,6 +9,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
+import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
 	public static final GearPlacer gearPlacer = new GearPlacer();
+	public static final Shifters shifters = new Shifters();
 	public static OI oi;
 	
     Command autonomousCommand;
