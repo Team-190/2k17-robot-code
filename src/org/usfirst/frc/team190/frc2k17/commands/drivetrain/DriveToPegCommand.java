@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Drive to the Peg using the camera to calculate the distance. Constantly ensure
+ * that the robot is driving straight by getting the angle value from the camera
+ * while driving.
  */
 public class DriveToPegCommand extends Command {
 	
@@ -16,6 +18,10 @@ public class DriveToPegCommand extends Command {
     	requires(Robot.drivetrain);
     }
 
+    /**
+     * get the distance to the peg and drive for that distance
+     * TODO: we are arbitrarily subtracting 12" from the computed distance for testing
+     */
     protected void initialize() {
     	forwardDist = Robot.gearCamera.getDistanceToPeg();
     	Robot.drivetrain.enableDistanceControl(forwardDist - 12);
@@ -25,6 +31,7 @@ public class DriveToPegCommand extends Command {
 
     protected void execute() {
     	double angle = Robot.gearCamera.getAngleToPeg();
+    	//TODO: arbitrary proportional constant below for steering while driving
     	Robot.drivetrain.controlDistance(angle * -0.01);
     }
     

@@ -114,13 +114,13 @@ public final class RobotMapReal {
 		public static final int
 		CAMERA_RESOLUTION_X = 320,
 		CAMERA_RESOLUTION_Y = 240,
-		CAMERA_EXPOSURE = 0,
-		GEAR_PLACER_SET_TIMEOUT = 1000; // milliseconds
+		CAMERA_EXPOSURE = 0;
 		
 		public static final double
 		CAMERA_HFOV = 54.8,
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE = 0.1,
 		DRIVE_TO_PEG_MAX_SPEED = 0.5,
-		TURN_TO_PEG_OUTPUT_TOLERANCE = 3;
+		TURN_TO_PEG_OUTPUT_TOLERANCE = 3,
+		GEAR_PLACER_SET_TIMEOUT = 1.0;
 	}
 }
