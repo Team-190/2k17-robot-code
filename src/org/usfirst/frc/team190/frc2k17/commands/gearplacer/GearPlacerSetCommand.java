@@ -15,12 +15,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class GearPlacerSetCommand extends Command {
 	
 	private final GearPlacer.State state;
-	private final boolean wasExtended;
 
 	public GearPlacerSetCommand(final GearPlacer.State state) {
 		requires(Robot.gearPlacer);
 		this.state = state;
-		wasExtended = Robot.gearPlacer.getFullyExtended();
 	}
 
 	protected void initialize() {
@@ -29,10 +27,6 @@ public class GearPlacerSetCommand extends Command {
 	}
 
 	protected boolean isFinished() {
-		if(isTimedOut()) {
-			Logger.defaultLogger.error("Gear placer failed to actuate within the timeout.");
-			return true;
-		}
-		return Robot.gearPlacer.getFullyExtended() != wasExtended;
+		return isTimedOut();
 	}
 }

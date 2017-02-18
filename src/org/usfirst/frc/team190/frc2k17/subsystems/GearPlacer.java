@@ -14,8 +14,7 @@ public class GearPlacer extends Subsystem {
 
 	private static final Solenoid solenoid = new Solenoid(RobotMap.PCM.GEAR_PUSHER);
 	private static final DigitalInput pegPresenceSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
-	private static final DigitalInput fullExtensionSensor = new DigitalInput(RobotMap.DIO.GEAR_PLACER_FULLY_EXTENDED);
-	
+
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
 		
@@ -51,11 +50,4 @@ public class GearPlacer extends Subsystem {
 		return pegPresenceSensor.get();
 	}
 	
-	/**
-	 * @return true if the gear placer piston is fully extended, false otherwise
-	 */
-	public boolean getFullyExtended() {
-		//TODO: this assumes that the sensor returns one when the gear placer is fully extended
-		return fullExtensionSensor.get();
-	}
 }
