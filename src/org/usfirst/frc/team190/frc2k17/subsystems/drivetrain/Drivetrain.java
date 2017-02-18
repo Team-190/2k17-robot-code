@@ -7,8 +7,6 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,19 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final DoubleSolenoid shifters;
 	private final DriveController turningController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
 	private final AHRS navx;
 	
-	/**
-	 * The gears that the transmission may be shifted into.
-	 */
-	public enum Gear {
-		HIGH, LOW
-	}
 	
 	/**
 	 * Constructor initializes private fields.
@@ -41,7 +32,6 @@ public class Drivetrain extends Subsystem {
 		
 		turningController = new TurningController(navx);
 		distanceController = new DistanceController(srxdrive);
-		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
 	}
 	
 	/**
@@ -126,18 +116,6 @@ public class Drivetrain extends Subsystem {
 	
 	public boolean isMoving() {
 		return navx.isMoving();
-	}
-	
-	/**
-	 * Shift the transmission into the specified gear.
-	 * @param gear the gear to shift into
-	 */
-	public void shift(Gear gear){
-		if(gear == Gear.HIGH){
-			shifters.set(Value.kForward);
-		}else if(gear == Gear.LOW){
-			shifters.set(Value.kReverse);
-		}
 	}
 	
 	/**
