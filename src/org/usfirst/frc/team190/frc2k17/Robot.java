@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 	public static final Climber climber = new Climber();
 	public static final Boopers boopers = new Boopers();
 	public static final GearPlacer gearPlacer = new GearPlacer();
+	public static Shifters shifter = new Shifters();
 	public static final Shifters shifters = new Shifters();
 	public static OI oi;
 	
