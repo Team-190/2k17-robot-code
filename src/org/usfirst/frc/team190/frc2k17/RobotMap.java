@@ -11,6 +11,7 @@ public final class RobotMap {
 	private static boolean IS_KIT_BOT;
 	
 	{
+		// TODO calculate IS_KIT_BOT based on something
 		IS_KIT_BOT = true;
 	}
 	
