@@ -41,6 +41,14 @@ public class Shifters extends Subsystem {
 			shifter.set(false);
 		}
 	}
+	
+	public boolean isInHighGear() {
+		if (shifter.get()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
     
 }
 
