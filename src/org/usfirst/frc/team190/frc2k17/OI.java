@@ -69,7 +69,7 @@ public class OI {
 	public static FilteredJoystick joystick1;
 	public static XboxController joystick2;
 
-	
+	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
 	private Trigger povUpTrigger, povDownTrigger;
 	
@@ -78,6 +78,16 @@ public class OI {
 		joystick0.setDeadband(0.05); // TODO: Put constant in robotmap
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
+		
+		highShiftButton = new JoystickButton(joystick1, 3);
+		lowShiftButton = new JoystickButton(joystick1, 2);
+		driveToPegButton = new JoystickButton(joystick0, 3);
+		gearKickButton = new JoystickButton(joystick0, 2);
+		
+		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
+		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
+		driveToPegButton.whenPressed(new PlaceGearCommand());
+		gearKickButton.whenPressed(new KickGearCommand());
 		
 		povUpTrigger = new PovUpTrigger();
 		povDownTrigger = new PovDownTrigger();
