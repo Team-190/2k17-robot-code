@@ -145,5 +145,11 @@ public class Drivetrain extends Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
 	}
+	public double getLeftRPM() {
+		return srxdrive.getLeftRPM();
+	}
+	public double getRightRPM() {
+		return srxdrive.getRightRPM();
+	}
 }
 
