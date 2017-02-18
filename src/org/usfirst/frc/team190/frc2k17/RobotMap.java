@@ -47,7 +47,8 @@ public final class RobotMap {
 	
 	public static final class DIO {
 		public static final int
-		GEAR_PUSHER_SENSOR = 0;
+		PEG_LIMIT_SWITCH = 0,
+		GEAR_PLACER_FULLY_EXTENDED = 1;
 		
 	}
 	
@@ -114,7 +115,8 @@ public final class RobotMap {
 		public static final int
 		CAMERA_RESOLUTION_X = 320,
 		CAMERA_RESOLUTION_Y = 240,
-		CAMERA_EXPOSURE = 0;
+		CAMERA_EXPOSURE = 0,
+		GEAR_PLACER_SET_TIMEOUT = 1000; // milliseconds
 		
 		public static final double
 		CAMERA_HFOV = 54.8,

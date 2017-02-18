@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GearPlacer extends Subsystem {
 
 	private final Solenoid solenoid;
-	private final DigitalInput pegPresenceSensor;
+	private final DigitalInput pegPresenceSensor, fullExtensionSensor;
 	
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
@@ -30,7 +30,8 @@ public class GearPlacer extends Subsystem {
 
 	public GearPlacer() {
 		solenoid = new Solenoid(RobotMap.PCM.GEAR_PUSHER);
-		pegPresenceSensor = new DigitalInput(RobotMap.DIO.GEAR_PUSHER_SENSOR);
+		pegPresenceSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
+		fullExtensionSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
 	}
 
 	public void initDefaultCommand() {
@@ -51,5 +52,12 @@ public class GearPlacer extends Subsystem {
 	 */
 	public boolean getPegPresent() {
 		return pegPresenceSensor.get();
+	}
+	
+	/**
+	 * @return true if the gear placer piston is fully extended, false otherwise
+	 */
+	public boolean getFullyExtended() {
+		return fullExtensionSensor.get();
 	}
 }

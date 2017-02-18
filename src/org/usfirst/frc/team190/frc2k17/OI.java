@@ -7,18 +7,28 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberLowerCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
+import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -58,23 +68,17 @@ public class OI {
 	public static XboxController joystick2;
 
 	
-	private Button aButton;
-	private Button bButton;
-	private Button xButton;
-	private Button yButton;
-	
-	private Button lbButton;
-	private Button rbButton;
-	
-	private Button backButton;
-	private Button startButton;
-	
+	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
+	private Trigger povUpTrigger, povDownTrigger;
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
 		joystick0.setDeadband(0.05); // TODO: Put constant in robotmap
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
+		
+		povUpTrigger = new PovUpTrigger();
+		povDownTrigger = new PovDownTrigger();
 		
 		aButton = new JoystickButton(joystick2, 1);
 		bButton = new JoystickButton(joystick2, 2);
@@ -84,9 +88,16 @@ public class OI {
 		rbButton = new JoystickButton(joystick2, 6);
 		backButton = new JoystickButton(joystick2, 7);
 		startButton = new JoystickButton(joystick2, 8);
-
-		rbButton.whileHeld(new BooperSetCommand(Boopers.State.EXTENDED));
-		backButton.toggleWhenPressed(new GearCameraLightOnCommand());
+		
+		lbButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
+		lbButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
+		backButton.whenPressed(new GearCameraLightToggleCommand());
+		povUpTrigger.whileActive(new ClimberClimbCommand());
+		povDownTrigger.whileActive(new ClimberLowerCommand());
+		yButton.toggleWhenPressed(new ShooterSpinCommand());
+		aButton.whileHeld(new ShooterFeedCommand());
+		xButton.whenPressed(new KickGearCommand());
+		startButton.whenPressed(new GearPlacerToggleCommand());
 		
 		
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));

@@ -44,6 +44,17 @@ public class GearCamera extends Subsystem {
     }
     
     /**
+     * Toggle the status of the ring light.
+     */
+    public void lightToggle() {
+    	if(spike.get() == Value.kOff) {
+    		spike.set(Value.kForward);
+    	} else {
+    		spike.set(Value.kOff);
+    	}
+    }
+    
+    /**
      * Get data from the camera that is used to compute the distance and angle
      * to the peg.
      */
