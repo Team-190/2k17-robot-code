@@ -46,8 +46,7 @@ public final class RobotMapKitBot {
 	
 	public static final class DIO {
 		public static final int
-		PEG_LIMIT_SWITCH = 0,
-		GEAR_PLACER_FULLY_EXTENDED = 1;
+		PEG_LIMIT_SWITCH = 0;
 		
 	}
 	

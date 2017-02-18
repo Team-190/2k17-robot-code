@@ -53,9 +53,7 @@ public final class RobotMap {
 	
 	public static final class DIO {
 		public static final int
-		PEG_LIMIT_SWITCH = IS_KIT_BOT ? RobotMapKitBot.DIO.PEG_LIMIT_SWITCH : RobotMapReal.DIO.PEG_LIMIT_SWITCH,
-		GEAR_PLACER_FULLY_EXTENDED = IS_KIT_BOT ? RobotMapKitBot.DIO.GEAR_PLACER_FULLY_EXTENDED : RobotMapReal.DIO.GEAR_PLACER_FULLY_EXTENDED;
-		
+		PEG_LIMIT_SWITCH = IS_KIT_BOT ? RobotMapKitBot.DIO.PEG_LIMIT_SWITCH : RobotMapReal.DIO.PEG_LIMIT_SWITCH;
 	}
 	
 	public static final class NetworkTable {
