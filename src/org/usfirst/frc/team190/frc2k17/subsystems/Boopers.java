@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperToggleCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -35,7 +36,7 @@ public class Boopers extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new BooperToggleCommand());
+		setDefaultCommand(new BooperSetCommand(Boopers.State.RETRACTED));
 	}
 
 	public void toggle() {
