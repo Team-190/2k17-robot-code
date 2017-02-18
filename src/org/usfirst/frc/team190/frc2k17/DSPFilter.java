@@ -3,7 +3,7 @@ package org.usfirst.frc.team190.frc2k17;
 public class DSPFilter { 
 	// This class is designed to do first order filtering
 	
-	enum FilterType {
+	public enum FilterType {
 		LOW_PASS,
 		HIGH_PASS
 	}
