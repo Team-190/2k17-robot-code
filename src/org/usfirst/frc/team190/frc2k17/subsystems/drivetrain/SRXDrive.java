@@ -122,4 +122,10 @@ public class SRXDrive {
 		left.diagnose();
 		right.diagnose();
 	}
+	public double getLeftRPM() {
+		return left.getSpeed();
+	}
+	public double getRightRPM() {
+		return right.getSpeed();
+	}
 }
