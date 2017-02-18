@@ -82,27 +82,27 @@ public class DriveMotorPair {
 	
 	public void diagnose() {
 		if (master.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn(name + "front drivetrain motor has over-temperature sticky bit set.");
+			Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (master.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn(name + " front drivetrain motor has under-voltage sticky bit set.");
+			Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (slave.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn(name + " rear drivetrain motor has over-temperature sticky bit set.");
+			Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
 		}
 		if (slave.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn(name + " rear drivetrain motor has under-voltage sticky bit set.");
+			Logger.defaultLogger.warn(name + " - rear drivetrain motor has under-voltage sticky bit set.");
 		}
 		if (!master.isAlive()) {
-			Logger.defaultLogger.warn(name + " front drivetrain motor is stopped by motor safety.");
+			Logger.defaultLogger.warn(name + " - front drivetrain motor is stopped by motor safety.");
 		}
 		if (!slave.isAlive()) {
-			Logger.defaultLogger.warn(name + " rear drivetrain motor is stopped by motor safety.");
+			Logger.defaultLogger.warn(name + " - rear drivetrain motor is stopped by motor safety.");
 		}
 		if (master.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.warn(name + " drivetrain encoder not present.");
+			Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
 		} else {
-			Logger.defaultLogger.debug(name + " drivetrain encoder is present.");
+			Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
 		}
 	}	
 }

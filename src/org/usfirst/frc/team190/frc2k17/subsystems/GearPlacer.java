@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearPlacer extends Subsystem {
 
-	private final Solenoid solenoid;
-	private final DigitalInput pegPresenceSensor, fullExtensionSensor;
+	private static final Solenoid solenoid = new Solenoid(RobotMap.PCM.GEAR_PUSHER);
+	private static final DigitalInput pegPresenceSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
+	private static final DigitalInput fullExtensionSensor = new DigitalInput(RobotMap.DIO.GEAR_PLACER_FULLY_EXTENDED);
 	
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
@@ -29,9 +30,7 @@ public class GearPlacer extends Subsystem {
 	}
 
 	public GearPlacer() {
-		solenoid = new Solenoid(RobotMap.PCM.GEAR_PUSHER);
-		pegPresenceSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
-		fullExtensionSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
+		
 	}
 
 	public void initDefaultCommand() {

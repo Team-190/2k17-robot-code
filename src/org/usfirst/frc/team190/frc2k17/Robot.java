@@ -32,13 +32,13 @@ public class Robot extends IterativeRobot {
 	
 	public static Drivetrain drivetrain;
 	public static GearCamera gearCamera;
-	public static final Shooter shooter = new Shooter();
-	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
-	public static final Collector collector = new Collector();
-	public static final Climber climber = new Climber();
-	public static final Boopers boopers = new Boopers();
-	public static final GearPlacer gearPlacer = new GearPlacer();
-	public static final Shifters shifters = new Shifters();
+	public static Shooter shooter;
+	public static ShooterFeeder shooterFeeder;
+	public static Collector collector;
+	public static Climber climber;
+	public static Boopers boopers;
+	public static GearPlacer gearPlacer;
+	public static Shifters shifters;
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -57,6 +57,13 @@ public class Robot extends IterativeRobot {
     	drivetrain = new Drivetrain();
     	// gearCamera must not be initialized statically. Do not move from robotInit().
     	gearCamera = new GearCamera();
+    	shooter = new Shooter();
+    	shooterFeeder = new ShooterFeeder();
+    	collector = new Collector();
+    	climber = new Climber();
+    	boopers = new Boopers();
+    	gearPlacer = new GearPlacer();
+    	shifters = new Shifters();
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
