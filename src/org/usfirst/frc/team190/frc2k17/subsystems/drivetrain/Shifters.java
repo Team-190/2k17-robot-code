@@ -41,6 +41,15 @@ public class Shifters extends Subsystem {
 			shifter.set(false);
 		}
 	}
-    
+    public Gear getGear() {
+    	if(shifter.get())
+    	{
+    		return Gear.HIGH;
+    	}
+    	else
+    	{
+    		return Gear.LOW;
+    	}
+    }
 }
 
