@@ -7,39 +7,28 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Logger {
 	
-	public static Logger defaultLogger = new Logger(new StdOutputter());
+	public static final Logger defaultLogger = new Logger(new StdOutputter());
 	public static Logger kangarooVoice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
 	
 	public static enum Level {
-		TRACE,
-		DEBUG,
-		INFO,
-		WARN,
-		ERROR,
-		SEVERE,
-		CRITICAL;
+		TRACE("trace"),
+		DEBUG("debug"),
+		INFO(""),
+		WARN("warning"),
+		ERROR("error"),
+		SEVERE("severe error"),
+		CRITICAL("critical");
+		
+		private final String kangarooVoice;
+		
+		private Level(String kangarooVoice) {
+			this.kangarooVoice = kangarooVoice;
+		}
 		
 		public String getKangarooVoice() {
-			switch(this) {
-			case TRACE:
-				return "trace";
-			case DEBUG:
-				return "debug";
-			case INFO:
-				return "";
-			case WARN:
-				return "warning";
-			case ERROR:
-				return "error";
-			case SEVERE:
-				return "severe error";
-			case CRITICAL:
-				return "critical";
-			default:
-				return "";
-			}
+			return kangarooVoice;
 		}
 	}
 	

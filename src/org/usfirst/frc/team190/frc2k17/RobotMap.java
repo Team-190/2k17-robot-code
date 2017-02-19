@@ -1,5 +1,4 @@
 package org.usfirst.frc.team190.frc2k17;
-import java.util.HashMap;
 
 import com.ctre.CANTalon.FeedbackDevice;
 /**
