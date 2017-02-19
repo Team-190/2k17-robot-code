@@ -64,7 +64,12 @@ public class RobotMap {
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
-		JOYSTICK_DEADBAND = new Key<Double>(0.05);
+		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
+		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
+		DRIVE_CURVE_TRACK_WIDTH = new Key<Double>(19.5),
+		DRIVE_CURVE_WHEEL_DIAMETER = new Key<Double>(4.0),
+		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_CURVE_WHEEL_DIAMETER.get());
 
 	public final Key<FeedbackDevice> 
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);
