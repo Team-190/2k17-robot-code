@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class Logger {
 	
 	public static Logger defaultLogger = new Logger(new StdOutputter());
-	public static Logger kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.NetworkTable.Kangaroo.TABLE_NAME, RobotMap.NetworkTable.Kangaroo.VOICE_LOG));
+	public static Logger kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
 	
@@ -83,6 +83,11 @@ public class Logger {
 
 	public void critical(String msg) {
 		output(new Message(Level.CRITICAL, msg));
+	}
+	
+	public void critical(String msg, Exception e) {
+		critical(msg + e.toString());
+		e.printStackTrace();
 	}
 	
 	private void output(Message msg) {

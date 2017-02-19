@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SRXDrive {
 	
 	private DriveMotorPair left = new DriveMotorPair("Left motors",
-												RobotMap.CAN.DRIVE_MOTOR_LEFT_FRONT,
-												RobotMap.CAN.DRIVE_MOTOR_LEFT_REAR,
-												RobotMap.Constants.Drivetrain.DRIVE_LEFT_INVERTED);
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_FRONT.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_REAR.get(),
+												RobotMap.getInstance().DRIVE_LEFT_INVERTED.get());
 	private DriveMotorPair right= new DriveMotorPair("Right motors",
-												RobotMap.CAN.DRIVE_MOTOR_RIGHT_FRONT,
-												RobotMap.CAN.DRIVE_MOTOR_RIGHT_REAR,
-												RobotMap.Constants.Drivetrain.DRIVE_RIGHT_INVERTED);
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_FRONT.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_REAR.get(),
+												RobotMap.getInstance().DRIVE_RIGHT_INVERTED.get());
 	
 	public SRXDrive() {
 		diagnose();
@@ -37,8 +37,8 @@ public class SRXDrive {
 	 * @param rightSpeed the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		leftSpeed = limit(leftSpeed) * RobotMap.Constants.Drivetrain.MAX_SPEED_LOW;
-		rightSpeed = limit(rightSpeed) * RobotMap.Constants.Drivetrain.MAX_SPEED_LOW;
+		leftSpeed = limit(leftSpeed) * RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
+		rightSpeed = limit(rightSpeed) * RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
 		//TODO: Adjust for proper gear
 		driveMotorsRPM(leftSpeed, rightSpeed);		
 	}

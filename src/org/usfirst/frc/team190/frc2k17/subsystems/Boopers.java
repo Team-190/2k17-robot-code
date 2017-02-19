@@ -30,7 +30,7 @@ public class Boopers extends Subsystem {
 	}
 
 	public Boopers() {
-		solenoid = new Solenoid(RobotMap.CAN.PCM, RobotMap.PCM.BOOPERS);
+		solenoid = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_BOOPERS.get());
 	}
 
 	public void initDefaultCommand() {

@@ -20,7 +20,7 @@ public class Shifters extends Subsystem {
 	private Solenoid shifter;
 	
 	public Shifters() {
-		shifter = new Solenoid(RobotMap.CAN.PCM, RobotMap.PCM.SHIFTER);
+		shifter = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_SHIFTER.get());
 	}
     
 	public void initDefaultCommand() {

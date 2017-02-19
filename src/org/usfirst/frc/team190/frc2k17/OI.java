@@ -128,19 +128,19 @@ public class OI {
 	}
 	
 	public double getDriverJoystick1X() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getAxis(AxisType.kX) : joystick0.getAxis(AxisType.kX);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kX) : joystick0.getAxis(AxisType.kX);
 	}
 	
 	public double getDriverJoystick1Y() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
 	}
 	
 	public double getDriverJoystick2X() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getAxis(AxisType.kX) : joystick1.getAxis(AxisType.kX);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_2.get()) ? -joystick1.getAxis(AxisType.kX) : joystick1.getAxis(AxisType.kX);
 	}
 	
 	public double getDriverJoystick2Y() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getAxis(AxisType.kY) : joystick1.getAxis(AxisType.kY);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_2.get()) ? -joystick1.getAxis(AxisType.kY) : joystick1.getAxis(AxisType.kY);
 	}
 
 	public double getDriverJoystick1Throttle() {

@@ -14,7 +14,7 @@ public class Collector extends Subsystem {
 	private final CANTalon collectorMotor;
 	
 	public Collector() {
-		collectorMotor = new CANTalon(RobotMap.CAN.COLLECTOR_MOTOR);
+		collectorMotor = new CANTalon(RobotMap.getInstance().CAN_COLLECTOR_MOTOR.get());
 	}
 	// TODO: implement speed control for collector
 	public void collect() {

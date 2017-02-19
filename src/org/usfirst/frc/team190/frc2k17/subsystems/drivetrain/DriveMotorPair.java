@@ -20,11 +20,11 @@ public class DriveMotorPair {
 	public DriveMotorPair(String name, int masterID, int slaveID, boolean inverted) {
 		master = new CANTalon(masterID);
 		
-		master.setFeedbackDevice(RobotMap.Constants.Drivetrain.DRIVE_FEEDBACK_DEV);
-		if(RobotMap.Constants.Drivetrain.DRIVE_FEEDBACK_DEV == FeedbackDevice.QuadEncoder)
+		master.setFeedbackDevice(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get());
+		if(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.QuadEncoder)
 		{
 			//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
-			master.configEncoderCodesPerRev(RobotMap.Constants.Drivetrain.TICKS_PER_REV);
+			master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 		}
 		
 		master.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -33,10 +33,10 @@ public class DriveMotorPair {
 		//TODO: set the reverseSensor() on the encoders. I believe it's opposite the inverted flag.
 		//TODO: after setting reverseSensor(), delete the corrections in the position functions
 		master.setProfile(0);
-		master.setP(RobotMap.Constants.Drivetrain.PID.SPEED_KP);
-		master.setI(RobotMap.Constants.Drivetrain.PID.SPEED_KI);
-		master.setD(RobotMap.Constants.Drivetrain.PID.SPEED_KD);
-		master.setF(RobotMap.Constants.Drivetrain.PID.SPEED_KF);
+		master.setP(RobotMap.getInstance().DRIVE_PID_SPEED_KP.get());
+		master.setI(RobotMap.getInstance().DRIVE_PID_SPEED_KI.get());
+		master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
+		master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 		master.changeControlMode(TalonControlMode.Speed);
 		LiveWindow.addActuator("Drive Train", name + " motor", master);
 		
@@ -73,11 +73,11 @@ public class DriveMotorPair {
 	}
 	
 	private double inchesToTicks(double inches) {
-		return inches / RobotMap.Constants.Drivetrain.PID.INCHES_PER_TICK;
+		return inches / RobotMap.getInstance().DRIVE_PID_INCHES_PER_TICK.get();
 	}
 	
 	private double ticksToInches(double ticks) {
-		return ticks * RobotMap.Constants.Drivetrain.PID.INCHES_PER_TICK;
+		return ticks * RobotMap.getInstance().DRIVE_PID_INCHES_PER_TICK.get();
 	}
 	
 	public void diagnose() {

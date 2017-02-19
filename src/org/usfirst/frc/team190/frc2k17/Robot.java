@@ -70,9 +70,9 @@ public class Robot extends IterativeRobot {
         //SmartDashboard.putData("Auto mode", chooser);
 		
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(RobotMap.Constants.CAMERA_RESOLUTION_X,
-							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
-		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
+		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
+							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
+		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
     }
 	
 	/**

@@ -26,9 +26,9 @@ public class Shooter extends Subsystem {
 	 */
 	public Shooter() {
 		
-		flywheelMotor1 = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FLYWHEEL1);
-		flywheelMotor2 = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FLYWHEEL2);
-		feedMotor = new CANTalon(RobotMap.CAN.SHOOTER_MOTOR_FEED);
+		flywheelMotor1 = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FLYWHEEL1.get());
+		flywheelMotor2 = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FLYWHEEL2.get());
+		feedMotor = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FEED.get());
 		
 		flywheelMotor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		flywheelMotor1.configEncoderCodesPerRev(256);
