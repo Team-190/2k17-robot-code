@@ -63,6 +63,7 @@ public class Drivetrain extends Subsystem {
 	 * @param angle the angle to turn in degrees
 	 */
 	public void enableTurningControl(double angle) {
+		SmartDashboard.putNumber("Degrees to turn", angle);
 		turningController.enable(angle);
 	}
 	

@@ -40,9 +40,8 @@ public class TurningController implements DriveController {
 	 * @return true if the loop is on target
 	 */
 	public boolean isOnTarget() {
-//		return turningPID.onTarget();
 		return (turningPID.onTarget() && onTargetSince != null && Duration.between(onTargetSince, Instant.now())
-				.compareTo(Duration.ofMillis(2500)) > 0);
+				.compareTo(Duration.ofMillis(500)) > 0);
 	}
 	
 	/**
