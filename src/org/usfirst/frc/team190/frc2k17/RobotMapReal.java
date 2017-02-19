@@ -52,7 +52,7 @@ public class RobotMapReal extends RobotMap{
 		DRIVE_LEFT_ENC_INVERTED.set(true);
 		DRIVE_RIGHT_ENC_INVERTED.set(false);
 		DRIVE_TICKS_PER_REV.set(4096);
-		DRIVE_FEEDBACK_DEV.set(FeedbackDevice.CtreMagEncoder_Relative);
+		DRIVE_FEEDBACK_DEV.set(FeedbackDevice.QuadEncoder);
 		OI_INVERT_DRIVER_JOSTICK_1.set(true);
 		OI_INVERT_DRIVER_JOSTICK_2.set(true);
 		CAMERA_RESOLUTION_X.set(320);
