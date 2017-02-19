@@ -26,7 +26,6 @@ public abstract class RobotMap {
 	CAN_CLIMBER_MOTOR,
 	CAN_PCM,
 	DIO_PEG_LIMIT_SWITCH,
-	DIO_GEAR_PLACER_FULLY_EXTENDED,
 	DRIVE_TICKS_PER_REV,
 	CAMERA_RESOLUTION_X,
 	CAMERA_RESOLUTION_Y,
@@ -55,7 +54,9 @@ public abstract class RobotMap {
 	DRIVE_TO_PEG_OUTPUT_TOLERANCE,
 	DRIVE_TO_PEG_MAX_SPEED,
 	TURN_TO_PEG_OUTPUT_TOLERANCE,
-	GEAR_PLACER_SET_TIMEOUT;
+	GEAR_PLACER_SET_TIMEOUT,
+	GEAR_PRESENT_DRIVE_BACK_TIME,
+	GEAR_PRESENT_KICK_TIMEOUT;
 	
 	public final Key<Long>
 	DRIVE_PID_TURN_WAIT;
@@ -93,7 +94,6 @@ public abstract class RobotMap {
 		CAN_CLIMBER_MOTOR = new Key<Integer>();
 		CAN_PCM = new Key<Integer>();
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>();
-		DIO_GEAR_PLACER_FULLY_EXTENDED = new Key<Integer>();
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>();
 		NETWORKTABLE_KANGAROO_VOICE_LOG = new Key<String>();
 		DRIVE_PID_TURN_KP = new Key<Double>();
@@ -131,8 +131,10 @@ public abstract class RobotMap {
 		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>();
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>();
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>();
+		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>();
+		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>();
 	}
-	
+
 	public static void init(Class<RobotMap> type) {
 		try {
 			instance = type.newInstance();
@@ -172,5 +174,4 @@ public abstract class RobotMap {
 		}
 		
 	}
-
 }

@@ -26,7 +26,6 @@ public abstract class RobotMapKitBot extends RobotMap{
 		CAN_CLIMBER_MOTOR.set(10);
 		CAN_PCM.set(20);
 		DIO_PEG_LIMIT_SWITCH.set(0);
-		DIO_GEAR_PLACER_FULLY_EXTENDED.set(1);
 		NETWORKTABLE_KANGAROO_TABLE_NAME.set("kangaroo");
 		NETWORKTABLE_KANGAROO_VOICE_LOG.set("voicelog");
 		DRIVE_PID_TURN_KP.set(0.015);
@@ -40,20 +39,20 @@ public abstract class RobotMapKitBot extends RobotMap{
 		DRIVE_PID_DISTANCE_MAX.set(1.0);
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT.set(4.0);
 		DRIVE_PID_DISTANCE_TOLERANCE.set(0.5);
-		DRIVE_PID_SPEED_KP.set(0.1);
+		DRIVE_PID_SPEED_KP.set(0.111);
 		DRIVE_PID_SPEED_KI.set(0.0);
-		DRIVE_PID_SPEED_KD.set(1.25);
-		DRIVE_PID_SPEED_KF.set(0.37463378906249994);
+		DRIVE_PID_SPEED_KD.set(0.5);
+		DRIVE_PID_SPEED_KF.set(0.3188372672);
 		DRIVE_PID_INCHES_PER_TICK.set(0.003);
 		DRIVE_PID_TURN_WAIT.set(100L); // milliseconds
-		DRIVE_MAX_SPEED_LOW.set(337.0);
+		DRIVE_MAX_SPEED_LOW.set(450.0);
 		DRIVE_MAX_SPEED_HIGH.set(600.0);
-		DRIVE_LEFT_INVERTED.set(false);
-		DRIVE_RIGHT_INVERTED.set(true);
+		DRIVE_LEFT_INVERTED.set(true);
+		DRIVE_RIGHT_INVERTED.set(false);
 		DRIVE_INVERT_LEFT_ENC.set(true);
 		DRIVE_INVERT_RIGHT_ENC.set(false);
-		DRIVE_TICKS_PER_REV.set(1024*(36/12)); //explicity show math to show gear ratio
-		DRIVE_FEEDBACK_DEV.set(FeedbackDevice.QuadEncoder);
+		DRIVE_TICKS_PER_REV.set(4096);
+		DRIVE_FEEDBACK_DEV.set(FeedbackDevice.CtreMagEncoder_Relative);
 		OI_INVERT_DRIVER_JOSTICK_1.set(true);
 		OI_INVERT_DRIVER_JOSTICK_2.set(true);
 		CAMERA_RESOLUTION_X.set(320);
@@ -63,7 +62,9 @@ public abstract class RobotMapKitBot extends RobotMap{
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE.set(0.1);
 		DRIVE_TO_PEG_MAX_SPEED.set(0.5);
 		TURN_TO_PEG_OUTPUT_TOLERANCE.set(3.0);
-		GEAR_PLACER_SET_TIMEOUT.set(1.0);
+		GEAR_PLACER_SET_TIMEOUT.set(5.0);
+		GEAR_PRESENT_DRIVE_BACK_TIME.set(0.3);
+		GEAR_PRESENT_KICK_TIMEOUT.set(0.1);
 	}
 	
 }
