@@ -76,10 +76,10 @@ public final class RobotMapKitBot {
 				DISTANCE_I_ERROR_LIMIT = 4.0,
 				DISTANCE_TOLERANCE = 0.5,
 				
-				SPEED_KP = 0.1,
+				SPEED_KP = 0.111,
 				SPEED_KI = 0.0,
-				SPEED_KD = 1.25,
-				SPEED_KF = 0.37463378906249994,
+				SPEED_KD = 0.5,
+				SPEED_KF = 0.3188372672,
 				
 				INCHES_PER_TICK = 0.003;
 				
@@ -89,19 +89,19 @@ public final class RobotMapKitBot {
 			}
 			
 			public static final double
-			MAX_SPEED_LOW = 337,
+			MAX_SPEED_LOW = 450,
 			MAX_SPEED_HIGH = 600;
 			
 			public static final boolean
-			DRIVE_LEFT_INVERTED = false,
-			DRIVE_RIGHT_INVERTED = true;
+			DRIVE_LEFT_INVERTED = true,
+			DRIVE_RIGHT_INVERTED = false;
 
 			public static final boolean
 			INVERT_LEFT_ENC = true,
 			INVERT_RIGHT_ENC = false;
 			
-			public static int TICKS_PER_REV = 1024*(36/12);//explicity show math to show gear ratio
-			public static FeedbackDevice DRIVE_FEEDBACK_DEV = FeedbackDevice.QuadEncoder;
+			public static int TICKS_PER_REV = 4096;
+			public static FeedbackDevice DRIVE_FEEDBACK_DEV = FeedbackDevice.CtreMagEncoder_Relative;
 		}
 		
 		public static final class OI {

@@ -143,7 +143,7 @@ public class Drivetrain extends Subsystem {
 		srxdrive.outputEncoderValues();
 	}
 	public void initDefaultCommand() {
-		setDefaultCommand(new TankDriveCommand());
+		setDefaultCommand(new ArcadeDriveCommand());
 	}
 }
 
