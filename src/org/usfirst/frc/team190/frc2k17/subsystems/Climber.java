@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.ctre.CANTalon;
@@ -14,6 +15,7 @@ public class Climber extends Subsystem {
 	
 	public Climber(){
 		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
+		diagnose();
 	}
 	
 	
@@ -31,7 +33,17 @@ public class Climber extends Subsystem {
     	climberMotor.set(-1.0);
     }
     
-    // TODO: Implement diagnose for climber
+    public void diagnose() {
+		if (climberMotor.getStickyFaultOverTemp() != 0) {
+			Logger.defaultLogger.warn("Collector motor has over-temperature sticky bit set.");
+		}
+		if (climberMotor.getStickyFaultUnderVoltage() != 0) {
+			Logger.defaultLogger.warn("Collector motor has under-voltage sticky bit set.");
+		}
+		if (!climberMotor.isAlive()) {
+			Logger.defaultLogger.warn("Collector motor is stopped by motor safety.");
+		}
+    }
     
 }
 
