@@ -37,7 +37,7 @@ public class TurnTowardPegCommand extends Command {
      * - the robot has turned to the angle to the peg
      */
     protected boolean isFinished() {
-    	return !wasPegVisible ;//|| Robot.drivetrain.isTurningControlOnTarget();
+    	return !wasPegVisible || Robot.drivetrain.isTurningControlOnTarget();
     }
 
     protected void end() {

@@ -11,7 +11,7 @@ public class GearCameraLightOnCommand extends Command {
 
     public GearCameraLightOnCommand() {
         requires(Robot.gearCamera);
-        setTimeout(1);
+        setTimeout(0.4);
     }
 
     // Called just before this Command runs the first time

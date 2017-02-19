@@ -94,8 +94,6 @@ public class GearCamera extends Subsystem {
 	}
 
 	public boolean isPegVisible() {
-		// TODO: we really don't want to call this 3 times, but this will work
-		// for a test
 		getCameraData();
 		return pegIsVisible;
 	}
