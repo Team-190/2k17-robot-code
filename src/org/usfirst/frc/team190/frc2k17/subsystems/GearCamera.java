@@ -25,7 +25,7 @@ public class GearCamera extends Subsystem {
     private boolean pegIsVisible;
     
     public GearCamera() {
-    	spike = new Relay(RobotMap.PWM.CAMERA_LIGHT);
+    	spike = new Relay(RobotMap.getInstance().PWM_CAMERA_LIGHT.get());
     	grip = NetworkTable.getTable("/GRIP/frontCameraReport");	
     }
     
@@ -66,12 +66,12 @@ public class GearCamera extends Subsystem {
     	double[] heightArray = grip.getNumberArray("height", new double[0]);
     	
     	if (centerXArray.length >= 2) {
-    		double cameraHalfWidth = (RobotMap.Constants.CAMERA_RESOLUTION_X / 2);
+    		double cameraHalfWidth = (RobotMap.getInstance().CAMERA_RESOLUTION_X.get() / 2);
     		double centerXAvg = (centerXArray[0] + centerXArray[1]) / 2.0;
     		double distanceFromCenter = centerXAvg - cameraHalfWidth;
     		
     		//Math.toDegrees(Math.atan((distanceFromCenter / cameraHalfWidth) * Math.tan(Math.toRadians(RobotMap.Constants.CAMERA_HFOV / 2))));
-    		degreesToTurn = (centerXAvg / RobotMap.Constants.CAMERA_RESOLUTION_X * RobotMap.Constants.CAMERA_HFOV) - (RobotMap.Constants.CAMERA_HFOV / 2);
+    		degreesToTurn = (centerXAvg / RobotMap.getInstance().CAMERA_RESOLUTION_X.get() * RobotMap.getInstance().CAMERA_HFOV.get()) - (RobotMap.getInstance().CAMERA_HFOV.get() / 2);
     		
     		double h = heightArray[0];
     		inchesToDrive = 12.0 * (-0.0001599959* h*h*h + 0.0225971104 * h*h - 1.116489553 * h + 22.7077288336) - 12;
