@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -43,7 +44,7 @@ public class Shifters extends Subsystem {
 	}
 	
 	public boolean isInHighGear() {
-		if (shifter.get()) {
+		if (!Robot.isKitBot() && shifter.get()) {
 			return true;
 		} else {
 			return false;

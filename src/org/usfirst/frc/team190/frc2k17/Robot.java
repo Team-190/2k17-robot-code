@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	
 	public static Preferences prefs;
 	
 	public static Drivetrain drivetrain;
@@ -51,7 +51,11 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
 		// RobotMap must be initialized before almost anything else.
-    	RobotMap.init(RobotMapKitBot.class);
+    	if(isKitBot()) {
+    		RobotMap.init(RobotMapKitBot.class);
+    	} else {
+    		RobotMap.init(RobotMapReal.class);
+    	}
     	Logger.init();
     	Logger.resetTimestamp();
     	// prefs must not be initialized statically. Do not move from robotInit().
@@ -152,5 +156,12 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    /**
+     * @return whether the robot is the kit bot
+     */
+    public static boolean isKitBot() {
+    	return true;
     }
 }
