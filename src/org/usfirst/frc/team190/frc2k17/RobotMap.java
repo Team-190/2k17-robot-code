@@ -37,20 +37,23 @@ public class RobotMap {
 	
 	public final Key<Double>
 		DRIVE_PID_TURN_KP = new Key<Double>(0.015),
-		DRIVE_PID_TURN_KI = new Key<Double>(0.005), //0.003),
-		DRIVE_PID_TURN_KD = new Key<Double>(0.04),
+		DRIVE_PID_TURN_KI = new Key<Double>(0.005),
+		DRIVE_PID_TURN_KD = new Key<Double>(0.012),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
-		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.5),
+		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
+		
 		DRIVE_PID_DISTANCE_KP = new Key<Double>(0.023),
 		DRIVE_PID_DISTANCE_KI = new Key<Double>(0.002),
 		DRIVE_PID_DISTANCE_KD = new Key<Double>(0.02),
 		DRIVE_PID_DISTANCE_MAX = new Key<Double>(1.0),
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
+		
 		DRIVE_PID_SPEED_KP = new Key<Double>(0.111),
 		DRIVE_PID_SPEED_KI = new Key<Double>(0.0),
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.5),
 		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672),
+		
 		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 0.004), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
@@ -69,8 +72,8 @@ public class RobotMap {
 	public final Key<Boolean>
 		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>(false),
 		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true),
-		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(false),
-		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(true),
+		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(true),
+		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(false),
 		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>(true),
 		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>(true);
 	

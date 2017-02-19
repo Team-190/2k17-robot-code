@@ -24,14 +24,14 @@ public class DriveToPegCommand extends Command {
      */
     protected void initialize() {
     	forwardDist = Robot.gearCamera.getDistanceToPeg();
-    	Robot.drivetrain.enableDistanceControl(forwardDist - 12);
+    	Robot.drivetrain.enableDistanceControl(forwardDist - 3);
 
     	SmartDashboard.putNumber("Inches to drive", forwardDist);
     }
 
     protected void execute() {
     	double angle = Robot.gearCamera.getAngleToPeg();
-    	Robot.drivetrain.controlDistance();
+    	Robot.drivetrain.controlDistance(); // TODO: Put constant in robotmap
     }
     
     protected boolean isFinished() {

@@ -107,7 +107,7 @@ public class SRXDrive {
 		 */
 		public double getEncoderPosition() {
 			double pos = ticksToInches(master.getEncPosition());
-			return encoderInverted ? pos : -pos;
+			return encoderInverted ? -pos : pos;
 		}
 		
 		/**
@@ -262,6 +262,8 @@ public class SRXDrive {
 	public void outputEncoderValues() {
 		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", left.getSpeed());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", right.getSpeed());
+		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
+		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
 		SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
 		SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
 	}
