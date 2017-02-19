@@ -17,11 +17,13 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
@@ -71,7 +73,7 @@ public class OI {
 
 	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Trigger povUpTrigger, povDownTrigger;
+	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
@@ -92,6 +94,8 @@ public class OI {
 		povUpTrigger = new PovUpTrigger();
 		povDownTrigger = new PovDownTrigger();
 		
+		pegPresentTrigger = new PegPresentTrigger();
+		
 		aButton = new JoystickButton(joystick2, 1);
 		bButton = new JoystickButton(joystick2, 2);
 		xButton = new JoystickButton(joystick2, 3);
@@ -106,6 +110,7 @@ public class OI {
 		backButton.whenPressed(new GearCameraLightToggleCommand());
 		povUpTrigger.whileActive(new ClimberClimbCommand());
 		povDownTrigger.whileActive(new ClimberLowerCommand());
+		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		yButton.toggleWhenPressed(new ShooterSpinCommand());
 		aButton.whileHeld(new ShooterFeedCommand());
 		xButton.whenPressed(new KickGearCommand());
