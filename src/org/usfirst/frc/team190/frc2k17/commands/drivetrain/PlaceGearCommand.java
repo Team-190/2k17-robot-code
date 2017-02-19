@@ -14,6 +14,7 @@ public class PlaceGearCommand extends CommandGroup {
     public PlaceGearCommand() {
     	addSequential(new GearCameraLightOnCommand());
     	addSequential(new TurnTowardPegCommand());
+    	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());
     	addSequential(new GearCameraLightOffCommand());
     } 

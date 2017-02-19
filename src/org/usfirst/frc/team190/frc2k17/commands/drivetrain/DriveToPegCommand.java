@@ -32,7 +32,8 @@ public class DriveToPegCommand extends Command {
     protected void execute() {
     	double angle = Robot.gearCamera.getAngleToPeg();
     	//TODO: arbitrary proportional constant below for steering while driving
-    	Robot.drivetrain.controlDistance(angle * -0.01);
+    	//Robot.drivetrain.controlDistance(angle * -0.01);
+    	Robot.drivetrain.controlDistance();
     }
     
     protected boolean isFinished() {

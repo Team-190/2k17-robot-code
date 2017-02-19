@@ -29,7 +29,7 @@ public class RobotMapKitBot extends RobotMap{
 		NETWORKTABLE_KANGAROO_TABLE_NAME.set("kangaroo");
 		NETWORKTABLE_KANGAROO_VOICE_LOG.set("voicelog");
 		DRIVE_PID_TURN_KP.set(0.015);
-		DRIVE_PID_TURN_KI.set(0.002);
+		DRIVE_PID_TURN_KI.set(0.003);
 		DRIVE_PID_TURN_KD.set(0.04);
 		DRIVE_PID_TURN_I_ERROR_LIMIT.set(5.0);
 		DRIVE_PID_TURN_TOLERANCE.set(0.5);
