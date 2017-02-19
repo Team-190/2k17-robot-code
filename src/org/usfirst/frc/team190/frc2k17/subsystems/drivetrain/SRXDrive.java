@@ -18,12 +18,12 @@ public class SRXDrive {
 		private CANTalon master;
 		private CANTalon slave;
 		private String name;
-		private boolean inverted;
+		private boolean encoderInverted;
 		private boolean inSpeedControlMode;
 
-		public DriveMotorPair(String name, int masterID, int slaveID, boolean inverted) {
+		public DriveMotorPair(String name, int masterID, int slaveID, boolean motorInverted, boolean encoderInverted) {
 			this.name = name;
-			this.inverted = inverted;
+			this.encoderInverted = encoderInverted;
 			
 			master = new CANTalon(masterID);
 			
@@ -42,8 +42,8 @@ public class SRXDrive {
 			master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
 			master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 			
-			master.reverseOutput(!inverted);
-			master.reverseSensor(inverted);
+			master.reverseOutput(motorInverted);
+			master.reverseSensor(encoderInverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
 			slave = new CANTalon(slaveID);
@@ -107,7 +107,7 @@ public class SRXDrive {
 		 */
 		public double getEncoderPosition() {
 			double pos = ticksToInches(master.getEncPosition());
-			return inverted ? pos : -pos;
+			return encoderInverted ? pos : -pos;
 		}
 		
 		/**
@@ -169,12 +169,14 @@ public class SRXDrive {
 	private DriveMotorPair left = new DriveMotorPair("Left",
 												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_FRONT.get(),
 												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_REAR.get(),
-												RobotMap.getInstance().DRIVE_LEFT_INVERTED.get());
+												RobotMap.getInstance().DRIVE_LEFT_MOTOR_INVERTED.get(),
+												RobotMap.getInstance().DRIVE_LEFT_ENC_INVERTED.get());
 	
 	private DriveMotorPair right= new DriveMotorPair("Right",
 												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_FRONT.get(),
 												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_REAR.get(),
-												RobotMap.getInstance().DRIVE_RIGHT_INVERTED.get());
+												RobotMap.getInstance().DRIVE_RIGHT_MOTOR_INVERTED.get(),
+												RobotMap.getInstance().DRIVE_RIGHT_ENC_INVERTED.get());
 	
 	/**
 	 * Constructor

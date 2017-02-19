@@ -62,10 +62,10 @@ public abstract class RobotMap {
 	DRIVE_PID_TURN_WAIT;
 	
 	public final Key<Boolean>
-	DRIVE_LEFT_INVERTED,
-	DRIVE_RIGHT_INVERTED,
-	DRIVE_INVERT_LEFT_ENC,
-	DRIVE_INVERT_RIGHT_ENC,
+	DRIVE_LEFT_MOTOR_INVERTED,
+	DRIVE_RIGHT_MOTOR_INVERTED,
+	DRIVE_LEFT_ENC_INVERTED,
+	DRIVE_RIGHT_ENC_INVERTED,
 	OI_INVERT_DRIVER_JOSTICK_1,
 	OI_INVERT_DRIVER_JOSTICK_2;
 	
@@ -115,10 +115,10 @@ public abstract class RobotMap {
 		DRIVE_PID_TURN_WAIT = new Key<Long>();
 		DRIVE_MAX_SPEED_LOW = new Key<Double>();
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>();
-		DRIVE_LEFT_INVERTED = new Key<Boolean>();
-		DRIVE_RIGHT_INVERTED = new Key<Boolean>();
-		DRIVE_INVERT_LEFT_ENC = new Key<Boolean>();
-		DRIVE_INVERT_RIGHT_ENC = new Key<Boolean>();
+		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>();
+		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>();
+		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>();
+		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>();
 		DRIVE_TICKS_PER_REV = new Key<Integer>();
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>();
 		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>();

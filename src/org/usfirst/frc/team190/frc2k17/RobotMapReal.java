@@ -47,10 +47,10 @@ public class RobotMapReal extends RobotMap{
 		DRIVE_PID_TURN_WAIT.set(100L); // milliseconds
 		DRIVE_MAX_SPEED_LOW.set(450.0);
 		DRIVE_MAX_SPEED_HIGH.set(600.0);
-		DRIVE_LEFT_INVERTED.set(true);
-		DRIVE_RIGHT_INVERTED.set(false);
-		DRIVE_INVERT_LEFT_ENC.set(true);
-		DRIVE_INVERT_RIGHT_ENC.set(false);
+		DRIVE_LEFT_MOTOR_INVERTED.set(true);
+		DRIVE_RIGHT_MOTOR_INVERTED.set(false);
+		DRIVE_LEFT_ENC_INVERTED.set(true);
+		DRIVE_RIGHT_ENC_INVERTED.set(false);
 		DRIVE_TICKS_PER_REV.set(4096);
 		DRIVE_FEEDBACK_DEV.set(FeedbackDevice.CtreMagEncoder_Relative);
 		OI_INVERT_DRIVER_JOSTICK_1.set(true);
