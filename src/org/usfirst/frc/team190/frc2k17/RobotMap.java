@@ -135,11 +135,11 @@ public abstract class RobotMap {
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>();
 	}
 
-	public static void init(Class<RobotMap> type) {
+	public static void init(Class<? extends RobotMap> type) {
 		try {
 			instance = type.newInstance();
 		} catch (InstantiationException e) {
-			Logger.defaultLogger.critical("Failed to instantiate RobotMap", e);
+			Logger.defaultLogger.critical("Failed to instantiate RobotMap", e.getCause());
 			assert false;
 		} catch (IllegalAccessException e) {
 			Logger.defaultLogger.critical("Failed to instantiate RobotMap", e);
@@ -149,7 +149,8 @@ public abstract class RobotMap {
 	
 	public static RobotMap getInstance() {
 		if(instance == null) {
-			// TODO
+			Logger.defaultLogger.critical("Attempted to access RobotMap before initializing it.");
+			assert false;
 		}
 		return instance;
 	}

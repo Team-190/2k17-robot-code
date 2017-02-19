@@ -8,7 +8,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public abstract class RobotMapKitBot extends RobotMap{
+public class RobotMapKitBot extends RobotMap{
 	
 	public RobotMapKitBot() {
 		PWM_CAMERA_LIGHT.set(0);

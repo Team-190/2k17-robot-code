@@ -50,6 +50,9 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
+		// RobotMap must be initialized before almost anything else.
+    	RobotMap.init(RobotMapKitBot.class);
+    	Logger.init();
     	Logger.resetTimestamp();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
