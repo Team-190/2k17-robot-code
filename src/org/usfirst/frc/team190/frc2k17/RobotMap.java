@@ -8,12 +8,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  */
 public final class RobotMap {
 	
-	private static boolean IS_KIT_BOT;
-	
-	{
-		// TODO calculate IS_KIT_BOT based on something
-		IS_KIT_BOT = true;
-	}
+	private static boolean IS_KIT_BOT = true;
 	
 	private RobotMap(){
 		// private constructor to prevent this class from being instantiated

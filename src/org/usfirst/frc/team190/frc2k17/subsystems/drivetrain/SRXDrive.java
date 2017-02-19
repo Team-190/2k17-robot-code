@@ -22,6 +22,9 @@ public class SRXDrive {
 		private boolean inSpeedControlMode;
 
 		public DriveMotorPair(String name, int masterID, int slaveID, boolean inverted) {
+			this.name = name;
+			this.inverted = inverted;
+			
 			master = new CANTalon(masterID);
 			
 			master.setFeedbackDevice(RobotMap.Constants.Drivetrain.DRIVE_FEEDBACK_DEV);
@@ -33,24 +36,19 @@ public class SRXDrive {
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
 			master.configPeakOutputVoltage(+12.0f, -12.0f);
-			master.setInverted(inverted);
-			//TODO: set the reverseSensor() on the encoders. I believe it's opposite the inverted flag.
-			//TODO: after setting reverseSensor(), delete the corrections in the position functions
 			master.setProfile(0);
 			master.setP(RobotMap.Constants.Drivetrain.PID.SPEED_KP);
 			master.setI(RobotMap.Constants.Drivetrain.PID.SPEED_KI);
 			master.setD(RobotMap.Constants.Drivetrain.PID.SPEED_KD);
 			master.setF(RobotMap.Constants.Drivetrain.PID.SPEED_KF);
-			master.changeControlMode(TalonControlMode.Speed);
 			
+			master.reverseOutput(!inverted);
+			master.reverseSensor(inverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
 			slave = new CANTalon(slaveID);
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
-			
-			this.name = name;
-			this.inverted = inverted;
 
 			setControlMode(TalonControlMode.Speed);
 		}
@@ -64,6 +62,8 @@ public class SRXDrive {
 				double maxSpeed = Robot.shifters.isInHighGear() ? RobotMap.Constants.Drivetrain.MAX_SPEED_HIGH : RobotMap.Constants.Drivetrain.MAX_SPEED_LOW;
 				speed *= maxSpeed;
 			}
+			
+			SmartDashboard.putNumber(name + " setpoint", speed);
 			
 			// TODO: Implement switching between speed and percentvbus mode somewhere
 			// 		 Most likely need to implement a failsafe if an encoder fails and
