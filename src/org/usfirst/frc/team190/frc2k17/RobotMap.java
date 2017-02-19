@@ -56,7 +56,8 @@ public abstract class RobotMap {
 	TURN_TO_PEG_OUTPUT_TOLERANCE,
 	GEAR_PLACER_SET_TIMEOUT,
 	GEAR_PRESENT_DRIVE_BACK_TIME,
-	GEAR_PRESENT_KICK_TIMEOUT;
+	GEAR_PRESENT_KICK_TIMEOUT,
+	JOYSTICK_DEADBAND;
 	
 	public final Key<Long>
 	DRIVE_PID_TURN_WAIT;
@@ -133,6 +134,7 @@ public abstract class RobotMap {
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>();
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>();
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>();
+		JOYSTICK_DEADBAND = new Key<Double>();
 	}
 
 	public static void init(Class<? extends RobotMap> type) {

@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PlaceGearCommand extends CommandGroup {
 
     public PlaceGearCommand() {
-    	requires(Robot.drivetrain);
-    	
     	addSequential(new GearCameraLightOnCommand());
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());

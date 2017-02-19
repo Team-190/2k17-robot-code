@@ -77,7 +77,7 @@ public class OI {
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
-		joystick0.setDeadband(0.05); // TODO: Put constant in robotmap
+		joystick0.setDeadband(RobotMap.getInstance().JOYSTICK_DEADBAND.get());
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
 		

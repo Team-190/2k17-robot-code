@@ -65,6 +65,7 @@ public class RobotMapReal extends RobotMap{
 		GEAR_PLACER_SET_TIMEOUT.set(5.0);
 		GEAR_PRESENT_DRIVE_BACK_TIME.set(0.3);
 		GEAR_PRESENT_KICK_TIMEOUT.set(0.1);
+		JOYSTICK_DEADBAND.set(0.05);
 	}
 	
 }
