@@ -37,16 +37,16 @@ public class AutoDriveToHopperCurveCommand extends Command {
     protected void initialize() {
     	Logger.defaultLogger.debug(this.getClass().getSimpleName() + " initializing.");
     	step = 0;
-		path.calculate(duration, RobotMap.Constants.Drivetrain.Curve.TIME_STEP,
-				RobotMap.Constants.Drivetrain.Curve.TRACK_WIDTH);
+		path.calculate(duration, RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get(),
+				RobotMap.getInstance().DRIVE_CURVE_TRACK_WIDTH.get());
 		double sum = 0;
 		for(int i = 0; i < path.smoothLeftVelocity.length; i++) {
-			sum += path.smoothLeftVelocity[i][1] * RobotMap.Constants.Drivetrain.Curve.TIME_STEP;
+			sum += path.smoothLeftVelocity[i][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 		}
 		Logger.defaultLogger.debug("The left side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
 		sum = 0;
 		for(int i = 0; i < path.smoothRightVelocity.length; i++) {
-			sum += path.smoothRightVelocity[i][1] * RobotMap.Constants.Drivetrain.Curve.TIME_STEP;
+			sum += path.smoothRightVelocity[i][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 		}
 		Logger.defaultLogger.debug("The right side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
     }
@@ -54,10 +54,10 @@ public class AutoDriveToHopperCurveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	assert step < path.smoothLeftVelocity.length && step < path.smoothRightVelocity.length : "Ran off the end of the curve velocities array";
-    	double leftRPM = path.smoothLeftVelocity[step][1] / RobotMap.Constants.Drivetrain.Curve.WHEEL_CIRCUMFERENCE * 60;
-    	double rightRPM = path.smoothRightVelocity[step][1] / RobotMap.Constants.Drivetrain.Curve.WHEEL_CIRCUMFERENCE * 60;
-    	double leftRatio = leftRPM / RobotMap.Constants.Drivetrain.MAX_SPEED_LOW;
-    	double rightRatio = rightRPM / RobotMap.Constants.Drivetrain.MAX_SPEED_LOW;
+    	double leftRPM = path.smoothLeftVelocity[step][1] / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
+    	double rightRPM = path.smoothRightVelocity[step][1] / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
+    	double leftRatio = leftRPM / RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
+    	double rightRatio = rightRPM / RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
 		Logger.defaultLogger.trace("Falcon output: left " + df.format(path.smoothLeftVelocity[step][1]) + " in/sec, " + df.format(leftRPM)
 				+ " RPM, " + df.format(leftRatio * 100) + " percent; right " + df.format(path.smoothRightVelocity[step][1]) + " in/sec, "
 				+ df.format(rightRPM) + " RPM, " + df.format(rightRatio * 100) + " percent.");

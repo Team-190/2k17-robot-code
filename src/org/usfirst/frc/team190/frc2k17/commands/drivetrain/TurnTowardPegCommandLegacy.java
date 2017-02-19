@@ -33,12 +33,12 @@ public class TurnTowardPegCommandLegacy extends Command {
     	if (centerXArray.length >= 2) {
     		double centerXActual = (centerXArray[0] + centerXArray[1]) / 2.0;
     		
-    		double error = (RobotMap.Constants.CAMERA_RESOLUTION_X / 2.0) - centerXActual;
+    		double error = (RobotMap.getInstance().CAMERA_RESOLUTION_X.get() / 2.0) - centerXActual;
 			double kP = SmartDashboard.getNumber("kP Turning", 0.01);
     		
     		double output = (error * kP);
     		
-    		if (output < RobotMap.Constants.TURN_TO_PEG_OUTPUT_TOLERANCE) {
+    		if (output < RobotMap.getInstance().TURN_TO_PEG_OUTPUT_TOLERANCE.get()) {
     			_finished = true;
     		}
     		

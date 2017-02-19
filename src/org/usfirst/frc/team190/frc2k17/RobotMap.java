@@ -1,4 +1,6 @@
 package org.usfirst.frc.team190.frc2k17;
+import java.util.HashMap;
+
 import com.ctre.CANTalon.FeedbackDevice;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -6,135 +8,181 @@ import com.ctre.CANTalon.FeedbackDevice;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public final class RobotMap {
+public abstract class RobotMap {
 	
-	private static boolean IS_KIT_BOT;
+	public final Key<Integer>
+	PWM_CAMERA_LIGHT,
+	PCM_SHIFTER,
+	PCM_GEAR_PUSHER,
+	PCM_BOOPERS,
+	CAN_DRIVE_MOTOR_LEFT_FRONT,
+	CAN_DRIVE_MOTOR_LEFT_REAR,
+	CAN_DRIVE_MOTOR_RIGHT_FRONT,
+	CAN_DRIVE_MOTOR_RIGHT_REAR,
+	CAN_SHOOTER_MOTOR_FLYWHEEL1,
+	CAN_SHOOTER_MOTOR_FLYWHEEL2,
+	CAN_SHOOTER_MOTOR_FEED,
+	CAN_COLLECTOR_MOTOR,
+	CAN_CLIMBER_MOTOR,
+	CAN_PCM,
+	DIO_PEG_LIMIT_SWITCH,
+	DRIVE_TICKS_PER_REV,
+	CAMERA_RESOLUTION_X,
+	CAMERA_RESOLUTION_Y,
+	CAMERA_EXPOSURE;
 	
-	{
-		// TODO calculate IS_KIT_BOT based on something
-		IS_KIT_BOT = true;
+	public final Key<Double>
+	DRIVE_PID_TURN_KP,
+	DRIVE_PID_TURN_KI,
+	DRIVE_PID_TURN_KD,
+	DRIVE_PID_TURN_I_ERROR_LIMIT,
+	DRIVE_PID_TURN_TOLERANCE,
+	DRIVE_PID_DISTANCE_KP,
+	DRIVE_PID_DISTANCE_KI,
+	DRIVE_PID_DISTANCE_KD,
+	DRIVE_PID_DISTANCE_MAX,
+	DRIVE_PID_DISTANCE_I_ERROR_LIMIT,
+	DRIVE_PID_DISTANCE_TOLERANCE,
+	DRIVE_PID_SPEED_KP,
+	DRIVE_PID_SPEED_KI,
+	DRIVE_PID_SPEED_KD,
+	DRIVE_PID_SPEED_KF,
+	DRIVE_PID_INCHES_PER_TICK,
+	DRIVE_MAX_SPEED_LOW,
+	DRIVE_MAX_SPEED_HIGH,
+	DRIVE_CURVE_TIME_STEP,
+	DRIVE_CURVE_TRACK_WIDTH,
+	DRIVE_CURVE_WHEEL_DIAMETER,
+	DRIVE_CURVE_WHEEL_CIRCUMFERENCE,
+	CAMERA_HFOV,
+	DRIVE_TO_PEG_OUTPUT_TOLERANCE,
+	DRIVE_TO_PEG_MAX_SPEED,
+	TURN_TO_PEG_OUTPUT_TOLERANCE,
+	GEAR_PLACER_SET_TIMEOUT,
+	GEAR_PRESENT_DRIVE_BACK_TIME,
+	GEAR_PRESENT_KICK_TIMEOUT,
+	JOYSTICK_DEADBAND;
+	
+	public final Key<Long>
+	DRIVE_PID_TURN_WAIT;
+	
+	public final Key<Boolean>
+	DRIVE_LEFT_MOTOR_INVERTED,
+	DRIVE_RIGHT_MOTOR_INVERTED,
+	DRIVE_LEFT_ENC_INVERTED,
+	DRIVE_RIGHT_ENC_INVERTED,
+	OI_INVERT_DRIVER_JOSTICK_1,
+	OI_INVERT_DRIVER_JOSTICK_2;
+	
+	public final Key<String>
+	NETWORKTABLE_KANGAROO_TABLE_NAME,
+	NETWORKTABLE_KANGAROO_VOICE_LOG;
+	
+	public final Key<FeedbackDevice> 
+	DRIVE_FEEDBACK_DEV;
+	
+	private static RobotMap instance;
+	
+	public RobotMap() {
+		PWM_CAMERA_LIGHT = new Key<Integer>();
+		PCM_SHIFTER = new Key<Integer>();
+		PCM_GEAR_PUSHER = new Key<Integer>();
+		PCM_BOOPERS = new Key<Integer>();
+		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>();
+		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>();
+		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>();
+		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>();
+		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>();
+		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>();
+		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>();
+		CAN_COLLECTOR_MOTOR = new Key<Integer>();
+		CAN_CLIMBER_MOTOR = new Key<Integer>();
+		CAN_PCM = new Key<Integer>();
+		DIO_PEG_LIMIT_SWITCH = new Key<Integer>();
+		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>();
+		NETWORKTABLE_KANGAROO_VOICE_LOG = new Key<String>();
+		DRIVE_PID_TURN_KP = new Key<Double>();
+		DRIVE_PID_TURN_KI = new Key<Double>();
+		DRIVE_PID_TURN_KD = new Key<Double>();
+		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>();
+		DRIVE_PID_TURN_TOLERANCE = new Key<Double>();
+		DRIVE_PID_DISTANCE_KP = new Key<Double>();
+		DRIVE_PID_DISTANCE_KI = new Key<Double>();
+		DRIVE_PID_DISTANCE_KD = new Key<Double>();
+		DRIVE_PID_DISTANCE_MAX = new Key<Double>();
+		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>();
+		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>();
+		DRIVE_PID_SPEED_KP = new Key<Double>();
+		DRIVE_PID_SPEED_KI = new Key<Double>();
+		DRIVE_PID_SPEED_KD = new Key<Double>();
+		DRIVE_PID_SPEED_KF = new Key<Double>();
+		DRIVE_PID_INCHES_PER_TICK = new Key<Double>();
+		DRIVE_PID_TURN_WAIT = new Key<Long>();
+		DRIVE_MAX_SPEED_LOW = new Key<Double>();
+		DRIVE_MAX_SPEED_HIGH = new Key<Double>();
+		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>();
+		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>();
+		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>();
+		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>();
+		DRIVE_TICKS_PER_REV = new Key<Integer>();
+		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>();
+		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>();
+		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>();
+		CAMERA_RESOLUTION_X = new Key<Integer>();
+		CAMERA_RESOLUTION_Y = new Key<Integer>();
+		CAMERA_EXPOSURE = new Key<Integer>();
+		CAMERA_HFOV = new Key<Double>();
+		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>();
+		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>();
+		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>();
+		GEAR_PLACER_SET_TIMEOUT = new Key<Double>();
+		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>();
+		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>();
+		JOYSTICK_DEADBAND = new Key<Double>();
+		DRIVE_CURVE_TIME_STEP = new Key<Double>();
+		DRIVE_CURVE_TRACK_WIDTH = new Key<Double>();
+		DRIVE_CURVE_WHEEL_DIAMETER = new Key<Double>();
+		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>();
 	}
-	
-	private RobotMap(){
-		// private constructor to prevent this class from being instantiated
-	}
-	
-	public static final class PWM {
-		public static final int
-		CAMERA_LIGHT = IS_KIT_BOT ? RobotMapKitBot.PWM.CAMERA_LIGHT : RobotMapReal.PWM.CAMERA_LIGHT;
-	}
-	
-	public static final class PCM {
-		public static final int
-		SHIFTER = IS_KIT_BOT ? RobotMapKitBot.PCM.SHIFTER : RobotMapReal.PCM.SHIFTER,
-		
-		GEAR_PUSHER = IS_KIT_BOT ? RobotMapKitBot.PCM.GEAR_PUSHER : RobotMapReal.PCM.GEAR_PUSHER,
-		
-		BOOPERS = IS_KIT_BOT ? RobotMapKitBot.PCM.BOOPERS : RobotMapReal.PCM.BOOPERS;
-	}
-	
-	public static final class CAN {
-		public static final int
-		DRIVE_MOTOR_LEFT_FRONT = IS_KIT_BOT ? RobotMapKitBot.CAN.DRIVE_MOTOR_LEFT_FRONT : RobotMapReal.CAN.DRIVE_MOTOR_LEFT_FRONT,
-		DRIVE_MOTOR_LEFT_REAR = IS_KIT_BOT ? RobotMapKitBot.CAN.DRIVE_MOTOR_LEFT_REAR : RobotMapReal.CAN.DRIVE_MOTOR_LEFT_REAR,
-		DRIVE_MOTOR_RIGHT_FRONT = IS_KIT_BOT ? RobotMapKitBot.CAN.DRIVE_MOTOR_RIGHT_FRONT : RobotMapReal.CAN.DRIVE_MOTOR_RIGHT_FRONT,
-		DRIVE_MOTOR_RIGHT_REAR = IS_KIT_BOT ? RobotMapKitBot.CAN.DRIVE_MOTOR_RIGHT_REAR : RobotMapReal.CAN.DRIVE_MOTOR_RIGHT_REAR,
-		
-		SHOOTER_MOTOR_FLYWHEEL1 = IS_KIT_BOT ? RobotMapKitBot.CAN.SHOOTER_MOTOR_FLYWHEEL1 : RobotMapReal.CAN.SHOOTER_MOTOR_FLYWHEEL1,
-		SHOOTER_MOTOR_FLYWHEEL2 = IS_KIT_BOT ? RobotMapKitBot.CAN.SHOOTER_MOTOR_FLYWHEEL2 : RobotMapReal.CAN.SHOOTER_MOTOR_FLYWHEEL2,
-		SHOOTER_MOTOR_FEED = IS_KIT_BOT ? RobotMapKitBot.CAN.SHOOTER_MOTOR_FEED : RobotMapReal.CAN.SHOOTER_MOTOR_FEED,
-		
-		COLLECTOR_MOTOR = IS_KIT_BOT ? RobotMapKitBot.CAN.COLLECTOR_MOTOR : RobotMapReal.CAN.COLLECTOR_MOTOR,
-		
-		CLIMBER_MOTOR = IS_KIT_BOT ? RobotMapKitBot.CAN.CLIMBER_MOTOR : RobotMapReal.CAN.CLIMBER_MOTOR,
-		
-		PCM = IS_KIT_BOT ? RobotMapKitBot.CAN.PCM : RobotMapReal.CAN.PCM;
-	}
-	
-	public static final class DIO {
-		public static final int
-		PEG_LIMIT_SWITCH = IS_KIT_BOT ? RobotMapKitBot.DIO.PEG_LIMIT_SWITCH : RobotMapReal.DIO.PEG_LIMIT_SWITCH,
-		GEAR_PLACER_FULLY_EXTENDED = IS_KIT_BOT ? RobotMapKitBot.DIO.GEAR_PLACER_FULLY_EXTENDED : RobotMapReal.DIO.GEAR_PLACER_FULLY_EXTENDED;
-		
-	}
-	
-	public static final class NetworkTable {
-		public static final class Kangaroo {
-			public static final String
-			TABLE_NAME = IS_KIT_BOT ? RobotMapKitBot.NetworkTable.Kangaroo.TABLE_NAME : RobotMapReal.NetworkTable.Kangaroo.TABLE_NAME,
-			VOICE_LOG = IS_KIT_BOT ? RobotMapKitBot.NetworkTable.Kangaroo.VOICE_LOG : RobotMapReal.NetworkTable.Kangaroo.VOICE_LOG;
-		}
-	}
-	
-	public static final class Constants {
-		public static final class Drivetrain {
-			public static final class PID {
 
-				public static final double
-				TURN_KP = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.TURN_KP : RobotMapReal.Constants.Drivetrain.PID.TURN_KP,
-				TURN_KI = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.TURN_KI : RobotMapReal.Constants.Drivetrain.PID.TURN_KI,
-				TURN_KD = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.TURN_KD : RobotMapReal.Constants.Drivetrain.PID.TURN_KD,
-				TURN_I_ERROR_LIMIT = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.TURN_I_ERROR_LIMIT : RobotMapReal.Constants.Drivetrain.PID.TURN_I_ERROR_LIMIT,
-				TURN_TOLERANCE = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.TURN_TOLERANCE : RobotMapReal.Constants.Drivetrain.PID.TURN_TOLERANCE,
-				
-				DISTANCE_KP = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_KP : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_KP,
-				DISTANCE_KI = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_KI : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_KI,
-				DISTANCE_KD = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_KD : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_KD,
-				DISTANCE_MAX = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_MAX : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_MAX,
-				DISTANCE_I_ERROR_LIMIT = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_I_ERROR_LIMIT : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_I_ERROR_LIMIT,
-				DISTANCE_TOLERANCE = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DISTANCE_TOLERANCE : RobotMapReal.Constants.Drivetrain.PID.DISTANCE_TOLERANCE,
-				
-				SPEED_KP = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.SPEED_KP : RobotMapReal.Constants.Drivetrain.PID.SPEED_KP,
-				SPEED_KI = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.SPEED_KI : RobotMapReal.Constants.Drivetrain.PID.SPEED_KI,
-				SPEED_KD = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.SPEED_KD : RobotMapReal.Constants.Drivetrain.PID.SPEED_KD,
-				SPEED_KF = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.SPEED_KF : RobotMapReal.Constants.Drivetrain.PID.SPEED_KF,
-				
-				INCHES_PER_TICK = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.INCHES_PER_TICK : RobotMapReal.Constants.Drivetrain.PID.INCHES_PER_TICK;
-				
-				public static final long
-				DRIVE_PID_TURN_WAIT = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.PID.DRIVE_PID_TURN_WAIT : RobotMapReal.Constants.Drivetrain.PID.DRIVE_PID_TURN_WAIT;
-				
-			}
-			
-			public static final class Curve {
-				
-				public static final double
-				TIME_STEP = 0.02, // seconds
-				TRACK_WIDTH = 19.5, // inches
-				WHEEL_DIAMETER = 4, // inches
-				WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
-			}
-
-			public static final double
-			MAX_SPEED_LOW = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.MAX_SPEED_LOW : RobotMapReal.Constants.Drivetrain.MAX_SPEED_LOW,
-			MAX_SPEED_HIGH = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.MAX_SPEED_HIGH : RobotMapReal.Constants.Drivetrain.MAX_SPEED_HIGH;
-			
-			public static final boolean
-			DRIVE_LEFT_INVERTED = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.DRIVE_LEFT_INVERTED : RobotMapReal.Constants.Drivetrain.DRIVE_LEFT_INVERTED,
-			DRIVE_RIGHT_INVERTED = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.DRIVE_RIGHT_INVERTED : RobotMapReal.Constants.Drivetrain.DRIVE_RIGHT_INVERTED,
-			INVERT_LEFT_ENC = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.INVERT_LEFT_ENC : RobotMapReal.Constants.Drivetrain.INVERT_LEFT_ENC,
-			INVERT_RIGHT_ENC = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.INVERT_RIGHT_ENC : RobotMapReal.Constants.Drivetrain.INVERT_RIGHT_ENC;
-			
-			public static int TICKS_PER_REV = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.TICKS_PER_REV : RobotMapReal.Constants.Drivetrain.TICKS_PER_REV;
-			public static FeedbackDevice DRIVE_FEEDBACK_DEV = IS_KIT_BOT ? RobotMapKitBot.Constants.Drivetrain.DRIVE_FEEDBACK_DEV : RobotMapReal.Constants.Drivetrain.DRIVE_FEEDBACK_DEV;
+	public static void init(Class<? extends RobotMap> type) {
+		try {
+			instance = type.newInstance();
+		} catch (InstantiationException e) {
+			Logger.defaultLogger.critical("Failed to instantiate RobotMap", e.getCause());
+			assert false;
+		} catch (IllegalAccessException e) {
+			Logger.defaultLogger.critical("Failed to instantiate RobotMap", e);
+			assert false;
+		}
+	}
+	
+	public static RobotMap getInstance() {
+		if(instance == null) {
+			Logger.defaultLogger.critical("Attempted to access RobotMap before initializing it.");
+			assert false;
+		}
+		return instance;
+	}
+	
+	public class Key<T> {
+		
+		private T value;
+		
+		private Key() {
+			// private constructor so this class can only be instantiated in RobotMap
 		}
 		
-		public static final class OI {
-			public static final boolean
-			INVERT_DRIVER_JOSTICK_1 = IS_KIT_BOT ? RobotMapKitBot.Constants.OI.INVERT_DRIVER_JOSTICK_1 : RobotMapReal.Constants.OI.INVERT_DRIVER_JOSTICK_1,
-			INVERT_DRIVER_JOSTICK_2 = IS_KIT_BOT ? RobotMapKitBot.Constants.OI.INVERT_DRIVER_JOSTICK_2 : RobotMapReal.Constants.OI.INVERT_DRIVER_JOSTICK_2;
+		public T get() {
+			if(value == null) {
+				Logger.defaultLogger.critical("Retrieving value of uninitialized RobotMap constant.");
+			}
+			return value;
 		}
 		
-		public static final int
-		CAMERA_RESOLUTION_X = IS_KIT_BOT ? RobotMapKitBot.Constants.CAMERA_RESOLUTION_X : RobotMapReal.Constants.CAMERA_RESOLUTION_X,
-		CAMERA_RESOLUTION_Y = IS_KIT_BOT ? RobotMapKitBot.Constants.CAMERA_RESOLUTION_Y : RobotMapReal.Constants.CAMERA_RESOLUTION_Y,
-		CAMERA_EXPOSURE = IS_KIT_BOT ? RobotMapKitBot.Constants.CAMERA_EXPOSURE : RobotMapReal.Constants.CAMERA_EXPOSURE,
-		GEAR_PLACER_SET_TIMEOUT = IS_KIT_BOT ? RobotMapKitBot.Constants.GEAR_PLACER_SET_TIMEOUT : RobotMapReal.Constants.GEAR_PLACER_SET_TIMEOUT;
+		protected void set(T value) {
+			this.value = value;
+		}
 		
-		public static final double
-		CAMERA_HFOV = IS_KIT_BOT ? RobotMapKitBot.Constants.CAMERA_HFOV : RobotMapReal.Constants.CAMERA_HFOV,
-		DRIVE_TO_PEG_OUTPUT_TOLERANCE = IS_KIT_BOT ? RobotMapKitBot.Constants.DRIVE_TO_PEG_OUTPUT_TOLERANCE : RobotMapReal.Constants.DRIVE_TO_PEG_OUTPUT_TOLERANCE,
-		DRIVE_TO_PEG_MAX_SPEED = IS_KIT_BOT ? RobotMapKitBot.Constants.DRIVE_TO_PEG_MAX_SPEED : RobotMapReal.Constants.DRIVE_TO_PEG_MAX_SPEED,
-		TURN_TO_PEG_OUTPUT_TOLERANCE = IS_KIT_BOT ? RobotMapKitBot.Constants.TURN_TO_PEG_OUTPUT_TOLERANCE : RobotMapReal.Constants.TURN_TO_PEG_OUTPUT_TOLERANCE;
 	}
 }
