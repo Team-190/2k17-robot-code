@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearPlacer extends Subsystem {
 
-	private static final Solenoid solenoid = new Solenoid(RobotMap.getInstance().PCM_GEAR_PUSHER.get());
-	private static final DigitalInput pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
+	private final Solenoid solenoid;
+	private final DigitalInput pegPresenceSensor;
 	
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
@@ -30,6 +31,9 @@ public class GearPlacer extends Subsystem {
 	}
 
 	public GearPlacer() {
+		solenoid = new Solenoid(RobotMap.getInstance().PCM_GEAR_PUSHER.get());
+		pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
+		diagnose();
 	}
 
 	public void initDefaultCommand() {
@@ -48,6 +52,12 @@ public class GearPlacer extends Subsystem {
 	 */
 	public boolean getPegPresent() {
 		return pegPresenceSensor.get();
+	}
+	
+	public void diagnose() {
+		if(pegPresenceSensor.get()) {
+			Logger.defaultLogger.warn("Peg presence sensor is activated.");
+		}
 	}
 	
 }
