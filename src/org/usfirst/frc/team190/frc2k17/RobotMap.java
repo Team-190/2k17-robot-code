@@ -13,7 +13,7 @@ public class RobotMap {
 	public final Key<Integer>
 		PWM_CAMERA_LIGHT = new Key<Integer>(0),
 		PCM_SHIFTER = new Key<Integer>(0),
-		PCM_GEAR_PUSHER = new Key<Integer>(2),
+		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
 		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
 		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
