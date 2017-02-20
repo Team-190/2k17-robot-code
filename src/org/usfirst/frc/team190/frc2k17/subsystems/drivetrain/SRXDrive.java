@@ -20,6 +20,7 @@ public class SRXDrive {
 		private String name;
 		private boolean encoderInverted;
 		private boolean inSpeedControlMode;
+		private double setpoint;
 
 		public DriveMotorPair(String name, int masterID, int slaveID, boolean motorInverted, boolean encoderInverted) {
 			this.name = name;
@@ -69,13 +70,14 @@ public class SRXDrive {
 			// 		 Most likely need to implement a failsafe if an encoder fails and
 			//		 a manual control incase the failsafe also fails
 			master.set(speed);
+			setpoint = speed;
 		}
 		
 		/**
 		 * Sets the control mode of the master motor
 		 * @param mode control mode, either Speed or PercentVbus
 		 */
-		private void setControlMode(TalonControlMode mode) {
+		public void setControlMode(TalonControlMode mode) {
 			if (mode == TalonControlMode.Speed) {
 				master.changeControlMode(TalonControlMode.Speed);
 				inSpeedControlMode = true;
@@ -86,11 +88,36 @@ public class SRXDrive {
 		}
 		
 		/**
+		 * Gets the control mode of the master motor
+		 * @return control mode, either Speed or PercentVbus
+		 */
+		public TalonControlMode getControlMode() {
+			return master.getControlMode();
+		}
+		
+		/**
 		 * Gets the pair's speed
 		 * @return speed in inches/second
 		 */
 		public double getSpeed() {
 			return master.getSpeed();
+		}
+		
+		/**
+		 * Get the last setpoint, in RPM.
+		 * If the Talon is not in speed control mode, do a really sketchy conversion.
+		 * @return the setpoint, in RPM
+		 */
+		public double getSetpoint() {
+			if (getControlMode() == TalonControlMode.PercentVbus) {
+				double maxSpeed = Robot.shifters.getGear() == Shifters.Gear.HIGH ? RobotMap.getInstance().DRIVE_MAX_SPEED_HIGH.get() : RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
+				return setpoint*maxSpeed;
+			} else if (getControlMode() == TalonControlMode.Speed) {
+				return setpoint;
+			} else {
+				assert false;
+				return 0;
+			}
 		}
 		
 		/**
@@ -285,6 +312,15 @@ public class SRXDrive {
 	public void zeroEncoderPositions() {
 		left.setEncoderPosition(0);
 		right.setEncoderPosition(0);
+	}
+	
+	/**
+	 * Get the average of the last setpoints, in RPM.
+ 	 * If the Talons are not in speed control mode, do a really sketchy conversion.
+	 * @return the average of the setpoints
+	 */
+	public double getAverageSetpoint() {
+		return (left.getSetpoint() + right.getSetpoint()) / 2;
 	}
 	
 	/**

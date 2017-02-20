@@ -20,6 +20,7 @@ public class AutoShift extends Command {
 	private double lastRPM = 0;
 	private final double RPM_TRANSITION = 200; //RPM
 	private final double RATE_THRESHOLD = 20; //delta(RPM)/sec 
+	
     public AutoShift() {
     	requires(Robot.shifters);
     	lastRPM = getAvgRPM();
@@ -60,13 +61,17 @@ public class AutoShift extends Command {
     	}
     	lastRPM = currentRPM;
     }
+    
     private double getSetRPM() {
+    	
     	return -1;
     }
+    
     private boolean isBetween(double setpoint, double pointOne, double pointTwo)
     {
     	return ((pointTwo>=setpoint) && (pointOne<=setpoint)) || ((pointTwo<=setpoint) && (pointOne>=setpoint));
     }
+    
     protected boolean isFinished() {
         return false; //Eventually connect to a btn to stop
     }
