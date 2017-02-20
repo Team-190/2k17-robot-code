@@ -26,7 +26,7 @@ public class RobotMap {
 		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
 		CAN_PCM = new Key<Integer>(20),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
-		DRIVE_TICKS_PER_REV = new Key<Integer>(4096), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12
+		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0);
@@ -54,7 +54,7 @@ public class RobotMap {
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.0),
 		DRIVE_PID_SPEED_KF = new Key<Double>(1.36),
 		
-		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003), // For real bot, 4 * pi circumference / 3072 ticks per rev
+		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
 		CAMERA_HFOV = new Key<Double>(54.8),
