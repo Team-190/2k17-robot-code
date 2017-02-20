@@ -67,9 +67,9 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	public static FilteredJoystick joystick0;
-	public static FilteredJoystick joystick1;
-	public static XboxController joystick2;
+	private FilteredJoystick joystick0;
+	private FilteredJoystick joystick1;
+	private XboxController joystick2;
 
 	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
@@ -91,8 +91,8 @@ public class OI {
 		driveToPegButton.whenPressed(new PlaceGearCommand());
 		gearKickButton.whenPressed(new KickGearCommand());
 		
-		povUpTrigger = new PovUpTrigger();
-		povDownTrigger = new PovDownTrigger();
+		povUpTrigger = new PovUpTrigger(joystick2);
+		povDownTrigger = new PovDownTrigger(joystick2);
 		
 		pegPresentTrigger = new PegPresentTrigger();
 		

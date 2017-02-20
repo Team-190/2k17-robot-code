@@ -5,7 +5,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
-import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
+import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
@@ -13,6 +13,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -34,12 +35,14 @@ public class Robot extends IterativeRobot {
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
 	public static ShooterFeeder shooterFeeder;
-	public static Collector collector;
+	public static Agitator agitator;
 	public static Climber climber;
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
 	public static OI oi;
+	
+	private static Compressor compressor;
 	
     Command autonomousCommand;
     //SendableChooser chooser;
@@ -51,11 +54,6 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
 		// RobotMap must be initialized before almost anything else.
-    	if(isKitBot()) {
-    		RobotMap.init(RobotMapKitBot.class);
-    	} else {
-    		RobotMap.init(RobotMapReal.class);
-    	}
     	Logger.init();
     	Logger.resetTimestamp();
     	// prefs must not be initialized statically. Do not move from robotInit().
@@ -66,7 +64,7 @@ public class Robot extends IterativeRobot {
     	gearCamera = new GearCamera();
     	shooter = new Shooter();
     	shooterFeeder = new ShooterFeeder();
-    	collector = new Collector();
+    	agitator = new Agitator();
     	climber = new Climber();
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
@@ -80,6 +78,8 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
 							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
+		
+		compressor = new Compressor();
     }
 	
 	/**
@@ -90,6 +90,8 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
     	Logger.kangarooVoice.info("disabled");
+    	
+    	compressor.stop();
     }
 	
 	public void disabledPeriodic() {
@@ -122,7 +124,7 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+    //    if (autonomousCommand != null) autonomousCommand.start();
     }
 
     /**
@@ -140,7 +142,10 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	
+    	compressor.start();
+    	
         if (autonomousCommand != null) autonomousCommand.cancel();
+        //if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**
@@ -162,6 +167,6 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
-    	return true;
+    	return false;
     }
 }

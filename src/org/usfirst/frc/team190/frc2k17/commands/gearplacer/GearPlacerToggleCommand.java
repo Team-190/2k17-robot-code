@@ -14,20 +14,11 @@ public class GearPlacerToggleCommand extends Command {
 	}
 
 	protected void initialize() {
-	}
-
-	protected void execute() {
 		Robot.gearPlacer.toggle();
 	}
 
 	protected boolean isFinished() {
-		// TODO: implement isFinished for PushOut
-		return false;
+		return true;
 	}
 
-	protected void end() {
-	}
-
-	protected void interrupted() {
-	}
 }

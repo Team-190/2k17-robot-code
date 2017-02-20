@@ -14,7 +14,7 @@ public class ShooterSpinCommand extends Command {
     }
 
     protected void initialize() {
-    	Robot.shooter.ShooterOn(1500);
+    	Robot.shooter.shooterOn(1500);
     }
 
     protected boolean isFinished() {
@@ -23,7 +23,7 @@ public class ShooterSpinCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.ShooterOn(0);		// Stop Shooter when end() is called
+    	Robot.shooter.shooterOn(0);		// Stop Shooter when end() is called
     }
 
     // Called when another command which requires one or more of the same

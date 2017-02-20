@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SRXDrive {
 	
-	private class DriveMotorPair {
+	private static class DriveMotorPair {
 		private CANTalon master;
 		private CANTalon slave;
 		private String name;
@@ -42,7 +42,7 @@ public class SRXDrive {
 			master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
 			master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 			
-			master.reverseOutput(motorInverted);
+			master.setInverted(motorInverted);
 			master.reverseSensor(encoderInverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
@@ -107,7 +107,7 @@ public class SRXDrive {
 		 */
 		public double getEncoderPosition() {
 			double pos = ticksToInches(master.getEncPosition());
-			return encoderInverted ? pos : -pos;
+			return encoderInverted ? -pos : pos;
 		}
 		
 		/**
@@ -262,6 +262,8 @@ public class SRXDrive {
 	public void outputEncoderValues() {
 		SmartDashboard.putNumber("Left Drivetrain Encoder Velocity", left.getSpeed());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", right.getSpeed());
+		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
+		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
 		SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
 		SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
 	}
@@ -285,6 +287,15 @@ public class SRXDrive {
 		right.setEncoderPosition(0);
 	}
 	
+	/**
+	 * Sets the control mode of the motors
+	 * @param mode control mode, either Speed or PercentVbus
+	 */
+	public void setControlMode(TalonControlMode mode) {
+		left.setControlMode(mode);
+		right.setControlMode(mode);
+	}
+
 	/**
 	 * Perform health checks and log warnings.
 	 */
