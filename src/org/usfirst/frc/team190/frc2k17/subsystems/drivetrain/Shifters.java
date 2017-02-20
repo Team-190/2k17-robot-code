@@ -23,10 +23,10 @@ public class Shifters extends Subsystem {
 	
 	public Shifters() {
 		shifter = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_SHIFTER.get());
+		shift(Gear.LOW);
 	}
     
 	public void initDefaultCommand() {
-		setDefaultCommand(new ShiftersShiftCommand(Gear.LOW));
     }
     
 	/**
