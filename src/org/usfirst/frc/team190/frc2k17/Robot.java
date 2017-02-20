@@ -13,6 +13,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -40,6 +41,8 @@ public class Robot extends IterativeRobot {
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
 	public static OI oi;
+	
+	private static Compressor compressor;
 	
     Command autonomousCommand;
     //SendableChooser chooser;
@@ -75,6 +78,8 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
 							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
+		
+		compressor = new Compressor();
     }
 	
 	/**
@@ -85,6 +90,8 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
     	Logger.kangarooVoice.info("disabled");
+    	
+    	compressor.stop();
     }
 	
 	public void disabledPeriodic() {
@@ -134,6 +141,8 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
+    	
+    	compressor.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
