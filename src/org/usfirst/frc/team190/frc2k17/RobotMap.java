@@ -49,13 +49,13 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_SPEED_KP = new Key<Double>(0.0),
-		DRIVE_PID_SPEED_KI = new Key<Double>(0.0),
-		DRIVE_PID_SPEED_KD = new Key<Double>(0.0),
-		DRIVE_PID_SPEED_KF = new Key<Double>(1.36),
+		DRIVE_PID_SPEED_KP = new Key<Double>(0.05),
+		DRIVE_PID_SPEED_KI = new Key<Double>(0.001), //0.002
+		DRIVE_PID_SPEED_KD = new Key<Double>(0.8),
+		DRIVE_PID_SPEED_KF = new Key<Double>(0.384733),
 		
 		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
-		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0),
+		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
 		CAMERA_HFOV = new Key<Double>(54.8),
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(0.1),
