@@ -31,7 +31,7 @@ public class GearPlacer extends Subsystem {
 	}
 
 	public GearPlacer() {
-		solenoid = new Solenoid(RobotMap.getInstance().PCM_GEAR_PUSHER.get());
+		solenoid = new Solenoid(RobotMap.getInstance().CAN_PCM.get(),RobotMap.getInstance().PCM_GEAR_PUSHER.get());
 		pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
 		diagnose();
 	}
@@ -44,6 +44,7 @@ public class GearPlacer extends Subsystem {
 	}
 	
 	public void set(final State state) {
+		Logger.defaultLogger.trace("Setting gear placer to state " + state.name());
 		solenoid.set(state.get());
 	}
 	

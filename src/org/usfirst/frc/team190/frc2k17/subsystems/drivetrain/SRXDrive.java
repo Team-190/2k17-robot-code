@@ -50,7 +50,7 @@ public class SRXDrive {
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
 
-			setControlMode(TalonControlMode.Speed);
+			setControlMode(TalonControlMode.PercentVbus);
 		}
 
 		/**

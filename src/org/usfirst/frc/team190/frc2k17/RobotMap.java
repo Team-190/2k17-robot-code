@@ -70,8 +70,8 @@ public class RobotMap {
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);
 
 	public final Key<Boolean>
-		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>(false),
-		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true),
+		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>(false,false),
+		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true,false),
 		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(true),
 		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(false),
 		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>(true),
@@ -99,8 +99,8 @@ public class RobotMap {
 			realValue = realRobot;
 		}
 		
-		public Key(T realRobot) {
-			practiceValue = realValue = realRobot;
+		public Key(T both) {
+			practiceValue = realValue = both;
 		}
 		
 		public T get() {
