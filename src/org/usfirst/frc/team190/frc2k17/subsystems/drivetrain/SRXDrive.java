@@ -152,7 +152,7 @@ public class SRXDrive {
 		 * @return encoder ticks
 		 */
 		private double inchesToTicks(double inches) {
-			return inches / (4 * Math.PI * RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+			return inches / (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 		}
 		
 		/**
@@ -161,7 +161,7 @@ public class SRXDrive {
 		 * @return inches
 		 */
 		private double ticksToInches(double ticks) {
-			return ticks * 4 * Math.PI * RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
+			return ticks * (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 		}
 		
 		/**

@@ -27,6 +27,6 @@ public class GearPlacerSetCommand extends Command {
 	}
 
 	protected boolean isFinished() {
-		return isTimedOut();
+		return true;//isTimedOut();
 	}
 }

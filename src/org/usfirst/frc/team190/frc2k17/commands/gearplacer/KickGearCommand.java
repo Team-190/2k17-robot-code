@@ -27,6 +27,7 @@ public class KickGearCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new GearPlacerSetCommand(GearPlacer.State.EXTENDED));
+    	
     	addSequential(new GearPlacerSetCommand(GearPlacer.State.RETRACTED));
     }
 }
