@@ -30,7 +30,7 @@ public class DriveToPegCommand extends Command {
     }
 
     protected void execute() {
-    	double angle = Robot.gearCamera.getAngleToPeg();
+    	Robot.gearCamera.getAngleToPeg();
     	Robot.drivetrain.controlDistance(); // TODO: Put constant in robotmap
     }
     
