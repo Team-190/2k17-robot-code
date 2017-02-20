@@ -16,7 +16,7 @@ public class ShiftersToggleCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (Robot.shifters.isInHighGear()) {
+    	if (Robot.shifters.getGear() == Shifters.Gear.HIGH) {
         	Robot.shifters.shift(Shifters.Gear.LOW);
     	} else {
         	Robot.shifters.shift(Shifters.Gear.HIGH);
