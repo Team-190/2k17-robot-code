@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,7 +26,7 @@ public class Shifters extends Subsystem {
 	}
     
 	public void initDefaultCommand() {
-		shift(Gear.LOW);
+		setDefaultCommand(new ShiftersShiftCommand(Gear.LOW));
     }
     
 	/**
