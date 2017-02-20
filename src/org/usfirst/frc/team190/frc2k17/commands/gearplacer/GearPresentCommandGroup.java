@@ -28,7 +28,6 @@ public class GearPresentCommandGroup extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	requires(Robot.drivetrain);
     	addParallel(new KickGearCommand());
     	addSequential(new TimedCommand(RobotMap.getInstance().GEAR_PRESENT_KICK_TIMEOUT.get()));
     	addSequential(new GearDriveBackCommand());
