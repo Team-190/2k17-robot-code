@@ -14,6 +14,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDista
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
@@ -81,15 +82,15 @@ public class OI {
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
 		
-		highShiftButton = new JoystickButton(joystick1, 3);
-		lowShiftButton = new JoystickButton(joystick1, 2);
-		driveToPegButton = new JoystickButton(joystick0, 3);
-		gearKickButton = new JoystickButton(joystick0, 2);
+		highShiftButton = new JoystickButton(joystick0, 3);
+		lowShiftButton = new JoystickButton(joystick0, 2);
+		//driveToPegButton = new JoystickButton(joystick0, 3);
+		//gearKickButton = new JoystickButton(joystick0, 2);
 		
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
-		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-		driveToPegButton.whenPressed(new PlaceGearCommand());
-		gearKickButton.whenPressed(new KickGearCommand());
+		lowShiftButton.whenPressed(new ShiftersToggleCommand());
+		//driveToPegButton.whenPressed(new PlaceGearCommand());
+		//gearKickButton.whenPressed(new KickGearCommand());
 		
 		povUpTrigger = new PovUpTrigger(joystick2);
 		povDownTrigger = new PovDownTrigger(joystick2);
