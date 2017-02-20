@@ -42,7 +42,7 @@ public class SRXDrive {
 			master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
 			master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 			
-			master.reverseOutput(motorInverted);
+			master.setInverted(motorInverted);
 			master.reverseSensor(encoderInverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
