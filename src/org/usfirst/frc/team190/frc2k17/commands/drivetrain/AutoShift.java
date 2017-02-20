@@ -21,7 +21,7 @@ public class AutoShift extends Command {
 	private final double RPM_TRANSITION = 200; //RPM
 	private final double RATE_THRESHOLD = 20; //delta(RPM)/sec 
     public AutoShift() {
-    	requires(Robot.shifter);
+    	requires(Robot.shifters);
     	lastRPM = getAvgRPM();
     	rpmSig = new DSPFilter(DSPFilter.FilterType.LOW_PASS,RPM_FREQ_CUTOFF,lastRPM,SAMPLE_RATE);
     	rateRPM = new DSPFilter(DSPFilter.FilterType.LOW_PASS,RATE_RPM_FREQ_CUTOFF,0,SAMPLE_RATE);
@@ -46,7 +46,7 @@ public class AutoShift extends Command {
     			//check to shift high
     			if(rateChange > RATE_THRESHOLD)
     			{
-    				Robot.shifter.shift(Shifters.Gear.HIGH);
+    				Robot.shifters.shift(Shifters.Gear.HIGH);
     			}
     		}
     		else
@@ -54,7 +54,7 @@ public class AutoShift extends Command {
     			//check to shift low
     			if((-1*rateChange) > RATE_THRESHOLD)
     			{
-    				Robot.shifter.shift(Shifters.Gear.LOW);
+    				Robot.shifters.shift(Shifters.Gear.LOW);
     			}
     		}
     	}
