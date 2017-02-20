@@ -33,6 +33,7 @@ public class SRXDrive {
 			{
 				//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
 				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+				SmartDashboard.putNumber("Encoder Ticks", RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 			}
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -43,7 +44,7 @@ public class SRXDrive {
 			master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
 			master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 			
-			master.setInverted(motorInverted);
+			master.reverseOutput(motorInverted);
 			master.reverseSensor(encoderInverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
@@ -151,7 +152,7 @@ public class SRXDrive {
 		 * @return encoder ticks
 		 */
 		private double inchesToTicks(double inches) {
-			return inches / RobotMap.getInstance().DRIVE_PID_INCHES_PER_TICK.get();
+			return inches / (4 * Math.PI * RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 		}
 		
 		/**
@@ -160,7 +161,7 @@ public class SRXDrive {
 		 * @return inches
 		 */
 		private double ticksToInches(double ticks) {
-			return ticks * RobotMap.getInstance().DRIVE_PID_INCHES_PER_TICK.get();
+			return ticks * 4 * Math.PI * RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
 		}
 		
 		/**

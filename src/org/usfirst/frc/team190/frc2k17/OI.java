@@ -139,6 +139,7 @@ public class OI {
 	}
 	
 	public double getDriverJoystick1Y() {
+		//return joystick0.getAxis(AxisType.kThrottle);
 		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
 	}
 	
