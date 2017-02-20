@@ -145,6 +145,14 @@ public class Drivetrain extends Subsystem {
 		srxdrive.outputEncoderValues();
 	}
 	
+	/**
+	 * Get the average of the last setpoints, in RPM.
+	 * @return the average of the setpoints
+	 */
+	public double getAverageSetpoint() {
+		return srxdrive.getAverageSetpoint();
+	}
+	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
 	}

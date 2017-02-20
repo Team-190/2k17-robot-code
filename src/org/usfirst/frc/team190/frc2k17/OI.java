@@ -10,6 +10,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCom
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberLowerCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
@@ -118,6 +119,7 @@ public class OI {
 		bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 		bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		
+		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
