@@ -85,13 +85,14 @@ public class RobotMap {
 	private RobotMap() {
 	}
 	
-	public static RobotMap getInstance() {
-		if (instance == null)
+	public static synchronized RobotMap getInstance() {
+		if (instance == null) {
 			instance = new RobotMap();
+		}
 		return instance;
 	}
 
-	public class Key<T> {
+	public static class Key<T> {
 		private T practiceValue, realValue;
 		
 		public Key(T practiceRobot, T realRobot) {

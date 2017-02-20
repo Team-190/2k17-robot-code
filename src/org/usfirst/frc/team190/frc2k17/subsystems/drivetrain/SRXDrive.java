@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SRXDrive {
 	
-	private class DriveMotorPair {
+	private static class DriveMotorPair {
 		private CANTalon master;
 		private CANTalon slave;
 		private String name;

@@ -88,7 +88,7 @@ public class Shooter extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void ShooterOn(int flywheelSpeed){
+    public void shooterOn(int flywheelSpeed){
     	flywheelMotor1.changeControlMode(TalonControlMode.Speed);
     	flywheelMotor2.changeControlMode(TalonControlMode.Speed);
     	
