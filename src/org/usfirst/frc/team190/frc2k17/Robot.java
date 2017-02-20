@@ -32,14 +32,13 @@ public class Robot extends IterativeRobot {
 	
 	public static Drivetrain drivetrain;
 	public static GearCamera gearCamera;
-	public static final Shooter shooter = new Shooter();
-	public static final ShooterFeeder shooterFeeder = new ShooterFeeder();
-	public static final Collector collector = new Collector();
-	public static final Climber climber = new Climber();
-	public static final Boopers boopers = new Boopers();
-	public static final GearPlacer gearPlacer = new GearPlacer();
-	public static Shifters shifter = new Shifters();
-	public static final Shifters shifters = new Shifters();
+	public static Shooter shooter;
+	public static ShooterFeeder shooterFeeder;
+	public static Collector collector;
+	public static Climber climber;
+	public static Boopers boopers;
+	public static GearPlacer gearPlacer;
+	public static Shifters shifters;
 	public static OI oi;
 	
     Command autonomousCommand;
@@ -51,6 +50,13 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
+		// RobotMap must be initialized before almost anything else.
+    	if(isKitBot()) {
+    		RobotMap.init(RobotMapKitBot.class);
+    	} else {
+    		RobotMap.init(RobotMapReal.class);
+    	}
+    	Logger.init();
     	Logger.resetTimestamp();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
@@ -58,15 +64,22 @@ public class Robot extends IterativeRobot {
     	drivetrain = new Drivetrain();
     	// gearCamera must not be initialized statically. Do not move from robotInit().
     	gearCamera = new GearCamera();
+    	shooter = new Shooter();
+    	shooterFeeder = new ShooterFeeder();
+    	collector = new Collector();
+    	climber = new Climber();
+    	boopers = new Boopers();
+    	gearPlacer = new GearPlacer();
+    	shifters = new Shifters();
 		oi = new OI();
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
         //SmartDashboard.putData("Auto mode", chooser);
 		
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(RobotMap.Constants.CAMERA_RESOLUTION_X,
-							 RobotMap.Constants.CAMERA_RESOLUTION_Y);
-		camera.setExposureManual(RobotMap.Constants.CAMERA_EXPOSURE);
+		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
+							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
+		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
     }
 	
 	/**
@@ -143,5 +156,12 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    /**
+     * @return whether the robot is the kit bot
+     */
+    public static boolean isKitBot() {
+    	return true;
     }
 }

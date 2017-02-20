@@ -17,11 +17,13 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
@@ -69,18 +71,30 @@ public class OI {
 	public static FilteredJoystick joystick1;
 	public static XboxController joystick2;
 
-	
+	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Trigger povUpTrigger, povDownTrigger;
+	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
-		joystick0.setDeadband(0.05); // TODO: Put constant in robotmap
+		joystick0.setDeadband(RobotMap.getInstance().JOYSTICK_DEADBAND.get());
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
 		
+		highShiftButton = new JoystickButton(joystick1, 3);
+		lowShiftButton = new JoystickButton(joystick1, 2);
+		driveToPegButton = new JoystickButton(joystick0, 3);
+		gearKickButton = new JoystickButton(joystick0, 2);
+		
+		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
+		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
+		driveToPegButton.whenPressed(new PlaceGearCommand());
+		gearKickButton.whenPressed(new KickGearCommand());
+		
 		povUpTrigger = new PovUpTrigger();
 		povDownTrigger = new PovDownTrigger();
+		
+		pegPresentTrigger = new PegPresentTrigger();
 		
 		aButton = new JoystickButton(joystick2, 1);
 		bButton = new JoystickButton(joystick2, 2);
@@ -96,6 +110,7 @@ public class OI {
 		backButton.whenPressed(new GearCameraLightToggleCommand());
 		povUpTrigger.whileActive(new ClimberClimbCommand());
 		povDownTrigger.whileActive(new ClimberLowerCommand());
+		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		yButton.toggleWhenPressed(new ShooterSpinCommand());
 		aButton.whileHeld(new ShooterFeedCommand());
 		xButton.whenPressed(new KickGearCommand());
@@ -118,19 +133,19 @@ public class OI {
 	}
 	
 	public double getDriverJoystick1X() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getAxis(AxisType.kX) : joystick0.getAxis(AxisType.kX);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kX) : joystick0.getAxis(AxisType.kX);
 	}
 	
 	public double getDriverJoystick1Y() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_1) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
 	}
 	
 	public double getDriverJoystick2X() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getAxis(AxisType.kX) : joystick1.getAxis(AxisType.kX);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_2.get()) ? -joystick1.getAxis(AxisType.kX) : joystick1.getAxis(AxisType.kX);
 	}
 	
 	public double getDriverJoystick2Y() {
-		return (RobotMap.Constants.OI.INVERT_DRIVER_JOSTICK_2) ? -joystick1.getAxis(AxisType.kY) : joystick1.getAxis(AxisType.kY);
+		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_2.get()) ? -joystick1.getAxis(AxisType.kY) : joystick1.getAxis(AxisType.kY);
 	}
 
 	public double getDriverJoystick1Throttle() {

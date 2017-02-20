@@ -11,6 +11,7 @@ public class GearCameraLightOnCommand extends Command {
 
     public GearCameraLightOnCommand() {
         requires(Robot.gearCamera);
+        setTimeout(1);
     }
 
     // Called just before this Command runs the first time
@@ -20,6 +21,6 @@ public class GearCameraLightOnCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return isTimedOut();
     }
 }

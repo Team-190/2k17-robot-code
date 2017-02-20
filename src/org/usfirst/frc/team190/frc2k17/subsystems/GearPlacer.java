@@ -7,12 +7,13 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * This class handles the Gear Placer pneumatic device and the sensor
+ * that determines if the peg is in the robot
  */
 public class GearPlacer extends Subsystem {
 
-	private final Solenoid solenoid;
-	private final DigitalInput pegPresenceSensor, fullExtensionSensor;
+	private static final Solenoid solenoid = new Solenoid(RobotMap.getInstance().PCM_GEAR_PUSHER.get());
+	private static final DigitalInput pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
 	
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
@@ -29,14 +30,9 @@ public class GearPlacer extends Subsystem {
 	}
 
 	public GearPlacer() {
-		solenoid = new Solenoid(RobotMap.PCM.GEAR_PUSHER);
-		pegPresenceSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
-		fullExtensionSensor = new DigitalInput(RobotMap.DIO.PEG_LIMIT_SWITCH);
 	}
 
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
 	}
 
 	public void toggle() {
@@ -54,10 +50,4 @@ public class GearPlacer extends Subsystem {
 		return pegPresenceSensor.get();
 	}
 	
-	/**
-	 * @return true if the gear placer piston is fully extended, false otherwise
-	 */
-	public boolean getFullyExtended() {
-		return fullExtensionSensor.get();
-	}
 }

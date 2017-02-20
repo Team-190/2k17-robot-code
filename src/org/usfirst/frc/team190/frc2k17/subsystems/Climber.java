@@ -13,7 +13,7 @@ public class Climber extends Subsystem {
 	private final CANTalon climberMotor;
 	
 	public Climber(){
-		climberMotor = new CANTalon(RobotMap.CAN.CLIMBER_MOTOR);
+		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
 	}
 	
 	
