@@ -50,7 +50,7 @@ public class SRXDrive {
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
 
-			setControlMode(TalonControlMode.PercentVbus);
+			setControlMode(TalonControlMode.Speed);
 		}
 
 		/**
@@ -287,6 +287,15 @@ public class SRXDrive {
 		right.setEncoderPosition(0);
 	}
 	
+	/**
+	 * Sets the control mode of the motors
+	 * @param mode control mode, either Speed or PercentVbus
+	 */
+	public void setControlMode(TalonControlMode mode) {
+		left.setControlMode(mode);
+		right.setControlMode(mode);
+	}
+
 	/**
 	 * Perform health checks and log warnings.
 	 */

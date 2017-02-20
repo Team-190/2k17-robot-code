@@ -5,6 +5,7 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
 
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -145,6 +146,14 @@ public class Drivetrain extends Subsystem {
 	}
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
+	}
+	
+	/**
+	 * Set the control mode, either speed or percent vbus.
+	 * @param mode the mode to change to
+	 */
+	public void setControlMode(TalonControlMode mode) {
+		srxdrive.setControlMode(mode);
 	}
 }
 
