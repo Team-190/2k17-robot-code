@@ -5,7 +5,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
-import org.usfirst.frc.team190.frc2k17.subsystems.Collector;
+import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
 	public static ShooterFeeder shooterFeeder;
-	public static Collector collector;
+	public static Agitator agitator;
 	public static Climber climber;
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot {
     	gearCamera = new GearCamera();
     	shooter = new Shooter();
     	shooterFeeder = new ShooterFeeder();
-    	collector = new Collector();
+    	agitator = new Agitator();
     	climber = new Climber();
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
