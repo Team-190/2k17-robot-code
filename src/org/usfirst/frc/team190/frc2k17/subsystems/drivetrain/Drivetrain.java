@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
@@ -154,6 +155,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void setControlMode(TalonControlMode mode) {
 		srxdrive.setControlMode(mode);
+	}
+	public void enableCoast(boolean set) {
+		Robot.drivetrain.enableCoast(set);
 	}
 }
 
