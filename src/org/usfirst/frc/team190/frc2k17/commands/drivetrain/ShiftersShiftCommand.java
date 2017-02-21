@@ -14,11 +14,13 @@ public class ShiftersShiftCommand extends Command {
 	
     public ShiftersShiftCommand(Shifters.Gear gear) {
         requires(Robot.shifters);
+        requires(Robot.drivetrain);
         this.gear = gear;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drivetrain.tankDrive(0, 0);
     	Robot.shifters.shift(gear);
     }
 
