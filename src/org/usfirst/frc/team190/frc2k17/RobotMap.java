@@ -64,7 +64,19 @@ public class RobotMap {
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
-		JOYSTICK_DEADBAND = new Key<Double>(0.05);
+		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
+		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_RATE_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
+		AUTOSHIFT_MIDDLE_THRESHOLD = new Key<Double>(302.0), // RPM
+		AUTOSHIFT_MIDDLE_THRESHOLD_RATE = new Key<Double>(250.0), // delta(RPM)/sec
+		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
+		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
+		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0); // milliseconds
+		
 
 	public final Key<FeedbackDevice> 
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);
