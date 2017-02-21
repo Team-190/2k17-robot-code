@@ -22,14 +22,15 @@ public class RobotMap {
 		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
 		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(7),
 		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>(8),
-		CAN_COLLECTOR_MOTOR = new Key<Integer>(9),
+		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
 		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
 		CAN_PCM = new Key<Integer>(20),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
 		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
-		CAMERA_EXPOSURE = new Key<Integer>(0);
+		CAMERA_EXPOSURE = new Key<Integer>(0),
+		SHIFT_PAUSE = new Key<Integer>(20); // milliseconds
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
@@ -64,7 +65,19 @@ public class RobotMap {
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
-		JOYSTICK_DEADBAND = new Key<Double>(0.05);
+		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
+		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_RATE_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
+		AUTOSHIFT_MIDDLE_THRESHOLD = new Key<Double>(302.0), // RPM
+		AUTOSHIFT_MIDDLE_THRESHOLD_RATE = new Key<Double>(250.0), // delta(RPM)/sec
+		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
+		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
+		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0); // milliseconds
+		
 
 	public final Key<FeedbackDevice> 
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);

@@ -34,23 +34,19 @@ public class Shifters extends Subsystem {
 	 * @param gear the gear to shift into
 	 */
 	public void shift(Gear gear){
-		if(gear == Gear.HIGH)
-		{
+		if(gear == Gear.HIGH) {
 			shifter.set(true);
-		}
-		else if(gear == Gear.LOW)
-		{
+		} else if(gear == Gear.LOW) {
 			shifter.set(false);
 		}
 	}
 	
-	public boolean isInHighGear() {
-		if (!Robot.isKitBot() && shifter.get()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-    
+    public Gear getGear() {
+    	if(!Robot.isKitBot() && shifter.get()) {
+    		return Gear.HIGH;
+    	} else {
+    		return Gear.LOW;
+    	}
+    }
 }
 

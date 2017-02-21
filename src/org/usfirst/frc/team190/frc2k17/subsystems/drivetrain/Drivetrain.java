@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
@@ -144,8 +145,25 @@ public class Drivetrain extends Subsystem {
 	public void outputEncoderValues() {
 		srxdrive.outputEncoderValues();
 	}
+	
+	/**
+	 * Get the average of the last setpoints, in RPM.
+	 * @return the average of the setpoints
+	 */
+	public double getAverageSetpoint() {
+		return srxdrive.getAverageSetpoint();
+	}
+	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
+	}
+	
+	public double getLeftRPM() {
+		return srxdrive.getLeftRPM();
+	}
+	
+	public double getRightRPM() {
+		return srxdrive.getRightRPM();
 	}
 	
 	/**
@@ -154,6 +172,14 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void setControlMode(TalonControlMode mode) {
 		srxdrive.setControlMode(mode);
+	}
+	
+	public void enableCoast(boolean set) {
+		Robot.drivetrain.enableCoast(set);
+	}
+	
+	public void diagnose() {
+		srxdrive.diagnose();
 	}
 }
 

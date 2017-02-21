@@ -29,7 +29,7 @@ public class Agitator extends Subsystem {
 	}
 	
 	public Agitator() {
-		motor = new CANTalon(RobotMap.getInstance().CAN_COLLECTOR_MOTOR.get());
+		motor = new CANTalon(RobotMap.getInstance().CAN_AGITATOR_MOTOR.get());
 		diagnose();
 	}
 	
