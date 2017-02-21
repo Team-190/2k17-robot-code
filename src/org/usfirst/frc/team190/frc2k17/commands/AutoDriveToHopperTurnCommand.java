@@ -31,7 +31,7 @@ public class AutoDriveToHopperTurnCommand extends CommandGroup {
         // arm.
     	requires(Robot.drivetrain);
     	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(40));
-    	addSequential(new TurnToDegreesCommand(-30.0));
+    	addSequential(new TurnToDegreesCommand(30.0));
     	addSequential(new DriveStraightForDistanceCommand(126.0));
     }
 }

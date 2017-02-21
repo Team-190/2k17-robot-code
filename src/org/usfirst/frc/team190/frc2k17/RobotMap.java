@@ -36,9 +36,9 @@ public class RobotMap {
 		NETWORKTABLE_KANGAROO_VOICE_LOG = new Key<String>("voicelog");
 	
 	public final Key<Double>
-		DRIVE_PID_TURN_KP = new Key<Double>(0.015),
-		DRIVE_PID_TURN_KI = new Key<Double>(0.005),
-		DRIVE_PID_TURN_KD = new Key<Double>(0.012),
+		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.017),
+		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.002),
+		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.005),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
 		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
 		

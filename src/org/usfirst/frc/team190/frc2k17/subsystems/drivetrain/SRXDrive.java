@@ -54,7 +54,12 @@ public class SRXDrive {
 
 			setControlMode(TalonControlMode.Speed);
 		}
-
+		
+		public void enableCoast(boolean set) {
+				master.enableBrakeMode(!set);
+				slave.enableBrakeMode(!set);
+		}
+		
 		/**
 		 * Set the master motor's control
 		 * @param speed in motor units (-1 to 1)
@@ -340,10 +345,17 @@ public class SRXDrive {
 		left.diagnose();
 		right.diagnose();
 	}
+	
 	public double getLeftRPM() {
 		return left.getSpeed();
 	}
+	
 	public double getRightRPM() {
 		return right.getSpeed();
+	}
+	
+	public void enableCoast(boolean set) {
+		left.enableCoast(set);
+		right.enableCoast(set);
 	}
 }
