@@ -173,8 +173,13 @@ public class Drivetrain extends Subsystem {
 	public void setControlMode(TalonControlMode mode) {
 		srxdrive.setControlMode(mode);
 	}
+	
 	public void enableCoast(boolean set) {
 		Robot.drivetrain.enableCoast(set);
+	}
+	
+	public void diagnose() {
+		srxdrive.diagnose();
 	}
 }
 

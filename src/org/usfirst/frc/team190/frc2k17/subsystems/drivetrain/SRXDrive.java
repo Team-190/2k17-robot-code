@@ -215,7 +215,6 @@ public class SRXDrive {
 	 * Constructor
 	 */
 	public SRXDrive() {
-		diagnose();
 		zeroEncoderPositions();
 	}
 	
@@ -341,7 +340,7 @@ public class SRXDrive {
 	/**
 	 * Perform health checks and log warnings.
 	 */
-	private void diagnose() {
+	public void diagnose() {
 		left.diagnose();
 		right.diagnose();
 	}

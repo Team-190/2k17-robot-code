@@ -80,6 +80,7 @@ public class Robot extends IterativeRobot {
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
 		
 		compressor = new Compressor();
+		diagnose();
     }
 	
 	/**
@@ -168,5 +169,22 @@ public class Robot extends IterativeRobot {
      */
     public static boolean isKitBot() {
     	return false;
+    }
+    
+    /**
+     * Call the diagnose functions on all of the subsystems.
+     */
+    public void diagnose() {
+    	if(isKitBot()) {
+    		Logger.defaultLogger.info("This is the kit bot.");
+    	} else {
+    		Logger.defaultLogger.info("This is the real (non-kit) robot.");
+    	}
+    	drivetrain.diagnose();
+    	shooter.diagnose();
+    	shooterFeeder.diagnose();
+    	agitator.diagnose();
+    	climber.diagnose();
+    	gearPlacer.diagnose();
     }
 }

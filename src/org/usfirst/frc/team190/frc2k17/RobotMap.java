@@ -22,7 +22,7 @@ public class RobotMap {
 		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
 		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(7),
 		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>(8),
-		CAN_COLLECTOR_MOTOR = new Key<Integer>(9),
+		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
 		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
 		CAN_PCM = new Key<Integer>(20),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),

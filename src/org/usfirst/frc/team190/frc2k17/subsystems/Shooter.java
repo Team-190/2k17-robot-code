@@ -52,14 +52,12 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.setI(i);
 		flywheelMotor2.setD(d);
 
-		diagnose();
-		
 	}
 	
 	/**
 	 * Perform health checks and log warnings.
 	 */
-	private void diagnose() {
+	public void diagnose() {
 		if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
 			Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
 		}
