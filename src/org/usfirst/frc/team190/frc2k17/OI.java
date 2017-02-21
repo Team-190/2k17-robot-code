@@ -9,7 +9,6 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
-import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberLowerCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
@@ -111,7 +110,6 @@ public class OI {
 		lbButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 		backButton.whenPressed(new GearCameraLightToggleCommand());
 		povUpTrigger.whileActive(new ClimberClimbCommand());
-		povDownTrigger.whileActive(new ClimberLowerCommand());
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		yButton.toggleWhenPressed(new StartShooterCommand());
 		aButton.whileHeld(new ShooterFeedCommand());

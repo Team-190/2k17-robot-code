@@ -52,10 +52,10 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_SPEED_KP = new Key<Double>(0.3),
-		DRIVE_PID_SPEED_KI = new Key<Double>(0.0), //0.002
-		DRIVE_PID_SPEED_KD = new Key<Double>(0.8),
-		DRIVE_PID_SPEED_KF = new Key<Double>(0.34),
+		DRIVE_PID_SPEED_KP = new Key<Double>(0.111, 0.3),
+		DRIVE_PID_SPEED_KI = new Key<Double>(0.0, 0.0), //0.002
+		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
+		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
 		
 		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
@@ -68,6 +68,7 @@ public class RobotMap {
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling

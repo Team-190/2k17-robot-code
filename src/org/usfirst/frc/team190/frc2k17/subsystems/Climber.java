@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder.State;
 
 import com.ctre.CANTalon;
 
@@ -13,24 +14,31 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Climber extends Subsystem {
 	private final CANTalon climberMotor;
 	
+	public enum State {
+		CLIMB(1), STOP(0), LOWER(-1);
+		
+		private final double value;
+		
+		private State(double value) {
+			this.value = value;
+		}
+		
+		private double get() {
+			return value;
+		}
+	}
+	
 	public Climber(){
 		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
 		diagnose();
 	}
 	
-	
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
+    public void set(State state) {
+		climberMotor.set(state.get());
+	}
     
-    // TODO: Implement speed control for climber
-    public void climb() {
-    	climberMotor.set(1.0);
-    }
-    
-    public void lower() {
-    	climberMotor.set(-1.0);
+    public double getOutputCurrent() {
+    	return climberMotor.getOutputCurrent();
     }
     
     public void diagnose() {
@@ -45,5 +53,9 @@ public class Climber extends Subsystem {
 		}
     }
     
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new MySpecialCommand());
+    }
 }
 
