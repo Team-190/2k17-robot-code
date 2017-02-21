@@ -18,11 +18,13 @@ public class SRXDrive {
 		private CANTalon master;
 		private CANTalon slave;
 		private String name;
+		private boolean motorInverted;
 		private boolean encoderInverted;
 		private boolean inSpeedControlMode;
 
 		public DriveMotorPair(String name, int masterID, int slaveID, boolean motorInverted, boolean encoderInverted) {
 			this.name = name;
+			this.motorInverted = motorInverted;
 			this.encoderInverted = encoderInverted;
 			
 			master = new CANTalon(masterID);
@@ -43,13 +45,15 @@ public class SRXDrive {
 			master.setD(RobotMap.getInstance().DRIVE_PID_SPEED_KD.get());
 			master.setF(RobotMap.getInstance().DRIVE_PID_SPEED_KF.get());
 			
-			master.reverseOutput(motorInverted);
-			master.reverseSensor(encoderInverted);
 			LiveWindow.addActuator("Drive Train", name + " motor", master);
 			
 			slave = new CANTalon(slaveID);
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
+			
+			master.setInverted(motorInverted);
+			master.reverseOutput(false);
+			master.reverseSensor(encoderInverted);
 
 			setControlMode(TalonControlMode.Speed);
 		}
