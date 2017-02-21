@@ -29,7 +29,8 @@ public class RobotMap {
 		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
-		CAMERA_EXPOSURE = new Key<Integer>(0);
+		CAMERA_EXPOSURE = new Key<Integer>(0),
+		SHIFT_PAUSE = new Key<Integer>(20); // milliseconds
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),

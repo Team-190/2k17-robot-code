@@ -17,7 +17,6 @@ public class TankDriveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.enableCoast(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,7 +31,6 @@ public class TankDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.enableCoast(false);
     	Robot.drivetrain.setControlMode(TalonControlMode.Speed);
     }
 
