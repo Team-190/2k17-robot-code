@@ -30,7 +30,9 @@ public class RobotMap {
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
-		SHIFT_PAUSE = new Key<Integer>(20); // milliseconds
+		SHIFT_PAUSE = new Key<Integer>(20), // milliseconds
+		
+		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
@@ -76,7 +78,9 @@ public class RobotMap {
 		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
 		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
-		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0); // milliseconds
+		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		
+		AUTO_TIME_TO_STOP = new Key<Double>(14.5);
 		
 
 	public final Key<FeedbackDevice> 

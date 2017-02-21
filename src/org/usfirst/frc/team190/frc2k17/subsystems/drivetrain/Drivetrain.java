@@ -175,7 +175,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void enableCoast(boolean set) {
-		Robot.drivetrain.enableCoast(set);
+		srxdrive.enableCoast(set);
 	}
 	
 	public void diagnose() {
