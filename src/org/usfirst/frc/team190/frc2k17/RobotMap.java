@@ -66,6 +66,7 @@ public class RobotMap {
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
