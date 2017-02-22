@@ -66,9 +66,9 @@ public class GearCamera extends Subsystem {
 		double[] heightArray = grip.getNumberArray("height", new double[0]);
 
 		if (centerXArray.length >= 2) {
-			double cameraHalfWidth = (RobotMap.getInstance().CAMERA_RESOLUTION_X.get() / 2);
+			double cameraHalfWidth = (double) RobotMap.getInstance().CAMERA_RESOLUTION_X.get() / 2;
 			double centerXAvg = (centerXArray[0] + centerXArray[1]) / 2.0;
-			double distanceFromCenter = centerXAvg - cameraHalfWidth;
+			//double distanceFromCenter = centerXAvg - cameraHalfWidth;
 
 			// Math.toDegrees(Math.atan((distanceFromCenter / cameraHalfWidth) *
 			// Math.tan(Math.toRadians(RobotMap.Constants.CAMERA_HFOV / 2))));

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team190.frc2k17.commands.collector;
+package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
 
@@ -7,27 +7,26 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CollectorStopCommand extends Command {
+public class StopShooterCommand extends Command {
 
-    public CollectorStopCommand() {
+    public StopShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.collector);
+    	requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.shooter.shooterOff();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.collector.stop();
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    // TODO: implement isFinished for CollectorStop
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
@@ -37,5 +36,6 @@ public class CollectorStopCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

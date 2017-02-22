@@ -20,6 +20,7 @@ public class Shooter extends Subsystem {
 					  p = 0,
 					  i = 0,
 					  d = 0;
+	private int requestedSpeed;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -52,14 +53,12 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.setI(i);
 		flywheelMotor2.setD(d);
 
-		diagnose();
-		
 	}
 	
 	/**
 	 * Perform health checks and log warnings.
 	 */
-	private void diagnose() {
+	public void diagnose() {
 		if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
 			Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
 		}
@@ -88,7 +87,9 @@ public class Shooter extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void ShooterOn(int flywheelSpeed){
+    public void shooterOn(int flywheelSpeed){
+    	requestedSpeed = flywheelSpeed;
+    	
     	flywheelMotor1.changeControlMode(TalonControlMode.Speed);
     	flywheelMotor2.changeControlMode(TalonControlMode.Speed);
     	
@@ -96,5 +97,17 @@ public class Shooter extends Subsystem {
     	flywheelMotor2.set(flywheelSpeed);
     }
     
+    public boolean isAtSpeed() {
+    	int speed1 = flywheelMotor1.getEncVelocity();
+    	int speed2 = flywheelMotor2.getEncVelocity();
+    	int rpmTolerance = RobotMap.getInstance().SHOOTER_RPM_TOLERANCE.get();
+    	// TODO: move magicnum to RobotMap
+    	return (Math.abs(speed1 - requestedSpeed) <= rpmTolerance) && (Math.abs(speed2 - requestedSpeed) <= rpmTolerance);
+    }
+    
+    public void shooterOff() {
+    	flywheelMotor1.set(0);
+    	flywheelMotor2.set(0);
+    }
 }
 

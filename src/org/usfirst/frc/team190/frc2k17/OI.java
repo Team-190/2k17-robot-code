@@ -9,18 +9,19 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
-import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberLowerCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
@@ -67,9 +68,9 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	public static FilteredJoystick joystick0;
-	public static FilteredJoystick joystick1;
-	public static XboxController joystick2;
+	private FilteredJoystick joystick0;
+	private FilteredJoystick joystick1;
+	private XboxController joystick2;
 
 	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
@@ -81,18 +82,18 @@ public class OI {
 		joystick1 = new FilteredJoystick(1);
 		joystick2 = new XboxController(2);
 		
-		highShiftButton = new JoystickButton(joystick1, 3);
-		lowShiftButton = new JoystickButton(joystick1, 2);
-		driveToPegButton = new JoystickButton(joystick0, 3);
-		gearKickButton = new JoystickButton(joystick0, 2);
+		highShiftButton = new JoystickButton(joystick0, 3);
+		lowShiftButton = new JoystickButton(joystick0, 2);
+		//driveToPegButton = new JoystickButton(joystick0, 3);
+		//gearKickButton = new JoystickButton(joystick0, 2);
 		
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
-		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-		driveToPegButton.whenPressed(new PlaceGearCommand());
-		gearKickButton.whenPressed(new KickGearCommand());
+		lowShiftButton.whenPressed(new ShiftersToggleCommand());
+		//driveToPegButton.whenPressed(new PlaceGearCommand());
+		//gearKickButton.whenPressed(new KickGearCommand());
 		
-		povUpTrigger = new PovUpTrigger();
-		povDownTrigger = new PovDownTrigger();
+		povUpTrigger = new PovUpTrigger(joystick2);
+		povDownTrigger = new PovDownTrigger(joystick2);
 		
 		pegPresentTrigger = new PegPresentTrigger();
 		
@@ -109,15 +110,15 @@ public class OI {
 		lbButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 		backButton.whenPressed(new GearCameraLightToggleCommand());
 		povUpTrigger.whileActive(new ClimberClimbCommand());
-		povDownTrigger.whileActive(new ClimberLowerCommand());
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
-		yButton.toggleWhenPressed(new ShooterSpinCommand());
+		yButton.toggleWhenPressed(new StartShooterCommand());
 		aButton.whileHeld(new ShooterFeedCommand());
 		xButton.whenPressed(new KickGearCommand());
 		startButton.whenPressed(new GearPlacerToggleCommand());
 		bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 		bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		
+		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
 		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
@@ -137,6 +138,7 @@ public class OI {
 	}
 	
 	public double getDriverJoystick1Y() {
+		//return joystick0.getAxis(AxisType.kThrottle);
 		return (RobotMap.getInstance().OI_INVERT_DRIVER_JOSTICK_1.get()) ? -joystick0.getAxis(AxisType.kY) : joystick0.getAxis(AxisType.kY);
 	}
 	

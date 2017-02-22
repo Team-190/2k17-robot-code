@@ -1,18 +1,17 @@
-package org.usfirst.frc.team190.frc2k17.commands;
+package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
-import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
+import org.usfirst.frc.team190.frc2k17.RobotMap;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
-public class AutoDriveToHopperTurnCommand extends CommandGroup {
+public class ShooterShootCommandGroup extends CommandGroup {
 
-    public AutoDriveToHopperTurnCommand() {
+    public ShooterShootCommandGroup() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -29,9 +28,12 @@ public class AutoDriveToHopperTurnCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	requires(Robot.drivetrain);
-    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(40));
-    	addSequential(new TurnToDegreesCommand(30.0));
-    	addSequential(new DriveStraightForDistanceCommand(126.0));
+    	
+    	addSequential(new StartShooterCommand());
+    	addSequential(new StartFeederCommand());
+    	addSequential(new TimedCommand(RobotMap.getInstance().AUTO_TIME_TO_STOP.get() - Timer.getMatchTime()));
+    	addSequential(new StopFeederCommand());
+    	addSequential(new StopShooterCommand());
+    	
     }
 }

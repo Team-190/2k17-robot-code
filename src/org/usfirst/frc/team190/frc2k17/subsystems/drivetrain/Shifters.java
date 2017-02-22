@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,10 +23,10 @@ public class Shifters extends Subsystem {
 	
 	public Shifters() {
 		shifter = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_SHIFTER.get());
+		shift(Gear.LOW);
 	}
     
 	public void initDefaultCommand() {
-		shift(Gear.LOW);
     }
     
 	/**
@@ -33,23 +34,19 @@ public class Shifters extends Subsystem {
 	 * @param gear the gear to shift into
 	 */
 	public void shift(Gear gear){
-		if(gear == Gear.HIGH)
-		{
+		if(gear == Gear.HIGH) {
 			shifter.set(true);
-		}
-		else if(gear == Gear.LOW)
-		{
+		} else if(gear == Gear.LOW) {
 			shifter.set(false);
 		}
 	}
 	
-	public boolean isInHighGear() {
-		if (!Robot.isKitBot() && shifter.get()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-    
+    public Gear getGear() {
+    	if(!Robot.isKitBot() && shifter.get()) {
+    		return Gear.HIGH;
+    	} else {
+    		return Gear.LOW;
+    	}
+    }
 }
 
