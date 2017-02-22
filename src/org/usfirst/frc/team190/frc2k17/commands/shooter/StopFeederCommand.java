@@ -1,33 +1,33 @@
-package org.usfirst.frc.team190.frc2k17.commands.boopers;
+package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class BooperOffCommand extends Command {
+public class StopFeederCommand extends Command {
 
-    public BooperOffCommand() {
+    public StopFeederCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.boopers);
+    	requires(Robot.shooterFeeder);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.shooterFeeder.set(ShooterFeeder.State.OFF);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.boopers.off();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	// TODO: implement isFinished for Off
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

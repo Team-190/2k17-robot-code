@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoDriveBoxCommand extends CommandGroup {
+public class AutoDriveBackAndForthCommand extends CommandGroup {
 
-    public AutoDriveBoxCommand() {
+    public AutoDriveBackAndForthCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -29,14 +29,11 @@ public class AutoDriveBoxCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	requires(Robot.drivetrain);
-    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(72));
+    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(120));
+    	addSequential(new TurnToDegreesCommand(90));
+    	addSequential(new TurnToDegreesCommand(90));
+    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(120));
     	addSequential(new TurnToDegreesCommand(-90));
-    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(72));
     	addSequential(new TurnToDegreesCommand(-90));
-    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(72));
-    	addSequential(new TurnToDegreesCommand(-90));
-    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(72));
-    	
-    	
     }
 }

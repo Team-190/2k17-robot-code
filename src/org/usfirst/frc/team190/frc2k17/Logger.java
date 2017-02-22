@@ -7,40 +7,36 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Logger {
 	
-	public static Logger defaultLogger = new Logger(new StdOutputter());
-	public static Logger kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.NetworkTable.Kangaroo.TABLE_NAME, RobotMap.NetworkTable.Kangaroo.VOICE_LOG));
+	public static final Logger defaultLogger = new Logger(new StdOutputter());
+	public static Logger kangarooVoice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
 	
 	public static enum Level {
-		TRACE,
-		DEBUG,
-		INFO,
-		WARN,
-		ERROR,
-		SEVERE,
-		CRITICAL;
+		TRACE("trace"),
+		DEBUG("debug"),
+		INFO(""),
+		WARN("warning"),
+		ERROR("error"),
+		SEVERE("severe error"),
+		CRITICAL("critical");
+		
+		private final String kangarooVoice;
+		
+		private Level(String kangarooVoice) {
+			this.kangarooVoice = kangarooVoice;
+		}
 		
 		public String getKangarooVoice() {
-			switch(this) {
-			case TRACE:
-				return "trace";
-			case DEBUG:
-				return "debug";
-			case INFO:
-				return "";
-			case WARN:
-				return "warning";
-			case ERROR:
-				return "error";
-			case SEVERE:
-				return "severe error";
-			case CRITICAL:
-				return "critical";
-			default:
-				return "";
-			}
+			return kangarooVoice;
 		}
+	}
+	
+	/**
+	 * Initializes loggers besides defaultLogger.
+	 */
+	public static void init() {
+		kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
 	}
 	
 	public static void resetTimestamp() {
@@ -83,6 +79,15 @@ public class Logger {
 
 	public void critical(String msg) {
 		output(new Message(Level.CRITICAL, msg));
+	}
+	
+	public void critical(String msg, Throwable e) {
+		if(e != null) {
+			critical(msg + ":" + e.toString());
+			e.printStackTrace();
+		} else {
+			critical(msg);
+		}
 	}
 	
 	private void output(Message msg) {

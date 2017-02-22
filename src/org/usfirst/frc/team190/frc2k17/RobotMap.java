@@ -1,115 +1,140 @@
 package org.usfirst.frc.team190.frc2k17;
+
+import com.ctre.CANTalon.FeedbackDevice;
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
+ * 
+ * new Key<type>(practice-robot, real-robot)
  */
-public final class RobotMap {
-	
-	private RobotMap(){
-		// private constructor to prevent this class from being instantiated
-	}
-	
-	public static final class PWM {
-		public static final int
-		CAMERA_LIGHT = 0;
-	}
-	
-	public static final class PCM {
-		public static final int
-		SHIFTERS_SHIFT_HIGH = 0,
-		SHIFTERS_SHIFT_LOW = 1,
+public class RobotMap {
+	public final Key<Integer>
+		PWM_CAMERA_LIGHT = new Key<Integer>(0),
+		PCM_SHIFTER = new Key<Integer>(0),
+		PCM_GEAR_PUSHER = new Key<Integer>(1),
+		PCM_BOOPERS = new Key<Integer>(4),
+		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
+		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
+		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(2),
+		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>(5),
+		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
+		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(7),
+		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>(8),
+		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
+		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
+		CAN_PCM = new Key<Integer>(20),
+		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
+		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		CAMERA_RESOLUTION_X = new Key<Integer>(320),
+		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
+		CAMERA_EXPOSURE = new Key<Integer>(0),
+		SHIFT_PAUSE = new Key<Integer>(20), // milliseconds
 		
-		GEAR_PUSH_OUT = 2,
-		GEAR_PUSH_IN = 3,
-		
-		BOOPERS_PUSH_OUT = 4,
-		BOOPERS_PULL_IN = 5;
-	}
-	
-	public static final class CAN {
-		public static final int
-		DRIVE_MOTOR_LEFT_FRONT = 6,
-		DRIVE_MOTOR_LEFT_REAR = 3, 
-		DRIVE_MOTOR_RIGHT_FRONT = 2,
-		DRIVE_MOTOR_RIGHT_REAR = 5,
-		
-		SHOOTER_MOTOR_FLYWHEEL1 = 4,
-		SHOOTER_MOTOR_FLYWHEEL2 = 7,
-		SHOOTER_MOTOR_FEED = 8,
-		
-		COLLECTOR_MOTOR = 9,
-		
-		CLIMBER_MOTOR = 10;
-	}
-	
-	public static final class DIO {
-		public static final int
-		GEAR_PUSHER_SENSOR = 0;
-		
-	}
-	
-	public static final class NetworkTable {
-		public static final class Kangaroo {
-			public static final String
-			TABLE_NAME = "kangaroo",
-			VOICE_LOG = "voicelog";
-		}
-	}
-	
-	public static final class Constants {
-		public static final class DriveTrain {
-			public static final double
-			DRIVE_PID_TURN_KP = 0.00686, // max speed at 180 deg of error
-			DRIVE_PID_TURN_KI = 0.00035,
-			DRIVE_PID_TURN_KD = 0.00019,
-			
-			DRIVE_PID_DISTANCE_KP = 0.0139, //8, //10, //12,
-			DRIVE_PID_DISTANCE_KI = 0.0,
-			DRIVE_PID_DISTANCE_KD = 0.0,
-			DRIVE_PID_DISTANCE_MAX = 1.0, // The max percentage of motor power from distance PID
-			
-			DRIVE_PID_SPEED_KP = 0.1, 
-			DRIVE_PID_SPEED_KI = 0.0,
-			DRIVE_PID_SPEED_KD = 1.25,
-			DRIVE_PID_SPEED_KF = 0.37463378906249994,
-			
-			DRIVE_MAX_SPEED_LOW = 337,	// RPM, 70% of true max
-			DRIVE_MAX_SPEED_HIGH = 600,	// RPM, 70% of true max
-			
-			DRIVE_PID_TURN_TOLERANCE = 2.0, // Degrees
-			DRIVE_PID_DIST_TOLERANCE = 3.0, // Inches
-			
-			INCHES_PER_TICK = 0.003;
-			
-			public static final long
-			DRIVE_PID_TURN_WAIT = 100; // milliseconds
-			
-			public static final boolean
-			DRIVE_LEFT_INVERTED = false,
-			DRIVE_RIGHT_INVERTED = true;
+		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
 
-			public static final boolean
-			INVERT_LEFT_ENC = true,
-			INVERT_RIGHT_ENC = false;
+	public final Key<String>
+		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
+		NETWORKTABLE_KANGAROO_VOICE_LOG = new Key<String>("voicelog");
+	
+	public final Key<Double>
+		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.017),
+		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.002),
+		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.005),
+		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
+		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
+		
+		DRIVE_PID_DISTANCE_KP = new Key<Double>(0.023, 0.05),
+		DRIVE_PID_DISTANCE_KI = new Key<Double>(0.002, 0.0),
+		DRIVE_PID_DISTANCE_KD = new Key<Double>(0.02, 0.0),
+		DRIVE_PID_DISTANCE_MAX = new Key<Double>(1.0),
+		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
+		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
+		
+		DRIVE_PID_SPEED_KP = new Key<Double>(0.111, 0.3),
+		DRIVE_PID_SPEED_KI = new Key<Double>(0.0, 0.0), //0.002
+		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
+		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
+		
+		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
+		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
+		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
+		CAMERA_HFOV = new Key<Double>(54.8),
+		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(0.1),
+		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>(0.5),
+		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(3.0),
+		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
+		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
+		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
+		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
+		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
+		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		CLIMBER_FREQ_CUTOFF = new Key<Double>(15.0), // hz
+		CLIMBER_PID_KP = new Key<Double>(0.15),
+		CLIMBER_PID_KI = new Key<Double>(0.0),
+		CLIMBER_PID_KD = new Key<Double>(0.0),
+		CLIMBER_PID_KF = new Key<Double>(0.0),
+		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
+		
+		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_RATE_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
+		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
+		AUTOSHIFT_MIDDLE_THRESHOLD = new Key<Double>(302.0), // RPM
+		AUTOSHIFT_MIDDLE_THRESHOLD_RATE = new Key<Double>(250.0), // delta(RPM)/sec
+		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
+		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
+		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		
+		AUTO_TIME_TO_STOP = new Key<Double>(14.5);
+		
+
+	public final Key<FeedbackDevice> 
+		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);
+
+	public final Key<Boolean>
+		DRIVE_LEFT_MOTOR_INVERTED = new Key<Boolean>(false,true),
+		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true,false),
+		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(true, false),
+		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(false, false),
+		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>(true),
+		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>(true);
+	
+	public final Key<Long>
+		DRIVE_PID_TURN_WAIT = new Key<Long>(100L); // milliseconds
+			
+	private static RobotMap instance = null;
+	
+	private RobotMap() {
+	}
+	
+	public static synchronized RobotMap getInstance() {
+		if (instance == null) {
+			instance = new RobotMap();
+		}
+		return instance;
+	}
+
+	public static class Key<T> {
+		private T practiceValue, realValue;
+		
+		public Key(T practiceRobot, T realRobot) {
+			practiceValue = practiceRobot;
+			realValue = realRobot;
 		}
 		
-		public static final class OI {
-			public static final boolean
-			INVERT_DRIVER_JOSTICK_1 = true,
-			INVERT_DRIVER_JOSTICK_2 = true;
+		public Key(T both) {
+			practiceValue = realValue = both;
 		}
 		
-		public static final int
-		CAMERA_RESOLUTION_X = 320,
-		CAMERA_RESOLUTION_Y = 240,
-		CAMERA_EXPOSURE = 0;
-		
-		public static final double
-		CAMERA_HFOV = 63.0,
-		DRIVE_TO_PEG_OUTPUT_TOLERANCE = 0.1,
-		DRIVE_TO_PEG_MAX_SPEED = 0.5,
-		TURN_TO_PEG_OUTPUT_TOLERANCE = 3;
+		public T get() {
+			if (Robot.isKitBot())
+				return practiceValue;
+			else
+				return realValue;
+		}
 	}
 }

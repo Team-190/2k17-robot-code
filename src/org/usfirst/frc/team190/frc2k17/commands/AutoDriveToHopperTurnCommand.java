@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.commands;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -9,9 +10,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoDriveToHopperCommand extends CommandGroup {
+public class AutoDriveToHopperTurnCommand extends CommandGroup {
 
-    public AutoDriveToHopperCommand() {
+    public AutoDriveToHopperTurnCommand() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -29,8 +30,8 @@ public class AutoDriveToHopperCommand extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	requires(Robot.drivetrain);
-    	addSequential(new DriveStraightForDistanceCommand(32.5));
-    	addSequential(new TurnToDegreesCommand(-30.0));
-    	addSequential(new DriveStraightForDistanceCommand(72.0));
+    	addSequential(new DriveStraightForDistanceHeadingCorrectionCommand(40));
+    	addSequential(new TurnToDegreesCommand(30.0));
+    	addSequential(new DriveStraightForDistanceCommand(126.0));
     }
 }

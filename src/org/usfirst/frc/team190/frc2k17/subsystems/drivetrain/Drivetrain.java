@@ -1,14 +1,14 @@
 
-package org.usfirst.frc.team190.frc2k17.subsystems;
+package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
 
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,19 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final DoubleSolenoid shifters;
-	private final TurningController turningController;
+	private final DriveController turningController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
 	private final AHRS navx;
 	
-	/**
-	 * The gears that the transmission may be shifted into.
-	 */
-	public enum Gear {
-		HIGH, LOW
-	}
 	
 	/**
 	 * Constructor initializes private fields.
@@ -41,15 +34,6 @@ public class Drivetrain extends Subsystem {
 		
 		turningController = new TurningController(navx);
 		distanceController = new DistanceController(srxdrive);
-		shifters = new DoubleSolenoid(RobotMap.PCM.SHIFTERS_SHIFT_HIGH, RobotMap.PCM.SHIFTERS_SHIFT_LOW);
-	}
-	
-	/**
-	 * Get the output of the distance PID loop
-	 * @return Distance PID loop output
-	 */
-	public double getDistanceControlLoopOutput() {
-		return distanceController.getLoopOutput();
 	}
 	
 	/**
@@ -75,19 +59,13 @@ public class Drivetrain extends Subsystem {
 		return distanceController.isOnTarget();
 	}
 	
-	/**
-	 * Get the output of the turning PID loop
-	 * @return Turning PID loop output
-	 */
-	public double getTurningControlLoopOutput() {
-		return turningController.getLoopOutput();
-	}
 	
 	/**
 	 * Enables the turning control loop and resets the navx positions to zero
 	 * @param angle the angle to turn in degrees
 	 */
 	public void enableTurningControl(double angle) {
+		SmartDashboard.putNumber("Degrees to turn", angle);
 		turningController.enable(angle);
 	}
 	
@@ -110,14 +88,22 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the driving control loop's output
 	 */
 	public void controlDistance() {
-		arcadeDrive(getDistanceControlLoopOutput(), 0);
+		arcadeDrive(distanceController.getLoopOutput(), 0);
+	}
+	
+	/**
+	 * Drives the robot based off the driving control loop's output
+	 * @param rotation the rotation value for arcade drive
+	 */
+	public void controlDistance(double rotation) {
+		arcadeDrive(distanceController.getLoopOutput(), rotation);
 	}
 
 	/**
 	 * Drives the robot based off the turning control loop's output
 	 */
 	public void controlTurning() {
-		arcadeDrive(0, getTurningControlLoopOutput());
+		arcadeDrive(0, turningController.getLoopOutput());
 
     	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
 	}
@@ -126,32 +112,29 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
-		arcadeDrive(getTurningControlLoopOutput(), getTurningControlLoopOutput());
+		arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
 		
     	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 	}
 	
-	/**
-	 * Shift the transmission into the specified gear.
-	 * @param gear the gear to shift into
-	 */
-	public void shift(Gear gear){
-		if(gear == Gear.HIGH){
-			shifters.set(Value.kForward);
-		}else if(gear == Gear.LOW){
-			shifters.set(Value.kReverse);
-		}
+	public boolean isMoving() {
+		return navx.isMoving();
 	}
 	
 	/**
 	 * Drive each side of the robot individually
-	 * @param leftSpeed the left speed of the robot
-	 * @param rightSpeed the right speed of the robot
+	 * @param leftSpeed (-1 to 1) the left speed of the robot
+	 * @param rightSpeed (-1 to 1) the right speed of the robot
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		srxdrive.tankDrive(leftSpeed, rightSpeed);
 	}
 	
+	/**
+	 * Drive with arcade drive
+	 * @param moveValue the speed to drive (-1 to 1)
+	 * @param rotateValue the amount of turn (-1 to 1)
+	 */
 	public void arcadeDrive(double moveValue, double rotateValue) {
 		srxdrive.arcadeDrive(moveValue, rotateValue);
 	}
@@ -163,16 +146,40 @@ public class Drivetrain extends Subsystem {
 		srxdrive.outputEncoderValues();
 	}
 	
-	public static double inchesToTicks(double inches) {
-		return inches / RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
-	}
-	
-	public static double ticksToInches(double ticks) {
-		return ticks * RobotMap.Constants.DriveTrain.INCHES_PER_TICK;
+	/**
+	 * Get the average of the last setpoints, in RPM.
+	 * @return the average of the setpoints
+	 */
+	public double getAverageSetpoint() {
+		return srxdrive.getAverageSetpoint();
 	}
 	
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDriveCommand());
+	}
+	
+	public double getLeftRPM() {
+		return srxdrive.getLeftRPM();
+	}
+	
+	public double getRightRPM() {
+		return srxdrive.getRightRPM();
+	}
+	
+	/**
+	 * Set the control mode, either speed or percent vbus.
+	 * @param mode the mode to change to
+	 */
+	public void setControlMode(TalonControlMode mode) {
+		srxdrive.setControlMode(mode);
+	}
+	
+	public void enableCoast(boolean set) {
+		srxdrive.enableCoast(set);
+	}
+	
+	public void diagnose() {
+		srxdrive.diagnose();
 	}
 }
 
