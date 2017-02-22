@@ -30,7 +30,9 @@ public class RobotMap {
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
-		SHIFT_PAUSE = new Key<Integer>(20); // milliseconds
+		SHIFT_PAUSE = new Key<Integer>(20), // milliseconds
+		
+		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
@@ -68,7 +70,15 @@ public class RobotMap {
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
 		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
+		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		CLIMBER_FREQ_CUTOFF = new Key<Double>(15.0), // hz
+		CLIMBER_PID_KP = new Key<Double>(0.15),
+		CLIMBER_PID_KI = new Key<Double>(0.0),
+		CLIMBER_PID_KD = new Key<Double>(0.0),
+		CLIMBER_PID_KF = new Key<Double>(0.0),
+		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
@@ -79,7 +89,9 @@ public class RobotMap {
 		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
 		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
-		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0); // milliseconds
+		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		
+		AUTO_TIME_TO_STOP = new Key<Double>(14.5);
 		
 
 	public final Key<FeedbackDevice> 

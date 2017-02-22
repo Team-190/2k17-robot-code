@@ -21,7 +21,7 @@ import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleComma
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
@@ -111,7 +111,7 @@ public class OI {
 		backButton.whenPressed(new GearCameraLightToggleCommand());
 		povUpTrigger.whileActive(new ClimberClimbCommand());
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
-		yButton.toggleWhenPressed(new ShooterSpinCommand());
+		yButton.toggleWhenPressed(new StartShooterCommand());
 		aButton.whileHeld(new ShooterFeedCommand());
 		xButton.whenPressed(new KickGearCommand());
 		startButton.whenPressed(new GearPlacerToggleCommand());
@@ -131,6 +131,7 @@ public class OI {
 		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
+		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 	}
 	
 	public double getDriverJoystick1X() {
