@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ShooterSpinCommand extends Command {
+public class StartShooterCommand extends Command {
 
-    public ShooterSpinCommand() {
+    public StartShooterCommand() {
     	requires(Robot.shooter);
     }
 
@@ -18,12 +18,11 @@ public class ShooterSpinCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        return Robot.shooter.isAtSpeed();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.shooterOn(0);		// Stop Shooter when end() is called
     }
 
     // Called when another command which requires one or more of the same
