@@ -17,13 +17,13 @@ public class RobotMap {
 		PCM_BOOPERS = new Key<Integer>(4),
 		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
 		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
-		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(2),
+		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(22),
 		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>(5),
 		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
 		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(7),
 		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>(8),
 		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
-		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
+		CAN_CLIMBER_MOTOR = new Key<Integer>(2),
 		CAN_PCM = new Key<Integer>(20),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
 		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
@@ -69,14 +69,14 @@ public class RobotMap {
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
 		
-		CLIMBER_KILL_CURRENT = new Key<Double>(30.0),
+		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		CLIMBER_FREQ_CUTOFF = new Key<Double>(15.0), // hz
-		CLIMBER_PID_KP = new Key<Double>(0.1),
+		CLIMBER_PID_KP = new Key<Double>(0.15),
 		CLIMBER_PID_KI = new Key<Double>(0.0),
 		CLIMBER_PID_KD = new Key<Double>(0.0),
 		CLIMBER_PID_KF = new Key<Double>(0.0),
-		CLIMBER_MAX_CURRENT = new Key<Double>(40.0),
+		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling

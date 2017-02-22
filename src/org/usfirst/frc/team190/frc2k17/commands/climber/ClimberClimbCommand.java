@@ -38,7 +38,7 @@ public class ClimberClimbCommand extends Command {
     		return true;
     	}
     	double current = filter.processNextPoint(Robot.climber.getOutputCurrent());
-    	Logger.defaultLogger.info("Climbing current: " + current);
+    	Logger.defaultLogger.info("Climbing current: " + Robot.climber.getOutputCurrent() + " (filtered: " + current + "), voltage: " + Robot.climber.getOutputVoltage());
     	if(current > RobotMap.getInstance().CLIMBER_KILL_CURRENT.get()) {
     		Logger.defaultLogger.info("Climbing stopped due to current.");
     		return true;

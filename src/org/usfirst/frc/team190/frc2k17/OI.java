@@ -131,6 +131,7 @@ public class OI {
 		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
+		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 	}
 	
 	public double getDriverJoystick1X() {

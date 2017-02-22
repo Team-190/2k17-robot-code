@@ -71,6 +71,10 @@ public class Climber extends Subsystem {
     	return climberMotor.getOutputCurrent();
     }
     
+    public double getOutputVoltage() {
+    	return climberMotor.getOutputVoltage();
+    }
+    
     public boolean isLimitSwitchPressed() {
     	return climberMotor.isFwdLimitSwitchClosed();
     }

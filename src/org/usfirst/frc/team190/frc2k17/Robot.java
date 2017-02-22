@@ -168,7 +168,7 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
-    	return false;
+    	return true;
     }
     
     /**
