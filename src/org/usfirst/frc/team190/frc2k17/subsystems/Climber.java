@@ -16,12 +16,18 @@ public class Climber extends Subsystem {
 	private final CANTalon climberMotor;
 	
 	public enum State {
-		CLIMB(1), STOP(0), SMOKE(-1);
+		CLIMB(1), STOP(0);
 		
 		private final double value;
 		
 		private State(double value) {
-			this.value = value;
+			assert value >= 0 : "Don't drive the climber in reverse!";
+			if(value < 0) {
+				Logger.defaultLogger.error("Don't drive the climber in reverse!");
+				this.value = 0;
+			} else {
+				this.value = value;
+			}
 		}
 		
 		private double getPercentVbusMode() {
@@ -35,6 +41,7 @@ public class Climber extends Subsystem {
 	
 	public Climber(){
 		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
+		climberMotor.ConfigRevLimitSwitchNormallyOpen(false);
 		diagnose();
 	}
 	
