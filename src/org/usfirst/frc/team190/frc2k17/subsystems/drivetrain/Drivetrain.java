@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
@@ -22,7 +23,7 @@ public class Drivetrain extends Subsystem {
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
-	private final AHRS navx;
+	private AHRS navx;
 	
 	
 	/**
@@ -31,8 +32,13 @@ public class Drivetrain extends Subsystem {
 	public Drivetrain(){
 		srxdrive = new SRXDrive();
 		navx = new AHRS(SPI.Port.kMXP);
-		
-		turningController = new TurningController(navx);
+		if(isNavxPresent()) {
+			turningController = new TurningController(navx);
+		} else {
+			navx.free();
+			navx = null;
+			turningController = null;
+		}
 		distanceController = new DistanceController(srxdrive);
 	}
 	
@@ -65,8 +71,12 @@ public class Drivetrain extends Subsystem {
 	 * @param angle the angle to turn in degrees
 	 */
 	public void enableTurningControl(double angle) {
-		SmartDashboard.putNumber("Degrees to turn", angle);
-		turningController.enable(angle);
+		if(isNavxPresent()) {
+			SmartDashboard.putNumber("Degrees to turn", angle);
+			turningController.enable(angle);
+		} else {
+			Logger.defaultLogger.severe("NavX not connected! Not enabling turning control.");
+		}
 	}
 	
 	/**
@@ -81,7 +91,11 @@ public class Drivetrain extends Subsystem {
 	 * @return true if the loop is on target
 	 */
 	public boolean isTurningControlOnTarget() {
-		return turningController.isOnTarget();
+		if(isNavxPresent()) {
+			return turningController.isOnTarget();
+		} else {
+			return true;
+		}
 	}
 	
 	/**
@@ -103,22 +117,28 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the turning control loop's output
 	 */
 	public void controlTurning() {
-		arcadeDrive(0, turningController.getLoopOutput());
-
-    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
+		if(isNavxPresent()) {
+			arcadeDrive(0, turningController.getLoopOutput());
+			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
+		}
 	}
 	
 	/**
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
-		arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
-		
-    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
+		if(isNavxPresent()) {
+			arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
+			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
+		}
 	}
 	
 	public boolean isMoving() {
-		return navx.isMoving();
+		if(isNavxPresent()) {
+			return navx.isMoving();
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -181,5 +201,13 @@ public class Drivetrain extends Subsystem {
 	public void diagnose() {
 		srxdrive.diagnose();
 	}
+	
+	public boolean isNavxPresent() {
+		if(navx == null) {
+			return false;
+		} else {
+			return navx.isConnected();
+		}
+    }
 }
 
