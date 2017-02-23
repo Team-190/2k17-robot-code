@@ -12,6 +12,12 @@ import com.ctre.CANTalon.FeedbackDevice;
 public class RobotMap {
 	public final Key<Integer>
 		PWM_CAMERA_LIGHT = new Key<Integer>(0),
+		PWM_LEDS_LEFT_R = new Key<Integer>(1),
+		PWM_LEDS_LEFT_G = new Key<Integer>(2),
+		PWM_LEDS_LEFT_B = new Key<Integer>(3),
+		PWM_LEDS_RIGHT_R = new Key<Integer>(4),
+		PWM_LEDS_RIGHT_G = new Key<Integer>(5),
+		PWM_LEDS_RIGHT_B = new Key<Integer>(6),
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),

@@ -4,6 +4,7 @@ package org.usfirst.frc.team190.frc2k17;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
+import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
@@ -41,6 +42,7 @@ public class Robot extends IterativeRobot {
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
 	public static OI oi;
+	public static LEDStrip leftLEDs, rightLEDs;
 	
 	private static Compressor compressor;
 	
@@ -70,6 +72,12 @@ public class Robot extends IterativeRobot {
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
 		oi = new OI();
+		leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
+								RobotMap.getInstance().PWM_LEDS_LEFT_G.get(),
+								RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
+		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+								 RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(),
+								 RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
         //SmartDashboard.putData("Auto mode", chooser);
