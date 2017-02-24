@@ -12,6 +12,12 @@ import com.ctre.CANTalon.FeedbackDevice;
 public class RobotMap {
 	public final Key<Integer>
 		PWM_CAMERA_LIGHT = new Key<Integer>(0),
+		PWM_LEDS_LEFT_R = new Key<Integer>(1),
+		PWM_LEDS_LEFT_G = new Key<Integer>(2),
+		PWM_LEDS_LEFT_B = new Key<Integer>(3),
+		PWM_LEDS_RIGHT_R = new Key<Integer>(4),
+		PWM_LEDS_RIGHT_G = new Key<Integer>(5),
+		PWM_LEDS_RIGHT_B = new Key<Integer>(6),
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
@@ -56,6 +62,8 @@ public class RobotMap {
 		DRIVE_PID_SPEED_KI = new Key<Double>(0.0, 0.0), //0.002
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
 		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
+		
+		DRIVE_WHEEL_DIAMETER_INCHES = new Key<Double>(4.0),
 		
 		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
