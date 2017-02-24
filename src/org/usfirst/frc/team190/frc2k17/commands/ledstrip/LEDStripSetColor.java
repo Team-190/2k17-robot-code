@@ -12,8 +12,8 @@ public class LEDStripSetColor extends LEDStripCommand {
         super(subsystem);
         
         this.r = r;
-        this.b = b;
         this.g = g;
+        this.b = b;
     }
 
     protected void initialize() {

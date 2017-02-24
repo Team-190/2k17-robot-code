@@ -133,7 +133,7 @@ public class OI {
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
-		//SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
+		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
 	}
 	
 	public double getDriverJoystick1X() {
