@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
 	public static OI oi;
-	public static LEDStrip leftLEDs, rightLEDs;
+	public static LEDStrip leftLEDs;//, rightLEDs;
 	
 	private static Compressor compressor;
 	
@@ -75,9 +75,9 @@ public class Robot extends IterativeRobot {
 		leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
 								RobotMap.getInstance().PWM_LEDS_LEFT_G.get(),
 								RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
-		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+		/*rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
 								 RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(),
-								 RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
+								 RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());*/
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
         //SmartDashboard.putData("Auto mode", chooser);

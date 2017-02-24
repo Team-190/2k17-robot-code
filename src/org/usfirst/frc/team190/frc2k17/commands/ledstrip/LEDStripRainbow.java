@@ -1,7 +1,5 @@
 package org.usfirst.frc.team190.frc2k17.commands.ledstrip;
 
-import java.awt.Color;
-
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 
 /**
@@ -18,11 +16,14 @@ public class LEDStripRainbow extends LEDStripCommand {
     protected void initialize() {}
 
     protected void execute() {
-    	Color c = Color.getHSBColor(currentHue, 1.0f, 1.0f);
+    	int rgb = LEDStrip.HSBtoRGB(currentHue, 1, 1);
+    	int r = LEDStrip.getRed(rgb);
+    	int g = LEDStrip.getGreen(rgb);
+    	int b = LEDStrip.getBlue(rgb);
     	
-    	strip.setColor(c);
+    	strip.setColor(r, g, b);
     	
-    	currentHue += 0.01f;
+    	currentHue += 0.001f;
     	if (currentHue > 1.0) {
     		currentHue = 0.0f;
     	}
