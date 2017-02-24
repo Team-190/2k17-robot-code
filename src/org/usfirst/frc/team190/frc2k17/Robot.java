@@ -7,6 +7,11 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
@@ -61,6 +66,7 @@ public class Robot extends IterativeRobot {
 		// RobotMap must be initialized before almost anything else.
     	Logger.init();
     	Logger.resetTimestamp();
+    	interceptOutputStream();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
@@ -189,11 +195,35 @@ public class Robot extends IterativeRobot {
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
     	}
+    	if(drivetrain.isNavxPresent()) {
+    		Logger.defaultLogger.info("NavX is present.");
+    	} else {
+    		Logger.defaultLogger.warn("NavX is not connected.");
+    	}
     	drivetrain.diagnose();
     	shooter.diagnose();
     	shooterFeeder.diagnose();
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
+    }
+    
+    private void interceptOutputStream() {
+    	System.setOut(new CustomStream(System.out));
+    }
+    
+    private static class CustomStream extends PrintStream {
+
+    	public CustomStream(OutputStream out) {
+			super(out);
+		}
+    	
+    	@Override
+    	public void println(String s) {
+    		if (!s.contains("navX-MXP SPI Read:  CRC error")){
+    			super.println(s);
+    		}
+    	}
+
     }
 }
