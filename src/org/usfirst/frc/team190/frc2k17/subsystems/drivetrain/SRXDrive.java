@@ -57,6 +57,9 @@ public class SRXDrive {
 			master.reverseSensor(encoderInverted);
 
 			setControlMode(TalonControlMode.Speed);
+			
+			LiveWindow.addActuator("drivetrain", name + " master", master);
+			LiveWindow.addActuator("drivetrain", name + " slave", slave);
 		}
 		
 		public void enableCoast(boolean set) {

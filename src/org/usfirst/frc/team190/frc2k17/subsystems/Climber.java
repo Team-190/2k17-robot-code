@@ -8,6 +8,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -42,6 +43,7 @@ public class Climber extends Subsystem {
 	public Climber(){
 		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
 		climberMotor.ConfigRevLimitSwitchNormallyOpen(false);
+		LiveWindow.addActuator("climber", "climber", climberMotor);
 		diagnose();
 	}
 	

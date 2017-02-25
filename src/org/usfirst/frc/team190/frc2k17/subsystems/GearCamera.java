@@ -8,6 +8,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,6 +28,7 @@ public class GearCamera extends Subsystem {
 	public GearCamera() {
 		spike = new Relay(RobotMap.getInstance().PWM_CAMERA_LIGHT.get());
 		grip = NetworkTable.getTable("/GRIP/frontCameraReport");
+		LiveWindow.addActuator("gear and boopers", "camera light", spike);
 	}
 
 	/**
