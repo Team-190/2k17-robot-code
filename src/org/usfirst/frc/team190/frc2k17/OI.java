@@ -20,7 +20,11 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
+<<<<<<< HEAD
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
+=======
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
+>>>>>>> a846b6082bf118e7d3d7aa92f07140e591f6f46b
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
@@ -136,7 +140,11 @@ public class OI {
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
+<<<<<<< HEAD
 		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
+=======
+		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
+>>>>>>> a846b6082bf118e7d3d7aa92f07140e591f6f46b
 	}
 	
 	public double getDriverJoystick1X() {
