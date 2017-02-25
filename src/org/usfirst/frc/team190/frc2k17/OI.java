@@ -20,6 +20,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
@@ -133,7 +134,9 @@ public class OI {
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
+		
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
+		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 	}
 	
 	public double getDriverJoystick1X() {
