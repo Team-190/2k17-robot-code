@@ -11,6 +11,7 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * Fuel handling and shooting subsystem.
@@ -19,6 +20,12 @@ public class Shooter extends Subsystem {
     
 	private final CANTalon flywheelMotor1, flywheelMotor2, feedMotor;
 	private double requestedSpeed;
+	private final CANTalon flywheelMotor1, flywheelMotor2;
+	private final int f = 0,
+					  p = 0,
+					  i = 0,
+					  d = 0;
+	private int requestedSpeed;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -27,7 +34,6 @@ public class Shooter extends Subsystem {
 		
 		flywheelMotor1 = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FLYWHEEL1.get());
 		flywheelMotor2 = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FLYWHEEL2.get());
-		feedMotor = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FEED.get());
 		
 		flywheelMotor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		flywheelMotor1.configEncoderCodesPerRev(256);
@@ -49,6 +55,7 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.reverseSensor(true);
 		
 		flywheelMotor2.setProfile(0);
+<<<<<<< HEAD
 		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
 		flywheelMotor2.setP(RobotMap.getInstance().SHOOTER_PID_KP.get());
 		flywheelMotor2.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
@@ -61,6 +68,15 @@ public class Shooter extends Subsystem {
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
 		Robot.prefs.putDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
 		Robot.prefs.putDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+=======
+		flywheelMotor2.setF(f);
+		flywheelMotor2.setP(p);
+		flywheelMotor2.setI(i);
+		flywheelMotor2.setD(d);
+		
+		LiveWindow.addActuator("shooting", "flywheel 1", flywheelMotor1);
+		LiveWindow.addActuator("shooting", "flywheel 2", flywheelMotor2);
+>>>>>>> 9861a22e907c3a65276d948f09aa4cd45d283d92
 
 	}
 	
@@ -74,17 +90,8 @@ public class Shooter extends Subsystem {
 		if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
 			Logger.defaultLogger.warn("Shooter flywheel motor has under-voltage sticky bit set.");
 		}
-		if (feedMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Shooter feed motor has over-temperature sticky bit set.");
-		}
-		if (feedMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Shooter feed motor has under-voltage sticky bit set.");
-		}
 		if (!flywheelMotor1.isAlive()) {
 			Logger.defaultLogger.warn("Shooter flywheel motor is stopped by motor safety.");
-		}
-		if (!feedMotor.isAlive()) {
-			Logger.defaultLogger.warn("Shooter feed motor is stopped by motor safety.");
 		}
 		if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
 			Logger.defaultLogger.warn("Shooter flywheel encoder not present.");

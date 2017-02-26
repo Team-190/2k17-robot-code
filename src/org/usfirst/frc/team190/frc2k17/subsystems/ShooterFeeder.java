@@ -7,6 +7,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Agitator.State;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -31,6 +32,7 @@ private final CANTalon motor;
 	
 	public ShooterFeeder() {
 		motor = new CANTalon(RobotMap.getInstance().CAN_SHOOTER_MOTOR_FEED.get());
+		LiveWindow.addActuator("shooting", "feeder", motor);
 	}
 	
 	public void set(State state) {

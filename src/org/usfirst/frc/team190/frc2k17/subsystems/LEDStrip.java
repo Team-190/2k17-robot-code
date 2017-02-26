@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripSetColor;
 
@@ -15,6 +16,7 @@ public class LEDStrip extends Subsystem {
 	private final DigitalOutput rChannel;
 	private final DigitalOutput gChannel;
 	private final DigitalOutput bChannel;
+	private float currentHue = 0;
 
 	/**
 	 * Constructor
@@ -48,21 +50,45 @@ public class LEDStrip extends Subsystem {
     	bChannel.updateDutyCycle(b / 255.0);
     }
     
-    private float hue = 0;
-    public void updateRainbow() {
-    	int rgb = HSBtoRGB(hue, 1, 1);
+    public void setColor(int rgb) {
     	int r = LEDStrip.getRed(rgb);
     	int g = LEDStrip.getGreen(rgb);
     	int b = LEDStrip.getBlue(rgb);
     	
-    	this.setColor(r, g, b);
+    	setColor(r, g, b);
+    }
+    
+    /**
+     * Updates the LED strip to iterate over the hue range
+     */
+    public void updateRainbow() {
+    	int rgb = HSBtoRGB(currentHue, 1, 1);
+    	setColor(rgb);
     	
-    	hue += 0.001f;
-    	if (hue > 1.0) {
-    		hue = 0.0f;
+    	currentHue += 0.001f;
+    	if (currentHue > 1.0) {
+    		currentHue = 0.0f;
     	}
     }
     
+    /**
+     * Generates a random color and sets it
+     */
+    public void setRandomColor() {
+    	int r = (int)(Math.random() * 255);
+    	int g = (int)(Math.random() * 255);
+    	int b = (int)(Math.random() * 255);
+    	
+    	setColor(r, g, b);
+    }
+    
+    /**
+     * Convert a color in HSB space to RGB
+     * @param hue Hue part (0 .. 1)
+     * @param saturation Saturation (0 .. 1)
+     * @param brightness Brightness (0 .. 1)
+     * @return An encoded RGB color (use getRed, getGreen, getBlue to decode)
+     */
     public static int HSBtoRGB(float hue, float saturation, float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
@@ -139,7 +165,7 @@ public class LEDStrip extends Subsystem {
     /**
      * Correct for nonlinearity in human eyes' perception of color
      * @param color Color value (0 - 255)
-     * @return
+     * @return Gamma corrected color value (0 - 255)
      * @see https://learn.adafruit.com/led-tricks-gamma-correction/the-issue
      */
     public static int correctGamma(int color) {
@@ -165,7 +191,7 @@ public class LEDStrip extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new LEDStripSetColor(this, 255, 128, 0));
+        setDefaultCommand(new LEDStripAllianceColor(this));
     }
 }
 

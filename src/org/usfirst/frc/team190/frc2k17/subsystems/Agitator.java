@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Agitator extends Subsystem {
 	
 	public Agitator() {
 		motor = new CANTalon(RobotMap.getInstance().CAN_AGITATOR_MOTOR.get());
+		LiveWindow.addActuator("shooting", "agitator", motor);
 		diagnose();
 	}
 	
