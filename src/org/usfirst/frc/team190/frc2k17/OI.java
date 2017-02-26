@@ -136,6 +136,7 @@ public class OI {
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
+		SmartDashboard.putData("Start Shooter", new StartShooterCommand());
 	}
 	
 	public double getDriverJoystick1X() {

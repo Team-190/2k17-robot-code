@@ -1,6 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.ctre.CANTalon;
@@ -9,6 +10,7 @@ import com.ctre.CANTalon.FeedbackDeviceStatus;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Fuel handling and shooting subsystem.
@@ -16,11 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem {
     
 	private final CANTalon flywheelMotor1, flywheelMotor2, feedMotor;
-	private final int f = 0,
-					  p = 0,
-					  i = 0,
-					  d = 0;
-	private int requestedSpeed;
+	private double requestedSpeed;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -42,16 +40,27 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
 		
 		flywheelMotor1.setProfile(0);
-		flywheelMotor1.setF(f);
-		flywheelMotor1.setP(p);
-		flywheelMotor1.setI(i);
-		flywheelMotor1.setD(d);
+		flywheelMotor1.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
+		flywheelMotor1.setP(RobotMap.getInstance().SHOOTER_PID_KP.get());
+		flywheelMotor1.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
+		flywheelMotor1.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
+		
+		flywheelMotor1.setInverted(true);
+		flywheelMotor1.reverseSensor(true);
 		
 		flywheelMotor2.setProfile(0);
-		flywheelMotor2.setF(f);
-		flywheelMotor2.setP(p);
-		flywheelMotor2.setI(i);
-		flywheelMotor2.setD(d);
+		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
+		flywheelMotor2.setP(RobotMap.getInstance().SHOOTER_PID_KP.get());
+		flywheelMotor2.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
+		flywheelMotor2.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
+		
+		flywheelMotor2.setInverted(true);
+		flywheelMotor2.reverseSensor(true);
+		
+		Robot.prefs.putDouble("Shooter PID F", RobotMap.getInstance().SHOOTER_PID_KF.get());
+		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
+		Robot.prefs.putDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
+		Robot.prefs.putDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
 
 	}
 	
@@ -87,7 +96,9 @@ public class Shooter extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void shooterOn(int flywheelSpeed){
+    public void shooterOn(double flywheelSpeed){
+    	getSmartDashboardPidValues();
+    	
     	requestedSpeed = flywheelSpeed;
     	
     	flywheelMotor1.changeControlMode(TalonControlMode.Speed);
@@ -108,6 +119,22 @@ public class Shooter extends Subsystem {
     public void shooterOff() {
     	flywheelMotor1.set(0);
     	flywheelMotor2.set(0);
+    }
+    
+    public void getSmartDashboardPidValues() {
+    	double f = Robot.prefs.getDouble("Shooter PID F", RobotMap.getInstance().SHOOTER_PID_KF.get());
+    	double p = Robot.prefs.getDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
+    	double i = Robot.prefs.getDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
+    	double d = Robot.prefs.getDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+    	flywheelMotor1.setPID(p, i, d);
+    	flywheelMotor1.setF(f);
+    	flywheelMotor2.setPID(p, i, d);
+    	flywheelMotor2.setF(f);
+    }
+    
+    public void printEncoderValues() {
+    	SmartDashboard.putNumber("Flywheel1 Speed", flywheelMotor1.getSpeed());
+    	SmartDashboard.putNumber("Flywheel2 Speed", flywheelMotor2.getSpeed());
     }
 }
 

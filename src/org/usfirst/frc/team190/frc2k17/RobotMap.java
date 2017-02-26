@@ -97,7 +97,12 @@ public class RobotMap {
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
 		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		
-		AUTO_TIME_TO_STOP = new Key<Double>(14.5);
+		AUTO_TIME_TO_STOP = new Key<Double>(14.5),
+		
+		SHOOTER_PID_KF = new Key<Double>(0.10455),
+		SHOOTER_PID_KP = new Key<Double>(0.0),
+		SHOOTER_PID_KI = new Key<Double>(0.0),
+		SHOOTER_PID_KD = new Key<Double>(0.0);
 		
 
 	public final Key<FeedbackDevice> 
