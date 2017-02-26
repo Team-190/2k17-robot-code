@@ -18,14 +18,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Shooter extends Subsystem {
     
-	private final CANTalon flywheelMotor1, flywheelMotor2, feedMotor;
-	private double requestedSpeed;
 	private final CANTalon flywheelMotor1, flywheelMotor2;
-	private final int f = 0,
-					  p = 0,
-					  i = 0,
-					  d = 0;
-	private int requestedSpeed;
+	private double requestedSpeed;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -55,7 +49,6 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.reverseSensor(true);
 		
 		flywheelMotor2.setProfile(0);
-<<<<<<< HEAD
 		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
 		flywheelMotor2.setP(RobotMap.getInstance().SHOOTER_PID_KP.get());
 		flywheelMotor2.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
@@ -68,15 +61,6 @@ public class Shooter extends Subsystem {
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
 		Robot.prefs.putDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
 		Robot.prefs.putDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
-=======
-		flywheelMotor2.setF(f);
-		flywheelMotor2.setP(p);
-		flywheelMotor2.setI(i);
-		flywheelMotor2.setD(d);
-		
-		LiveWindow.addActuator("shooting", "flywheel 1", flywheelMotor1);
-		LiveWindow.addActuator("shooting", "flywheel 2", flywheelMotor2);
->>>>>>> 9861a22e907c3a65276d948f09aa4cd45d283d92
 
 	}
 	
