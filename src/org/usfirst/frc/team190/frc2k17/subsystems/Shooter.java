@@ -33,11 +33,15 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.configEncoderCodesPerRev(256);
 		flywheelMotor1.configNominalOutputVoltage(+0.0f, -0.0f);
 		flywheelMotor1.configPeakOutputVoltage(+12.0f, -12.0f);
+		flywheelMotor1.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
+		flywheelMotor1.SetVelocityMeasurementWindow(1);
 		
 		flywheelMotor2.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		flywheelMotor2.configEncoderCodesPerRev(256);
 		flywheelMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
 		flywheelMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+		flywheelMotor2.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
+		flywheelMotor2.SetVelocityMeasurementWindow(1);
 		
 		flywheelMotor1.setProfile(0);
 		flywheelMotor1.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
@@ -100,10 +104,9 @@ public class Shooter extends Subsystem {
     }
     
     public boolean isAtSpeed() {
-    	int speed1 = flywheelMotor1.getEncVelocity();
-    	int speed2 = flywheelMotor2.getEncVelocity();
+    	double speed1 = flywheelMotor1.getSpeed();
+    	double speed2 = flywheelMotor2.getSpeed();
     	int rpmTolerance = RobotMap.getInstance().SHOOTER_RPM_TOLERANCE.get();
-    	// TODO: move magicnum to RobotMap
     	return (Math.abs(speed1 - requestedSpeed) <= rpmTolerance) && (Math.abs(speed2 - requestedSpeed) <= rpmTolerance);
     }
     
