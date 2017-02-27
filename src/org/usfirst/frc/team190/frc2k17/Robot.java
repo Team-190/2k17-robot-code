@@ -51,6 +51,9 @@ public class Robot extends IterativeRobot {
 	public static LEDStrip leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
 												   RobotMap.getInstance().PWM_LEDS_LEFT_G.get(),
 												   RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
+	public static LEDStrip rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+			   										RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(),
+		   											RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
 	
 	private static Compressor compressor;
 	

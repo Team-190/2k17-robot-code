@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import org.usfirst.frc.team190.frc2k17.Color;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripSetColor;
@@ -48,6 +49,10 @@ public class LEDStrip extends Subsystem {
     	rChannel.updateDutyCycle(r / 255.0);
     	gChannel.updateDutyCycle(g / 255.0);
     	bChannel.updateDutyCycle(b / 255.0);
+    }
+    
+    public void setColor(Color color) {
+    	setColor(color.get());
     }
     
     public void setColor(int rgb) {

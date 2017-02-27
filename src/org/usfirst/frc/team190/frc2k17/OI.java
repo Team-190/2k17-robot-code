@@ -21,8 +21,9 @@ import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleComma
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
-import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
