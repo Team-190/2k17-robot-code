@@ -13,14 +13,17 @@ public class LEDStripBlink extends LEDStripCommand {
 
 	boolean on;
 	Timer timer;
+	Color color;
 	
-    public LEDStripBlink(LEDStrip subsystem) {
+    public LEDStripBlink(LEDStrip subsystem, Color color) {
     	super(subsystem);
-    	timer = new Timer();
+    	this.color = color;
     }
     
     protected void initialize() {
     	strip.setColor(0);
+    	on = false;
+    	timer = new Timer();
     	timer.schedule(new TimerTask() {
 
 			@Override
@@ -29,7 +32,7 @@ public class LEDStripBlink extends LEDStripCommand {
 					strip.setColor(0);
 					on = false;
 				} else {
-					strip.setColor(Color.MAGENTA);
+					strip.setColor(color);
 					on = true;
 				}
 			}

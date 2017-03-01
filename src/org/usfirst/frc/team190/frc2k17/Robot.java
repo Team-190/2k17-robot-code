@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -96,6 +97,8 @@ public class Robot extends IterativeRobot {
 		
 		compressor = new Compressor();
 		diagnose();
+		leftLEDs.setColor(Color.YELLOW);
+    	rightLEDs.setColor(Color.YELLOW);
     }
 	
 	/**
@@ -113,8 +116,8 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		
-		// Make LEDs go rainbow in disabled
 		leftLEDs.updateRainbow();
+    	rightLEDs.updateRainbow();
 	}
 
 	/**
@@ -129,6 +132,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
+    	
         //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");

@@ -2,7 +2,7 @@ package org.usfirst.frc.team190.frc2k17;
 
 public class Color {
 	
-	int value;
+	private int r, g, b;
 
 	/**
      * The color white.  In the default sRGB space.
@@ -42,12 +42,7 @@ public class Color {
     /**
      * The color orange.  In the default sRGB space.
      */
-    public final static Color ORANGE = new Color(255, 200, 0);
-
-    /**
-     * The color yellow.  In the default sRGB space.
-     */
-    public final static Color YELLOW = new Color(255, 255, 0);
+    public final static Color YELLOW = new Color(255, 200, 0);
 
     /**
      * The color green.  In the default sRGB space.
@@ -55,9 +50,9 @@ public class Color {
     public final static Color GREEN = new Color(0, 255, 0);
 
     /**
-     * The color magenta.  In the default sRGB space.
+     * The color magenta, fixed to look better on the LED strips.
      */
-    public final static Color MAGENTA = new Color(255, 0, 255);
+    public final static Color MAGENTA = new Color(255, 0, 100);
 
     /**
      * The color cyan.  In the default sRGB space.
@@ -70,11 +65,21 @@ public class Color {
     public final static Color BLUE = new Color(0, 0, 255);
 
 	public Color(int r, int g, int b) {
-		this.value = (Math.max(255, r) << 4) & (Math.max(255, g) << 2) & (Math.max(255, b));
+		this.r = Math.min(255, r);
+	    this.g = Math.min(255, g);
+	    this.b = Math.min(255, b);
 	}
 	
-	public int get() {
-		return value;
+	public int getR() {
+		return r;
+	}
+	
+	public int getG() {
+		return g;
+	}
+	
+	public int getB() {
+		return b;
 	}
 
 }

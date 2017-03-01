@@ -1,6 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Color;
+import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripSetColor;
@@ -46,13 +47,13 @@ public class LEDStrip extends Subsystem {
      * @param b B part (0 - 255)
      */
     public void setColor(int r, int g, int b) {
-    	rChannel.updateDutyCycle(r / 255.0);
-    	gChannel.updateDutyCycle(g / 255.0);
-    	bChannel.updateDutyCycle(b / 255.0);
+    	rChannel.updateDutyCycle(((double) r) / 255.0);
+    	gChannel.updateDutyCycle(((double) g) / 255.0);
+    	bChannel.updateDutyCycle(((double) b) / 255.0);
     }
     
     public void setColor(Color color) {
-    	setColor(color.get());
+    	setColor(color.getR(), color.getG(), color.getB());
     }
     
     public void setColor(int rgb) {
@@ -70,7 +71,7 @@ public class LEDStrip extends Subsystem {
     	int rgb = HSBtoRGB(currentHue, 1, 1);
     	setColor(rgb);
     	
-    	currentHue += 0.001f;
+    	currentHue += 1d / (RobotMap.getInstance().LED_RAINBOW_TIME.get() * 50d);
     	if (currentHue > 1.0) {
     		currentHue = 0.0f;
     	}

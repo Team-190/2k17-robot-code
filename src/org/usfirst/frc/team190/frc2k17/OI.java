@@ -137,7 +137,7 @@ public class OI {
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		
-		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink());
+		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
 		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
 		SmartDashboard.putData("Start Shooter", new StartShooterCommand());
