@@ -45,6 +45,9 @@ public class RobotMap {
 		NETWORKTABLE_KANGAROO_VOICE_LOG = new Key<String>("voicelog");
 	
 	public final Key<Double>
+	
+		ROBOT_MAIN_LOOP_RATE = new  Key<Double>(50.0), // hz
+	
 		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.017),
 		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.002),
 		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.005),
@@ -91,7 +94,7 @@ public class RobotMap {
 		CLIMBER_PID_KF = new Key<Double>(0.0),
 		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
 		
-		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
+		AUTOSHIFT_SAMPLE_RATE = ROBOT_MAIN_LOOP_RATE, // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
 		AUTOSHIFT_RATE_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
 		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
@@ -104,6 +107,7 @@ public class RobotMap {
 		
 		AUTO_TIME_TO_STOP = new Key<Double>(14.5),
 		LED_RAINBOW_TIME = new Key<Double>(5.0),
+		LED_RAINBOW_REFRESH_RATE = ROBOT_MAIN_LOOP_RATE, // hz
 		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
 		
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
