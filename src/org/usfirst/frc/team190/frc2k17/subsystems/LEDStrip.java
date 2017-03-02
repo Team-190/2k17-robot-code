@@ -1,6 +1,9 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
+import java.util.concurrent.Semaphore;
+
 import org.usfirst.frc.team190.frc2k17.Color;
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
@@ -20,6 +23,7 @@ public class LEDStrip extends Subsystem {
 	private final DigitalOutput bChannel;
 	private float currentHue = 0;
 	private boolean override;
+	private Semaphore overrideSem;
 
 	/**
 	 * Constructor
@@ -28,6 +32,9 @@ public class LEDStrip extends Subsystem {
 	 * @param b The DIO port for the B channel
 	 */
     public LEDStrip(int r, int g, int b) {
+    	override = false;
+    	overrideSem = new Semaphore(1);
+    	
     	rChannel = new DigitalOutput(r);
     	gChannel = new DigitalOutput(g);
     	bChannel = new DigitalOutput(b);
@@ -60,11 +67,22 @@ public class LEDStrip extends Subsystem {
     }
     
     public void setColor(int rgb) {
+		while (true) {
+			try {
+				overrideSem.acquire();
+			} catch (InterruptedException e) {
+				continue;
+			}
+			break;
+		}
+		
     	int r = LEDStrip.getRed(rgb);
     	int g = LEDStrip.getGreen(rgb);
     	int b = LEDStrip.getBlue(rgb);
     	
     	setColor(r, g, b);
+    	
+    	overrideSem.release();
     }
     
     /**
@@ -96,8 +114,24 @@ public class LEDStrip extends Subsystem {
      * @param color the color to set
      */
     public void override(Color color) {
-    	setColor(color);
-    	override = true;
+    	while (true) {
+			try {
+				overrideSem.acquire();
+			} catch (InterruptedException e) {
+				continue;
+			}
+			break;
+		}
+		try {
+			if (!override) {
+				override = true;
+				rChannel.updateDutyCycle(((double) color.getR()) / 255.0);
+				gChannel.updateDutyCycle(((double) color.getG()) / 255.0);
+				bChannel.updateDutyCycle(((double) color.getB()) / 255.0);
+			}
+		} finally {
+			overrideSem.release();
+		}
     }
     
     /**

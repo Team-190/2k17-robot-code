@@ -42,7 +42,7 @@ public class Color {
     /**
      * The color orange.  In the default sRGB space.
      */
-    public final static Color YELLOW = new Color(255, 200, 0);
+    public final static Color YELLOW = new Color(255, 170, 0);
 
     /**
      * The color green.  In the default sRGB space.
