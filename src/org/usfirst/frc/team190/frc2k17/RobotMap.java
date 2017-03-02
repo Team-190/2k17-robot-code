@@ -21,8 +21,8 @@ public class RobotMap {
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
-		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
-		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
+		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(3, 6),
+		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(6, 3),
 		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(2),
 		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>(5),
 		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
@@ -123,6 +123,8 @@ public class RobotMap {
 		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>(true);
 	
 	public final Key<Long>
+		// ROBOT_COMMS_TIMEOUT is potentially safety-related, be very careful and test thoroughly when changing
+		ROBOT_COMMS_TIMEOUT = new Key<Long>(150L), // milliseconds
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L); // milliseconds
 			
 	private static RobotMap instance = null;

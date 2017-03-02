@@ -6,13 +6,10 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
-import java.io.File;
-import java.io.FileNotFoundException;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
@@ -24,8 +21,12 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.hal.HAL;
+import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
+import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -38,7 +39,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static Preferences prefs;
-	
 	public static Drivetrain drivetrain;
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
@@ -48,19 +48,15 @@ public class Robot extends IterativeRobot {
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
-	public static OI oi;
-	public static LEDStrip leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
-												   RobotMap.getInstance().PWM_LEDS_LEFT_G.get(),
-												   RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
-	public static LEDStrip rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
-			   										RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(),
-		   											RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
-	
+	public static LEDStrip leftLEDs;
+	public static LEDStrip rightLEDs;
 	private static Compressor compressor;
 	
-    Command autonomousCommand;
+	public static OI oi;
+	
+    private Command autonomousCommand;
     //SendableChooser chooser;
-        
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -84,6 +80,12 @@ public class Robot extends IterativeRobot {
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
+		leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
+				RobotMap.getInstance().PWM_LEDS_LEFT_G.get(), RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
+		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+				RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(), RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
+		compressor = new Compressor();
+		// OI must be initialized last
 		oi = new OI();
 		
         //chooser = new SendableChooser();
@@ -95,10 +97,7 @@ public class Robot extends IterativeRobot {
 							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
 		
-		compressor = new Compressor();
 		diagnose();
-		leftLEDs.setColor(Color.YELLOW);
-    	rightLEDs.setColor(Color.YELLOW);
     }
 	
 	/**
@@ -107,6 +106,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
+    	Logger.lowLogger.trace("disabledInit at " + Utility.getFPGATime());
     	Logger.defaultLogger.info("Robot Disabled.");
     	Logger.kangarooVoice.info("disabled");
     	
@@ -114,6 +114,7 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
+		Logger.lowLogger.trace("disabledPeriodic at " + Utility.getFPGATime());
 		Scheduler.getInstance().run();
 		
 		leftLEDs.updateRainbow();
@@ -130,6 +131,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+    	Logger.lowLogger.trace("autonomousInit at " + Utility.getFPGATime());
     	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
     	
@@ -154,27 +156,25 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	Logger.lowLogger.trace("autonomousPeriodic at " + Utility.getFPGATime());
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
+    	Logger.lowLogger.trace("teleopInit at " + Utility.getFPGATime());
     	Logger.kangarooVoice.info("teleop");
     	Logger.defaultLogger.info("Teleop mode started.");
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-    	
+
     	compressor.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
-        //if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	Logger.lowLogger.trace("teleopPeriodic at " + Utility.getFPGATime());
 		drivetrain.outputEncoderValues();
         Scheduler.getInstance().run();        
     }
@@ -183,7 +183,177 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
+    	Logger.lowLogger.trace("testPeriodic at " + Utility.getFPGATime());
         LiveWindow.run();
+    }
+    
+    /**
+     * Called once when the robot realizes that the driver station has become disconnected.
+     * Think about safety, do not actuate anything here!
+     */
+    public void disconnectedInit() {
+    	Logger.lowLogger.trace("disconnectedInit at " + Utility.getFPGATime());
+    	Logger.defaultLogger.warn("Driver station disconnected.");
+    	leftLEDs.override(Color.YELLOW);
+    	rightLEDs.override(Color.YELLOW);
+    }
+    
+    /**
+     * Called periodically when the driver station has lost connection.
+     * Think about safety, do not actuate anything here!
+     */
+    public void disconnectedPeriodic() {
+    	Logger.lowLogger.trace("disconnectedPeriodic at " + Utility.getFPGATime());
+    	
+    }
+    
+    /**
+     * Called once when the driver station becomes connected.
+     */
+    public void connected() {
+    	(new LEDStripsQuickBlink(Color.MAGENTA)).start();
+    }
+    
+	/**
+	 * Overrides main robot loop from IterativeRobot
+	 */
+	public void startCompetition() {
+		boolean disabledInitialized = false;
+		boolean autonomousInitialized = false;
+		boolean teleopInitialized = false;
+		boolean testInitialized = false;
+		boolean disconnectedInitialized = false;
+		double sleepTime = 1d / RobotMap.getInstance().ROBOT_MAIN_LOOP_RATE.get();
+		long lastReceivedDSPacket = 0L;
+		long timeoutMicros = RobotMap.getInstance().ROBOT_COMMS_TIMEOUT.get() * 1000L;
+		
+		Logger.defaultLogger.trace("Robot comms timeout configured to " + timeoutMicros + " microseconds.");
+		Logger.defaultLogger.trace("Robot main loop sleep time configured to " + sleepTime + " seconds.");
+		
+		HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
+
+		robotInit();
+
+		// Tell the DS that the robot is ready to be enabled
+		HAL.observeUserProgramStarting();
+
+		// loop forever, calling the appropriate mode-dependent function
+		LiveWindow.setEnabled(false);
+		long currentTime;
+		while (true) {
+			currentTime = Utility.getFPGATime();
+			// sleep for the appropriate amount of time so that the loop runs
+			// at the frequency specified in RobotMap
+			sleep(sleepTime);
+			if (m_ds.isNewControlData()) {
+				Logger.lowLogger.trace("packet received sometime in the last loop, at " + Utility.getFPGATime());
+				leftLEDs.disableOverride();
+				rightLEDs.disableOverride();
+				disconnectedInitialized = false;
+				lastReceivedDSPacket = currentTime;
+			}
+			if (currentTime < lastReceivedDSPacket + timeoutMicros) {
+				Logger.lowLogger.trace("iteration of main loop at " + Utility.getFPGATime());
+				// Call the appropriate function depending upon the current robot
+				// mode
+				if (isDisabled()) {
+					// call DisabledInit() if we are now just entering disabled mode
+					// from
+					// either a different mode or from power-on
+					if (!disabledInitialized) {
+						LiveWindow.setEnabled(false);
+						disabledInit();
+						disabledInitialized = true;
+						// reset the initialization flags for the other modes
+						autonomousInitialized = false;
+						teleopInitialized = false;
+						testInitialized = false;
+					}
+					HAL.observeUserProgramDisabled();
+					disabledPeriodic();
+				} else if (isTest()) {
+					// call TestInit() if we are now just entering test mode from
+					// either
+					// a different mode or from power-on
+					if (!testInitialized) {
+						LiveWindow.setEnabled(true);
+						testInit();
+						testInitialized = true;
+						autonomousInitialized = false;
+						teleopInitialized = false;
+						disabledInitialized = false;
+					}
+					HAL.observeUserProgramTest();
+					testPeriodic();
+				} else if (isAutonomous()) {
+					// call Autonomous_Init() if this is the first time
+					// we've entered autonomous_mode
+					if (!autonomousInitialized) {
+						LiveWindow.setEnabled(false);
+						// KBS NOTE: old code reset all PWMs and relays to "safe
+						// values"
+						// whenever entering autonomous mode, before calling
+						// "Autonomous_Init()"
+						autonomousInit();
+						autonomousInitialized = true;
+						testInitialized = false;
+						teleopInitialized = false;
+						disabledInitialized = false;
+					}
+					HAL.observeUserProgramAutonomous();
+					autonomousPeriodic();
+				} else {
+					// call Teleop_Init() if this is the first time
+					// we've entered teleop_mode
+					if (!teleopInitialized) {
+						LiveWindow.setEnabled(false);
+						teleopInit();
+						teleopInitialized = true;
+						testInitialized = false;
+						autonomousInitialized = false;
+						disabledInitialized = false;
+					}
+					HAL.observeUserProgramTeleop();
+					teleopPeriodic();
+				}
+				robotPeriodic();
+			} else {
+				Logger.lowLogger.trace("iteration of disconnected loop at " + Utility.getFPGATime());
+				if (!disconnectedInitialized) {
+					disconnectedInit();
+					disconnectedInitialized = true;
+				}
+				disconnectedPeriodic();
+			}
+		}
+	}
+    
+    /**
+     * Sleep for a certain number of seconds
+     * @param timeout the number of seconds to sleep
+     * 
+     */
+    private void sleep(double timeout) {
+    	long startTime = Utility.getFPGATime();
+        long timeoutMicros = (long)(timeout * 1000000);
+        if(!(timeout > 0)) {
+        	return;
+        }
+        while (true) {
+        	long now = Utility.getFPGATime();
+        	if (now < startTime + timeoutMicros) {
+        		// We still have time to wait
+        		long microsLeft = startTime + timeoutMicros - now;
+        		try {
+        			Thread.sleep(microsLeft / 1000L, (int) ((microsLeft % 1000L) * 1000L));
+        		} catch (InterruptedException ex) {
+        			// do nothing
+        		}
+        	} else {
+        		// Time has elapsed.
+        		return;
+        	}
+        }
     }
     
     /**
