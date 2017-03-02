@@ -19,6 +19,7 @@ public class LEDStrip extends Subsystem {
 	private final DigitalOutput gChannel;
 	private final DigitalOutput bChannel;
 	private float currentHue = 0;
+	private boolean override;
 
 	/**
 	 * Constructor
@@ -47,9 +48,11 @@ public class LEDStrip extends Subsystem {
      * @param b B part (0 - 255)
      */
     public void setColor(int r, int g, int b) {
-    	rChannel.updateDutyCycle(((double) r) / 255.0);
-    	gChannel.updateDutyCycle(((double) g) / 255.0);
-    	bChannel.updateDutyCycle(((double) b) / 255.0);
+    	if(!override) {
+    		rChannel.updateDutyCycle(((double) r) / 255.0);
+    		gChannel.updateDutyCycle(((double) g) / 255.0);
+    		bChannel.updateDutyCycle(((double) b) / 255.0);
+    	}
     }
     
     public void setColor(Color color) {
@@ -71,7 +74,7 @@ public class LEDStrip extends Subsystem {
     	int rgb = HSBtoRGB(currentHue, 1, 1);
     	setColor(rgb);
     	
-    	currentHue += 1d / (RobotMap.getInstance().LED_RAINBOW_TIME.get() * 50d);
+    	currentHue += 1d / (RobotMap.getInstance().LED_RAINBOW_TIME.get() * RobotMap.getInstance().LED_RAINBOW_REFRESH_RATE.get());
     	if (currentHue > 1.0) {
     		currentHue = 0.0f;
     	}
@@ -86,6 +89,14 @@ public class LEDStrip extends Subsystem {
     	int b = (int)(Math.random() * 255);
     	
     	setColor(r, g, b);
+    }
+    
+    /**
+     * Enable/disable override.
+     * @param override whether override should be enabled or disabled
+     */
+    public void setOverride(boolean override) {
+    	this.override = override;;
     }
     
     /**

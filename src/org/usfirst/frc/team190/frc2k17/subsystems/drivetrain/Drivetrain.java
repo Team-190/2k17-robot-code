@@ -83,7 +83,9 @@ public class Drivetrain extends Subsystem {
 	 * Disables the turning control loop
 	 */
 	public void disableTurningControl() {
-		turningController.disable();
+		if(turningController != null) {
+			turningController.disable();
+		}
 	}
 	
 	/**
@@ -130,6 +132,8 @@ public class Drivetrain extends Subsystem {
 		if(isNavxPresent()) {
 			arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
 			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
+		} else {
+			controlDistance(0);
 		}
 	}
 	

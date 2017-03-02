@@ -40,7 +40,7 @@ public class LEDStripQuickBlink extends LEDStripCommand {
 				}
 			}
     		
-    	}, 0, 50);
+    	}, 0, 100);
     }
     
 	protected boolean isFinished() {
