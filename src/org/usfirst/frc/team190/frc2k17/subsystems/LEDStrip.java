@@ -92,11 +92,19 @@ public class LEDStrip extends Subsystem {
     }
     
     /**
-     * Enable/disable override.
-     * @param override whether override should be enabled or disabled
+     * Set to the specified color and then enable override.
+     * @param color the color to set
      */
-    public void setOverride(boolean override) {
-    	this.override = override;;
+    public void override(Color color) {
+    	setColor(color);
+    	override = true;
+    }
+    
+    /**
+     * Disable override.
+     */
+    public void disableOverride() {
+    	override = false;
     }
     
     /**
