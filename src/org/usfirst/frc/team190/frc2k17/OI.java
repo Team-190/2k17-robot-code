@@ -22,6 +22,7 @@ import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGro
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
@@ -136,8 +137,8 @@ public class OI {
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
 		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
-		
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
+		SmartDashboard.putData("Peg Assist", new PegAssist());
 		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
 		SmartDashboard.putData("Start Shooter", new StartShooterCommand());

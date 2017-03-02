@@ -26,7 +26,7 @@ public class GearCamera extends Subsystem {
 	private boolean pegIsVisible;
 
 	public GearCamera() {
-		spike = new Relay(RobotMap.getInstance().PWM_CAMERA_LIGHT.get());
+		spike = new Relay(RobotMap.getInstance().RELAY_CAMERA_LIGHT.get());
 		grip = NetworkTable.getTable("/GRIP/frontCameraReport");
 		LiveWindow.addActuator("gear and boopers", "camera light", spike);
 	}

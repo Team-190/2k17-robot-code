@@ -11,7 +11,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  */
 public class RobotMap {
 	public final Key<Integer>
-		PWM_CAMERA_LIGHT = new Key<Integer>(0),
+		RELAY_CAMERA_LIGHT = new Key<Integer>(0),
 		PWM_LEDS_LEFT_R = new Key<Integer>(1),
 		PWM_LEDS_LEFT_G = new Key<Integer>(2),
 		PWM_LEDS_LEFT_B = new Key<Integer>(3),
@@ -104,6 +104,7 @@ public class RobotMap {
 		LED_RAINBOW_TIME = new Key<Double>(5.0),
 		LED_RAINBOW_REFRESH_RATE = ROBOT_MAIN_LOOP_RATE, // hz
 		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
+		PEGASSIST_TOLERANCE = new Key<Double>(1.0), // degrees
 		
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
 		SHOOTER_PID_KP = new Key<Double>(0.0),
@@ -125,7 +126,8 @@ public class RobotMap {
 	public final Key<Long>
 		// ROBOT_COMMS_TIMEOUT is potentially safety-related, be very careful and test thoroughly when changing
 		ROBOT_COMMS_TIMEOUT = new Key<Long>(150L), // milliseconds
-		DRIVE_PID_TURN_WAIT = new Key<Long>(100L); // milliseconds
+		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
+		PEGASSIST_REFRESH_TIME = new Key<Long>(300L); // milliseconds
 			
 	private static RobotMap instance = null;
 	
