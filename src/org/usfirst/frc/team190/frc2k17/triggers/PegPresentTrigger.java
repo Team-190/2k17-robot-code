@@ -8,8 +8,14 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  *
  */
 public class PegPresentTrigger extends Trigger {
+	
+	private static boolean enabled = true;
 
+	public static void setEnabled(boolean enabled) {
+		PegPresentTrigger.enabled = enabled;
+	}
+	
     public boolean get() {
-        return Robot.gearPlacer.getPegPresent();
+        return enabled && Robot.gearPlacer.getPegPresent();
     }
 }

@@ -3,11 +3,13 @@ package org.usfirst.frc.team190.frc2k17;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Logger {
 	
 	public static final Logger defaultLogger = new Logger(new StdOutputter());
+	public static final Logger lowLogger = new Logger(new BlackHole());
 	public static Logger kangarooVoice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
@@ -120,11 +122,30 @@ public class Logger {
 		public void output(Message msg);
 	}
 	
+	/**
+	 * Use BlackHole when you want a logger to discard all messages.
+	 */
+	private static class BlackHole implements Outputter {
+
+		@Override
+		public void output(Message msg) {
+			// do absolutely nothing!
+			// the message is jettisoned into the void, never to be seen again.
+		}
+		
+	}
+	
 	private static class StdOutputter implements Outputter {
 
 		@Override
 		public void output(Message msg){
 			System.out.println((System.currentTimeMillis() - beginningOfTime) + " [" + msg.getLevel() + "] " + msg.getMessage());
+			if(msg.getLevel() == Level.WARN) {
+				DriverStation.reportWarning(msg.getMessage(), false);
+			}
+			if(msg.getLevel() == Level.ERROR || msg.getLevel() == Level.SEVERE || msg.getLevel() == Level.CRITICAL) {
+				DriverStation.reportError(msg.getMessage(), false);
+			}
 		}
 		
 	}

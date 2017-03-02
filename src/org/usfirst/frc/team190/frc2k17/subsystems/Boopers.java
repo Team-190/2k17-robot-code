@@ -7,6 +7,7 @@ import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperToggleCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -31,6 +32,7 @@ public class Boopers extends Subsystem {
 
 	public Boopers() {
 		solenoid = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_BOOPERS.get());
+		LiveWindow.addActuator("gear and boopers", "boopers", solenoid);
 	}
 
 	public void initDefaultCommand() {

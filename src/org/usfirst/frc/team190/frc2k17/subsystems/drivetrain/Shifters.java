@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Shifters extends Subsystem {
 	public Shifters() {
 		shifter = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_SHIFTER.get());
 		shift(Gear.LOW);
+		LiveWindow.addActuator("drivetrain", "shifters", shifter);
 	}
     
 	public void initDefaultCommand() {

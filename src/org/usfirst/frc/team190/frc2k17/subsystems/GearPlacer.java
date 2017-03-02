@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * This class handles the Gear Placer pneumatic device and the sensor
@@ -33,6 +34,8 @@ public class GearPlacer extends Subsystem {
 	public GearPlacer() {
 		solenoid = new Solenoid(RobotMap.getInstance().CAN_PCM.get(),RobotMap.getInstance().PCM_GEAR_PUSHER.get());
 		pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
+		LiveWindow.addActuator("gear and boopers", "gear placer", solenoid);
+		LiveWindow.addSensor("gear and boopers", "gear limit switch", pegPresenceSensor);
 		diagnose();
 	}
 

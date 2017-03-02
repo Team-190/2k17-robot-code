@@ -12,6 +12,12 @@ import com.ctre.CANTalon.FeedbackDevice;
 public class RobotMap {
 	public final Key<Integer>
 		PWM_CAMERA_LIGHT = new Key<Integer>(0),
+		PWM_LEDS_LEFT_R = new Key<Integer>(1),
+		PWM_LEDS_LEFT_G = new Key<Integer>(2),
+		PWM_LEDS_LEFT_B = new Key<Integer>(3),
+		PWM_LEDS_RIGHT_R = new Key<Integer>(4),
+		PWM_LEDS_RIGHT_G = new Key<Integer>(5),
+		PWM_LEDS_RIGHT_B = new Key<Integer>(6),
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
@@ -57,6 +63,8 @@ public class RobotMap {
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
 		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
 		
+		DRIVE_WHEEL_DIAMETER_INCHES = new Key<Double>(4.0),
+		
 		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
@@ -74,14 +82,14 @@ public class RobotMap {
 		DRIVE_CURVE_WHEEL_DIAMETER = new Key<Double>(4.0),
 		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_CURVE_WHEEL_DIAMETER.get()),
 		
-		CLIMBER_KILL_CURRENT = new Key<Double>(30.0),
+		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		CLIMBER_FREQ_CUTOFF = new Key<Double>(15.0), // hz
-		CLIMBER_PID_KP = new Key<Double>(0.1),
+		CLIMBER_PID_KP = new Key<Double>(0.15),
 		CLIMBER_PID_KI = new Key<Double>(0.0),
 		CLIMBER_PID_KD = new Key<Double>(0.0),
 		CLIMBER_PID_KF = new Key<Double>(0.0),
-		CLIMBER_MAX_CURRENT = new Key<Double>(40.0),
+		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling
@@ -94,7 +102,14 @@ public class RobotMap {
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
 		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		
-		AUTO_TIME_TO_STOP = new Key<Double>(14.5);
+		AUTO_TIME_TO_STOP = new Key<Double>(14.5),
+		LED_RAINBOW_TIME = new Key<Double>(5.0),
+		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
+		
+		SHOOTER_PID_KF = new Key<Double>(0.10455),
+		SHOOTER_PID_KP = new Key<Double>(0.0),
+		SHOOTER_PID_KI = new Key<Double>(0.0),
+		SHOOTER_PID_KD = new Key<Double>(0.0);
 
 	public final Key<FeedbackDevice> 
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);

@@ -57,6 +57,9 @@ public class SRXDrive {
 			master.reverseSensor(encoderInverted);
 
 			setControlMode(TalonControlMode.Speed);
+			
+			LiveWindow.addActuator("drivetrain", name + " master", master);
+			LiveWindow.addActuator("drivetrain", name + " slave", slave);
 		}
 		
 		public void enableCoast(boolean set) {
@@ -143,8 +146,8 @@ public class SRXDrive {
 		 * @return encoder position in inches
 		 */
 		public double getEncoderPosition() {
-			double pos = ticksToInches(master.getEncPosition());
-			return encoderInverted ? -pos : pos;
+			double pos = rotationsToInches(master.getPosition());
+			return pos;
 		}
 		
 		/**
@@ -152,25 +155,15 @@ public class SRXDrive {
 		 * @param position position in inches
 		 */
 		public void setEncoderPosition(int position) {
-			master.setEncPosition(position);
+			master.setPosition(position);
 		}
-		
-		/**
-		 * Converts inches to encoder ticks
-		 * @param inches
-		 * @return encoder ticks
-		 */
-		private double inchesToTicks(double inches) {
-			return inches / (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
-		}
-		
 		/**
 		 * Converts encoder ticks to inches
 		 * @param encoder ticks
 		 * @return inches
 		 */
-		private double ticksToInches(double ticks) {
-			return ticks * (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+		private double rotationsToInches(double rotations) {
+			return rotations * (Math.PI * RobotMap.getInstance().DRIVE_WHEEL_DIAMETER_INCHES.get());
 		}
 		
 		/**

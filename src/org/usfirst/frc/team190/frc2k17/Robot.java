@@ -4,7 +4,15 @@ package org.usfirst.frc.team190.frc2k17;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
+import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
@@ -41,6 +49,12 @@ public class Robot extends IterativeRobot {
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
 	public static OI oi;
+	public static LEDStrip leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
+												   RobotMap.getInstance().PWM_LEDS_LEFT_G.get(),
+												   RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
+	public static LEDStrip rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+			   										RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(),
+		   											RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
 	
 	private static Compressor compressor;
 	
@@ -56,6 +70,7 @@ public class Robot extends IterativeRobot {
 		// RobotMap must be initialized before almost anything else.
     	Logger.init();
     	Logger.resetTimestamp();
+    	interceptOutputStream();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
@@ -70,6 +85,7 @@ public class Robot extends IterativeRobot {
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
 		oi = new OI();
+		
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
         //SmartDashboard.putData("Auto mode", chooser);
@@ -81,6 +97,8 @@ public class Robot extends IterativeRobot {
 		
 		compressor = new Compressor();
 		diagnose();
+		leftLEDs.setColor(Color.YELLOW);
+    	rightLEDs.setColor(Color.YELLOW);
     }
 	
 	/**
@@ -97,6 +115,9 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		
+		leftLEDs.updateRainbow();
+    	rightLEDs.updateRainbow();
 	}
 
 	/**
@@ -111,6 +132,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
+    	
         //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -168,7 +190,7 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
-    	return false;
+    	return true;
     }
     
     /**
@@ -180,11 +202,35 @@ public class Robot extends IterativeRobot {
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
     	}
+    	if(drivetrain.isNavxPresent()) {
+    		Logger.defaultLogger.info("NavX is present.");
+    	} else {
+    		Logger.defaultLogger.warn("NavX is not connected.");
+    	}
     	drivetrain.diagnose();
     	shooter.diagnose();
     	shooterFeeder.diagnose();
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
+    }
+    
+    private void interceptOutputStream() {
+    	System.setOut(new CustomStream(System.out));
+    }
+    
+    private static class CustomStream extends PrintStream {
+
+    	public CustomStream(OutputStream out) {
+			super(out);
+		}
+    	
+    	@Override
+    	public void println(String s) {
+    		if (!s.contains("navX-MXP SPI Read:  CRC error")){
+    			super.println(s);
+    		}
+    	}
+
     }
 }
