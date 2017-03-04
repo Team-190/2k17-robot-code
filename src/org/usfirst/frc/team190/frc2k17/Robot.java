@@ -20,6 +20,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
@@ -51,6 +52,7 @@ public class Robot extends IterativeRobot {
 	public static LEDStrip leftLEDs;
 	public static LEDStrip rightLEDs;
 	private static Compressor compressor;
+	private static PowerDistributionPanel pdp;
 	
 	public static OI oi;
 	
@@ -85,6 +87,7 @@ public class Robot extends IterativeRobot {
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
 		compressor = new Compressor();
+		pdp = new PowerDistributionPanel();
 		// OI must be initialized last
 		oi = new OI();
 		
@@ -226,6 +229,21 @@ public class Robot extends IterativeRobot {
 		boolean disconnectedInitialized = false;
 		double sleepTime = 1d / RobotMap.getInstance().ROBOT_MAIN_LOOP_RATE.get();
 		long lastReceivedDSPacket = 0L;
+		/*
+		 * The timeout of the system watchdog, which is part of the FPGA and out
+		 * of the control of this program. When the system watchdog expires, the
+		 * FPGA disables all outputs until a new packet is received, so the
+		 * program loop should also be paused because nothing will actuate
+		 * anyway.
+		 */
+		long systemTimeoutMicros = 125000L;
+		/*
+		 * The timeout after which disconnectedInit() and disconnectedPeriodic() should be run.
+		 * Set this longer than the system watchdog timeout so that network
+		 * congestion and other short disconnections do not cause log messages
+		 * and LED changes. People will think there is something wrong with the
+		 * robot if normal packet loss is made visible.
+		 */
 		long timeoutMicros = RobotMap.getInstance().ROBOT_COMMS_TIMEOUT.get() * 1000L;
 		
 		Logger.defaultLogger.trace("Robot comms timeout configured to " + timeoutMicros + " microseconds.");
@@ -253,7 +271,7 @@ public class Robot extends IterativeRobot {
 				disconnectedInitialized = false;
 				lastReceivedDSPacket = currentTime;
 			}
-			if (currentTime < lastReceivedDSPacket + timeoutMicros) {
+			if (currentTime < lastReceivedDSPacket + systemTimeoutMicros) {
 				Logger.lowLogger.trace("iteration of main loop at " + Utility.getFPGATime());
 				// Call the appropriate function depending upon the current robot
 				// mode
@@ -318,7 +336,7 @@ public class Robot extends IterativeRobot {
 					teleopPeriodic();
 				}
 				robotPeriodic();
-			} else {
+			} else if (currentTime >= lastReceivedDSPacket + timeoutMicros) {
 				Logger.lowLogger.trace("iteration of disconnected loop at " + Utility.getFPGATime());
 				if (!disconnectedInitialized) {
 					disconnectedInit();
@@ -381,6 +399,7 @@ public class Robot extends IterativeRobot {
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
     	}
+    	Logger.defaultLogger.info("Battery voltage is " + pdp.getVoltage() + " volts.");
     	drivetrain.diagnose();
     	shooter.diagnose();
     	shooterFeeder.diagnose();
@@ -398,6 +417,14 @@ public class Robot extends IterativeRobot {
     	CustomStream.resetNavxErrorCount();
     }
     
+    public static int getCanTimeoutErrorCount() {
+    	return CustomStream.getCanTimeoutErrorCount();
+    }
+    
+    public static void resetCanTimeoutErrorCount() {
+    	CustomStream.resetCanTimeoutErrorCount();
+    }
+    
     private void interceptOutputStream() {
     	System.setOut(new CustomStream(System.out));
     }
@@ -405,6 +432,7 @@ public class Robot extends IterativeRobot {
     private static class CustomStream extends PrintStream {
 
     	private static int navxErrorCount = 0;
+    	private static int canTimeoutErrorCount = 0;
     	
     	public static int getNavxErrorCount() {
     		return navxErrorCount;
@@ -412,6 +440,14 @@ public class Robot extends IterativeRobot {
     	
     	public static void resetNavxErrorCount() {
     		navxErrorCount = 0;
+    	}
+    	
+    	public static int getCanTimeoutErrorCount() {
+    		return canTimeoutErrorCount;
+    	}
+    	
+    	public static void resetCanTimeoutErrorCount() {
+    		canTimeoutErrorCount = 0;
     	}
     	
     	public CustomStream(OutputStream out) {
@@ -424,6 +460,9 @@ public class Robot extends IterativeRobot {
     			navxErrorCount++;
     		} else {
     			super.println(s);
+    			if (s.contains("CTRE CAN Receive Timeout")) {
+    				canTimeoutErrorCount++;
+    			}
     		}
     	}
 

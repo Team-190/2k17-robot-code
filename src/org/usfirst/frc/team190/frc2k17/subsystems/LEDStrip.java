@@ -57,14 +57,37 @@ public class LEDStrip extends Subsystem {
      * @param b B part (0 - 255)
      */
     public void setColor(int r, int g, int b) {
-    	if(!override) {
-    		this.r = r;
-    		this.g = g;
-    		this.b = b;
-    		rChannel.updateDutyCycle(((double) r) / 255.0);
-    		gChannel.updateDutyCycle(((double) g) / 255.0);
-    		bChannel.updateDutyCycle(((double) b) / 255.0);
-    	}
+		setColor(r, g, b, false);
+    }
+    
+    /**
+     * Sets the LED strip's color
+     * @param r R part (0 - 255)
+     * @param g G part (0 - 255)
+     * @param b B part (0 - 255)
+     * @param ignoreOverride for internal use only, ignores override and sets color anyway
+     */
+    private void setColor(int r, int g, int b, boolean ignoreOverride) {
+    	while (true) {
+			try {
+				overrideSem.acquire();
+			} catch (InterruptedException e) {
+				continue;
+			}
+			break;
+		}
+		try {
+			if (!override || ignoreOverride) {
+				this.r = r;
+				this.g = g;
+				this.b = b;
+				rChannel.updateDutyCycle(((double) r) / 255.0);
+				gChannel.updateDutyCycle(((double) g) / 255.0);
+				bChannel.updateDutyCycle(((double) b) / 255.0);
+			}
+		} finally {
+			overrideSem.release();
+		}
     }
     
     public Color getColor() {
@@ -75,24 +98,16 @@ public class LEDStrip extends Subsystem {
     	setColor(color.getR(), color.getG(), color.getB());
     }
     
+    private void setColor(Color color, boolean ignoreOverride) {
+    	setColor(color.getR(), color.getG(), color.getB(), ignoreOverride);
+    }
+    
     public void setColor(int rgb) {
-		while (true) {
-			try {
-				overrideSem.acquire();
-			} catch (InterruptedException e) {
-				continue;
-			}
-			break;
-		}
-		try {
 			int r = LEDStrip.getRed(rgb);
 			int g = LEDStrip.getGreen(rgb);
 			int b = LEDStrip.getBlue(rgb);
 
 			setColor(r, g, b);
-		} finally {
-			overrideSem.release();
-		}
     }
     
     /**
@@ -149,23 +164,11 @@ public class LEDStrip extends Subsystem {
      * Disable override.
      */
     public void disableOverride() {
-		while (true) {
-			try {
-				overrideSem.acquire();
-			} catch (InterruptedException e) {
-				continue;
+		if (override) {
+			if (oldColor != null) {
+				setColor(oldColor, true);
 			}
-			break;
-		}
-		try {
-			if (override) {
-				override = false;
-				if (oldColor != null) {
-					setColor(oldColor);
-				}
-			}
-		} finally {
-			overrideSem.release();
+			override = false;
 		}
     }
     
