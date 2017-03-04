@@ -86,12 +86,9 @@ public class GearCamera extends Subsystem {
 				pegIsVisible = false;
 			}
 
-			Logger.defaultLogger.info("Peg found, degreesToTurn set to " + degreesToTurn);
-			Logger.kangarooVoice.info(String.format("%1$.3f", degreesToTurn) + " degrees");
 		} else {
 			degreesToTurn = 0;
 			inchesToDrive = 0;
-			Logger.defaultLogger.info("Peg not seen, degreesToTurn not set.");
 		}
 	}
 

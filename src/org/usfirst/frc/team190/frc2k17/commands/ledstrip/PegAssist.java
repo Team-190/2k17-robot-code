@@ -31,16 +31,16 @@ public class PegAssist extends Command {
     public PegAssist() {
         requires(Robot.leftLEDs);
         requires(Robot.rightLEDs);
-        if (DriverStation.getInstance().getAlliance() == Alliance.Red) {
-    		allianceColor = Color.RED;
-    	} else {
-    		allianceColor = Color.BLUE;
-    	}
     }
 
     protected void initialize() {
     	Robot.leftLEDs.setColor(0);
     	Robot.rightLEDs.setColor(0);
+		if (DriverStation.getInstance().getAlliance() == Alliance.Red) {
+			allianceColor = Color.RED;
+		} else {
+			allianceColor = Color.BLUE;
+		}
     	on = false;
     	timer = new Timer();
     	resetTimer();
@@ -61,10 +61,10 @@ public class PegAssist extends Command {
 					Robot.rightLEDs.setColor(Color.GREEN);
 				} else if (degreesToTurn > 0) {
 					timer.schedule(leftTask, 0, blinkRate);
-					Robot.rightLEDs.setColor(Color.GREEN);
+					Robot.rightLEDs.setColor(allianceColor);
 				} else {
 					timer.schedule(rightTask, 0, blinkRate);
-					Robot.leftLEDs.setColor(Color.GREEN);
+					Robot.leftLEDs.setColor(allianceColor);
 				}
 
 			}
