@@ -140,12 +140,12 @@ public class Logger {
 		@Override
 		public void output(Message msg){
 			System.out.println((System.currentTimeMillis() - beginningOfTime) + " [" + msg.getLevel() + "] " + msg.getMessage());
-			if(msg.getLevel() == Level.WARN) {
+			/*if(msg.getLevel() == Level.WARN) {
 				DriverStation.reportWarning(msg.getMessage(), false);
 			}
 			if(msg.getLevel() == Level.ERROR || msg.getLevel() == Level.SEVERE || msg.getLevel() == Level.CRITICAL) {
 				DriverStation.reportError(msg.getMessage(), false);
-			}
+			}*/
 		}
 		
 	}

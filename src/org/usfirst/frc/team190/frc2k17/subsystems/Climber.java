@@ -1,6 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder.State;
 
@@ -89,14 +90,20 @@ public class Climber extends Subsystem {
     }
     
     public void diagnose() {
-		if (climberMotor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Collector motor has over-temperature sticky bit set.");
-		}
-		if (climberMotor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Collector motor has under-voltage sticky bit set.");
+    	Robot.resetCanTimeoutErrorCount();
+		int result = climberMotor.getStickyFaultOverTemp();
+		if (Robot.getCanTimeoutErrorCount() == 0) {
+			if (result != 0) {
+				Logger.defaultLogger.warn("Climber motor has over-temperature sticky bit set.");
+			}
+			if (climberMotor.getStickyFaultUnderVoltage() != 0) {
+				Logger.defaultLogger.warn("Climber motor has under-voltage sticky bit set.");
+			}
+		} else {
+			Logger.defaultLogger.warn("Climber motor controller not reachable over CAN.");
 		}
 		if (!climberMotor.isAlive()) {
-			Logger.defaultLogger.warn("Collector motor is stopped by motor safety.");
+			Logger.defaultLogger.warn("Climber motor is stopped by motor safety.");
 		}
     }
     

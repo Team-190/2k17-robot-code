@@ -1,9 +1,12 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.FeedbackDeviceStatus;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -32,7 +35,6 @@ public class Agitator extends Subsystem {
 	public Agitator() {
 		motor = new CANTalon(RobotMap.getInstance().CAN_AGITATOR_MOTOR.get());
 		LiveWindow.addActuator("shooting", "agitator", motor);
-		diagnose();
 	}
 	
 	// TODO: implement speed control for collector
@@ -47,11 +49,17 @@ public class Agitator extends Subsystem {
     }
     
     public void diagnose() {
-		if (motor.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Agitator motor has over-temperature sticky bit set.");
-		}
-		if (motor.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Agitator motor has under-voltage sticky bit set.");
+    	Robot.resetCanTimeoutErrorCount();
+		int result = motor.getStickyFaultOverTemp();
+		if (Robot.getCanTimeoutErrorCount() == 0) {
+			if (result != 0) {
+				Logger.defaultLogger.warn("Agitator motor has over-temperature sticky bit set.");
+			}
+			if (motor.getStickyFaultUnderVoltage() != 0) {
+				Logger.defaultLogger.warn("Agitator motor has under-voltage sticky bit set.");
+			}
+		} else {
+			Logger.defaultLogger.warn("Agitator motor controller not reachable over CAN.");
 		}
 		if (!motor.isAlive()) {
 			Logger.defaultLogger.warn("Agitator motor is stopped by motor safety.");

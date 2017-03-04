@@ -72,17 +72,23 @@ public class Shooter extends Subsystem {
 	 * Perform health checks and log warnings.
 	 */
 	public void diagnose() {
-		if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
-		}
-		if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Shooter flywheel motor has under-voltage sticky bit set.");
+		Robot.resetCanTimeoutErrorCount();
+		int result = flywheelMotor1.getStickyFaultOverTemp();
+		if (Robot.getCanTimeoutErrorCount() == 0) {
+			if (result != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
+			}
+			if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor has under-voltage sticky bit set.");
+			}
+			if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+				Logger.defaultLogger.warn("Shooter flywheel encoder not present.");
+			}
+		} else {
+			Logger.defaultLogger.warn("Shooter flywheel motor controller not reachable over CAN.");
 		}
 		if (!flywheelMotor1.isAlive()) {
 			Logger.defaultLogger.warn("Shooter flywheel motor is stopped by motor safety.");
-		}
-		if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.warn("Shooter flywheel encoder not present.");
 		}
 	}
 

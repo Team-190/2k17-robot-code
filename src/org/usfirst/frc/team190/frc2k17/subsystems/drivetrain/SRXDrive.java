@@ -170,28 +170,40 @@ public class SRXDrive {
 		 * Diagnose various sensors for the drive pair
 		 */
 		public void diagnose() {
-			if (master.getStickyFaultOverTemp() != 0) {
-				Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
+			Robot.resetCanTimeoutErrorCount();
+			int result = master.getStickyFaultOverTemp();
+			if (Robot.getCanTimeoutErrorCount() == 0) {
+				if (result != 0) {
+					Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
+				}
+				if (master.getStickyFaultUnderVoltage() != 0) {
+					Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
+				}
+				if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+					Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
+				} else {
+					Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+				}
+			} else {
+				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
 			}
-			if (master.getStickyFaultUnderVoltage() != 0) {
-				Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
-			}
-			if (slave.getStickyFaultOverTemp() != 0) {
-				Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
-			}
-			if (slave.getStickyFaultUnderVoltage() != 0) {
-				Logger.defaultLogger.warn(name + " - rear drivetrain motor has under-voltage sticky bit set.");
+			Robot.resetCanTimeoutErrorCount();
+			result = slave.getStickyFaultOverTemp();
+			if (Robot.getCanTimeoutErrorCount() == 0) {
+				if (result != 0) {
+					Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
+				}
+				if (slave.getStickyFaultUnderVoltage() != 0) {
+					Logger.defaultLogger.warn(name + " - rear drivetrain motor has under-voltage sticky bit set.");
+				}
+			} else {
+				Logger.defaultLogger.warn(name + " - rear drivetrain motor controller not reachable over CAN.");
 			}
 			if (!master.isAlive()) {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor is stopped by motor safety.");
 			}
 			if (!slave.isAlive()) {
 				Logger.defaultLogger.warn(name + " - rear drivetrain motor is stopped by motor safety.");
-			}
-			if (master.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-				Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
-			} else {
-				Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
 			}
 		}	
 	}
