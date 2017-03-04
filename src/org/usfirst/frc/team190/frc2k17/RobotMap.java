@@ -125,7 +125,7 @@ public class RobotMap {
 	
 	public final Key<Long>
 		// ROBOT_COMMS_TIMEOUT is potentially safety-related, be very careful and test thoroughly when changing
-		ROBOT_COMMS_TIMEOUT = new Key<Long>(150L), // milliseconds
+		ROBOT_COMMS_TIMEOUT = new Key<Long>(250L), // milliseconds
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
 		PEGASSIST_REFRESH_TIME = new Key<Long>(300L); // milliseconds
 			

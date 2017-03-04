@@ -67,6 +67,10 @@ public class Robot extends IterativeRobot {
     	Logger.init();
     	Logger.resetTimestamp();
     	interceptOutputStream();
+    	leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
+				RobotMap.getInstance().PWM_LEDS_LEFT_G.get(), RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
+		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
+				RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(), RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
@@ -80,10 +84,6 @@ public class Robot extends IterativeRobot {
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
-		leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
-				RobotMap.getInstance().PWM_LEDS_LEFT_G.get(), RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
-		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
-				RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(), RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
 		compressor = new Compressor();
 		// OI must be initialized last
 		oi = new OI();
@@ -194,6 +194,7 @@ public class Robot extends IterativeRobot {
     public void disconnectedInit() {
     	Logger.lowLogger.trace("disconnectedInit at " + Utility.getFPGATime());
     	Logger.defaultLogger.warn("Driver station disconnected.");
+    	
     	leftLEDs.override(Color.YELLOW);
     	rightLEDs.override(Color.YELLOW);
     }
@@ -364,18 +365,21 @@ public class Robot extends IterativeRobot {
     }
     
     /**
+     * @return whether we are using an xbox controller for the operator
+     */
+    public static boolean usingXboxController() {
+    	return false;
+    }
+    
+    /**
      * Call the diagnose functions on all of the subsystems.
      */
     public void diagnose() {
+    	Logger.defaultLogger.info("Running diagnostics...");
     	if(isKitBot()) {
     		Logger.defaultLogger.info("This is the kit bot.");
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
-    	}
-    	if(drivetrain.isNavxPresent()) {
-    		Logger.defaultLogger.info("NavX is present.");
-    	} else {
-    		Logger.defaultLogger.warn("NavX is not connected.");
     	}
     	drivetrain.diagnose();
     	shooter.diagnose();
@@ -383,6 +387,15 @@ public class Robot extends IterativeRobot {
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
+    	Logger.defaultLogger.info("Diagnostics complete.");
+    }
+    
+    public static int getNavxErrorCount() {
+    	return CustomStream.getNavxErrorCount();
+    }
+    
+    public static void resetNavxErrorCount() {
+    	CustomStream.resetNavxErrorCount();
     }
     
     private void interceptOutputStream() {
@@ -391,13 +404,25 @@ public class Robot extends IterativeRobot {
     
     private static class CustomStream extends PrintStream {
 
+    	private static int navxErrorCount = 0;
+    	
+    	public static int getNavxErrorCount() {
+    		return navxErrorCount;
+    	}
+    	
+    	public static void resetNavxErrorCount() {
+    		navxErrorCount = 0;
+    	}
+    	
     	public CustomStream(OutputStream out) {
 			super(out);
 		}
     	
     	@Override
     	public void println(String s) {
-    		if (!s.contains("navX-MXP SPI Read:  CRC error")){
+    		if (s.contains("navX-MXP SPI Read:  CRC error")){
+    			navxErrorCount++;
+    		} else {
     			super.println(s);
     		}
     	}

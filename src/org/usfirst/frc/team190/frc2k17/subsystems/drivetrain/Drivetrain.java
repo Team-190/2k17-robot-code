@@ -1,11 +1,13 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Color;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -19,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final DriveController turningController;
+	private DriveController turningController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
@@ -32,14 +34,8 @@ public class Drivetrain extends Subsystem {
 	public Drivetrain(){
 		srxdrive = new SRXDrive();
 		navx = new AHRS(SPI.Port.kMXP);
-		if(isNavxPresent()) {
-			turningController = new TurningController(navx);
-		} else {
-			navx.free();
-			navx = null;
-			turningController = null;
-		}
 		distanceController = new DistanceController(srxdrive);
+		turningController = new TurningController(navx);
 	}
 	
 	/**
@@ -179,7 +175,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDriveCommand());
+		setDefaultCommand(new TankDriveCommand());
 	}
 	
 	public double getLeftRPM() {
@@ -204,6 +200,26 @@ public class Drivetrain extends Subsystem {
 	
 	public void diagnose() {
 		srxdrive.diagnose();
+		
+		if (navx == null) {
+			Logger.defaultLogger.info("NavX is null, not checking.");
+		} else {
+			Logger.defaultLogger.info("Checking NavX, please wait...");
+			Robot.resetNavxErrorCount();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			if (Robot.getNavxErrorCount() == 0) {
+				Logger.defaultLogger.info("NavX is present.");
+			} else {
+				Logger.defaultLogger.warn("NavX is not connected.");
+				navx.free();
+				navx = null;
+				turningController = null;
+			}
+		}
 	}
 	
 	public boolean isNavxPresent() {
