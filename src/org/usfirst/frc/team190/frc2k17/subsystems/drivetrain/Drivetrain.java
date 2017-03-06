@@ -227,12 +227,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public boolean isNavxPresent() {
-		if(navx == null) {
-			return false;
-		} else {
-			navx.getAngle();
-			return navx.isConnected();
-		}
+		return navx != null;
     }
 }
 

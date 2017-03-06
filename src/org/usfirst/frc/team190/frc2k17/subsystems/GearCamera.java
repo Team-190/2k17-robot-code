@@ -90,6 +90,9 @@ public class GearCamera extends Subsystem {
 			degreesToTurn = 0;
 			inchesToDrive = 0;
 		}
+		
+		SmartDashboard.putNumber("Degrees to turn", degreesToTurn);
+		SmartDashboard.putNumber("Inches to drive", inchesToDrive);
 	}
 
 	public boolean isPegVisible() {

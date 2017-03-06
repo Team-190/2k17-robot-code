@@ -4,6 +4,7 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ClearStickyFaultsCommand;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
@@ -181,6 +182,7 @@ public class OI {
 		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
 		SmartDashboard.putData("Start Shooter", new StartShooterCommand());
+		SmartDashboard.putData("Clear Sticky Faults", new ClearStickyFaultsCommand());
 	}
 	
 	public double getDriverJoystick1X() {
