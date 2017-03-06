@@ -110,6 +110,15 @@ public class Drivetrain extends Subsystem {
 	public void controlDistance(double rotation) {
 		arcadeDrive(distanceController.getLoopOutput(), rotation);
 	}
+	
+	/**
+	 * Drives the robot based off the driving control loop's output
+	 * @param rotation the rotation value for arcade drive
+	 * @param speedLimit the maximum speed to drive
+	 */
+	public void controlDistance(double rotation, double speedLimit) {
+		arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), rotation);
+	}
 
 	/**
 	 * Drives the robot based off the turning control loop's output
@@ -125,8 +134,16 @@ public class Drivetrain extends Subsystem {
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
+		controlTurningAndDistance(1);
+	}
+	
+	/**
+	 * Drives the robot based off the output of the turning and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlTurningAndDistance(double speedLimit) {
 		if(isNavxPresent()) {
-			arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
+			arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), turningController.getLoopOutput());
 			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 		} else {
 			controlDistance(0);

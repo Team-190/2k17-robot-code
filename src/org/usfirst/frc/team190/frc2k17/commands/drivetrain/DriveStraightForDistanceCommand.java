@@ -8,16 +8,26 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightForDistanceCommand extends Command {
+	
 	private double inches;
+	private double speedLimit;
+	
 	/**
-	 * 
 	 * @param inches Distance to drive in inches
 	 */
     public DriveStraightForDistanceCommand(double inches) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	this.inches = inches;
     	requires(Robot.drivetrain);
+    	this.inches = inches;
+    }
+    
+    /**
+	 * @param inches Distance to drive in inches
+	 * @param speedLimit the maximum speed to drive
+	 */
+    public DriveStraightForDistanceCommand(double inches, double speedLimit) {
+    	requires(Robot.drivetrain);
+    	this.inches = inches;
+    	this.speedLimit = speedLimit;
     }
 
     // Called just before this Command runs the first time
@@ -27,7 +37,7 @@ public class DriveStraightForDistanceCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.controlDistance();
+    	Robot.drivetrain.controlDistance(0, speedLimit);
     }
 
     // Make this return true when this Command no longer needs to run execute()

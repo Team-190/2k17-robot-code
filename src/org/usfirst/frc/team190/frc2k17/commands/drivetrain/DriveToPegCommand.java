@@ -2,6 +2,7 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveToPegCommand extends Command {
 	
-	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
+	private DriveStraightForDistanceCommand driveCommand;
 	
     /**
      * get the distance to the peg and drive for that distance
@@ -21,7 +22,7 @@ public class DriveToPegCommand extends Command {
     protected void initialize() {
     	double dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist - 3);
+    	driveCommand = new DriveStraightForDistanceCommand(dist - 3, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
     	driveCommand.start();
     }
 

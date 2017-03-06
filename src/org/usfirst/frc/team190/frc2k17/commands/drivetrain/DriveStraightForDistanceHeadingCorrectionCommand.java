@@ -8,14 +8,27 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
+	
 	private double inches;
+	private double speedLimit;
+	
 	/**
-	 * 
 	 * @param inches Distance to drive in inches
 	 */
     public DriveStraightForDistanceHeadingCorrectionCommand(double inches) {
     	this.inches = inches;
+    	speedLimit = 1;
     	requires(Robot.drivetrain);
+    }
+    
+    /**
+	 * @param inches Distance to drive in inches
+	 * @param speedLimit the maximum speed to drive
+	 */
+    public DriveStraightForDistanceHeadingCorrectionCommand(double inches, double speedLimit) {
+    	requires(Robot.drivetrain);
+    	this.inches = inches;
+    	this.speedLimit = speedLimit;
     }
 
     protected void initialize() {
@@ -24,7 +37,7 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
     }
 
     protected void execute() {
-    	Robot.drivetrain.controlTurningAndDistance();
+    	Robot.drivetrain.controlTurningAndDistance(speedLimit);
     }
 
     protected boolean isFinished() {
