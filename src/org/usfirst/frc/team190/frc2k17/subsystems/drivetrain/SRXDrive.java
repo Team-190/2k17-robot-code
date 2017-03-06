@@ -210,14 +210,14 @@ public class SRXDrive {
 	}
 	
 	private DriveMotorPair left = new DriveMotorPair("Left",
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_FRONT.get(),
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_REAR.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_MASTER.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_SLAVE.get(),
 												RobotMap.getInstance().DRIVE_LEFT_MOTOR_INVERTED.get(),
 												RobotMap.getInstance().DRIVE_LEFT_ENC_INVERTED.get());
 	
 	private DriveMotorPair right= new DriveMotorPair("Right",
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_FRONT.get(),
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_REAR.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_MASTER.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_SLAVE.get(),
 												RobotMap.getInstance().DRIVE_RIGHT_MOTOR_INVERTED.get(),
 												RobotMap.getInstance().DRIVE_RIGHT_ENC_INVERTED.get());
 	
