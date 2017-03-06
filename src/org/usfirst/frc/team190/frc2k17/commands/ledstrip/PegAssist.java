@@ -1,5 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.commands.ledstrip;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,13 +22,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class PegAssist extends Command {
 	
-	boolean on;
-	Timer timer;
-	TimerTask leftTask, rightTask;
-	long rate;
-	Color allianceColor;
-	GearCameraLightOnCommand cameraLightOnCommand = new GearCameraLightOnCommand();
-	GearCameraLightOffCommand cameraLightOffCommand = new GearCameraLightOffCommand();
+	private boolean on;
+	private Timer timer;
+	private TimerTask leftTask, rightTask;
+	private Instant leftLastFlashed, rightLastFlashed;
+	private long rate;
+	private Color allianceColor;
+	private GearCameraLightOnCommand cameraLightOnCommand = new GearCameraLightOnCommand();
+	private GearCameraLightOffCommand cameraLightOffCommand = new GearCameraLightOffCommand();
 	
     public PegAssist() {
         requires(Robot.leftLEDs);
@@ -45,6 +48,8 @@ public class PegAssist extends Command {
     	timer = new Timer();
     	resetTimer();
 		cameraLightOnCommand.start();
+		leftLastFlashed = Instant.now();
+		rightLastFlashed = Instant.now();
 		timer.schedule(new TimerTask() {
 
 			@Override
@@ -52,7 +57,7 @@ public class PegAssist extends Command {
 				double degreesToTurn = Robot.gearCamera.getAngleToPeg();
 				SmartDashboard.putNumber("Camera Theoretical Angle", degreesToTurn);
 				resetTimer();
-				long blinkRate = (long) ((Math.abs(degreesToTurn) / (RobotMap.getInstance().CAMERA_HFOV.get() / 4d)) * 300d);
+				long blinkRate = (long) (((Math.abs(degreesToTurn) - RobotMap.getInstance().PEGASSIST_TOLERANCE.get()) / (RobotMap.getInstance().CAMERA_HFOV.get() / 4d)) * 300d);
 				if(degreesToTurn == 0) {
 					Robot.leftLEDs.setColor(allianceColor);
 					Robot.rightLEDs.setColor(allianceColor);
@@ -60,10 +65,10 @@ public class PegAssist extends Command {
 					Robot.leftLEDs.setColor(Color.GREEN);
 					Robot.rightLEDs.setColor(Color.GREEN);
 				} else if (degreesToTurn > 0) {
-					timer.schedule(leftTask, 0, blinkRate);
+					timer.schedule(leftTask, Math.max(0, blinkRate - Duration.between(leftLastFlashed, Instant.now()).toMillis()), blinkRate);
 					Robot.rightLEDs.setColor(allianceColor);
 				} else {
-					timer.schedule(rightTask, 0, blinkRate);
+					timer.schedule(rightTask, Math.max(0, blinkRate - Duration.between(rightLastFlashed, Instant.now()).toMillis()), blinkRate);
 					Robot.leftLEDs.setColor(allianceColor);
 				}
 
@@ -101,9 +106,11 @@ public class PegAssist extends Command {
 			public void run() {
 				if(on) {
 					Robot.leftLEDs.setColor(0);
+					leftLastFlashed = Instant.now();
 					on = false;
 				} else {
 					Robot.leftLEDs.setColor(Color.GREEN);
+					leftLastFlashed = Instant.now();
 					on = true;
 				}
 			}
@@ -115,9 +122,11 @@ public class PegAssist extends Command {
 			public void run() {
 				if(on) {
 					Robot.rightLEDs.setColor(0);
+					rightLastFlashed = Instant.now();
 					on = false;
 				} else {
 					Robot.rightLEDs.setColor(Color.GREEN);
+					rightLastFlashed = Instant.now();
 					on = true;
 				}
 			}

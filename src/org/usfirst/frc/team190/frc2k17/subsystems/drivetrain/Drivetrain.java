@@ -222,6 +222,10 @@ public class Drivetrain extends Subsystem {
 		}
 	}
 	
+	public void clearStickyFaults() {
+		srxdrive.clearStickyFaults();
+	}
+	
 	public boolean isNavxPresent() {
 		if(navx == null) {
 			return false;

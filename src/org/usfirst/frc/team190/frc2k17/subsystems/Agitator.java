@@ -49,10 +49,8 @@ public class Agitator extends Subsystem {
     }
     
     public void diagnose() {
-    	Robot.resetCanTimeoutErrorCount();
-		int result = motor.getStickyFaultOverTemp();
-		if (Robot.getCanTimeoutErrorCount() == 0) {
-			if (result != 0) {
+		if (motor.getBusVoltage() != 4.0) {
+			if (motor.getStickyFaultOverTemp() != 0) {
 				Logger.defaultLogger.warn("Agitator motor has over-temperature sticky bit set.");
 			}
 			if (motor.getStickyFaultUnderVoltage() != 0) {
@@ -64,6 +62,10 @@ public class Agitator extends Subsystem {
 		if (!motor.isAlive()) {
 			Logger.defaultLogger.warn("Agitator motor is stopped by motor safety.");
 		}
+    }
+    
+    public void clearStickyFaults() {
+    	motor.clearStickyFaults();
     }
 }
 

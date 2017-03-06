@@ -170,10 +170,8 @@ public class SRXDrive {
 		 * Diagnose various sensors for the drive pair
 		 */
 		public void diagnose() {
-			Robot.resetCanTimeoutErrorCount();
-			int result = master.getStickyFaultOverTemp();
-			if (Robot.getCanTimeoutErrorCount() == 0) {
-				if (result != 0) {
+			if (master.getBusVoltage() != 4.0) {
+				if (master.getStickyFaultOverTemp() != 0) {
 					Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
 				}
 				if (master.getStickyFaultUnderVoltage() != 0) {
@@ -187,10 +185,8 @@ public class SRXDrive {
 			} else {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
 			}
-			Robot.resetCanTimeoutErrorCount();
-			result = slave.getStickyFaultOverTemp();
-			if (Robot.getCanTimeoutErrorCount() == 0) {
-				if (result != 0) {
+			if (slave.getBusVoltage() != 4.0) {
+				if (slave.getStickyFaultOverTemp() != 0) {
 					Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
 				}
 				if (slave.getStickyFaultUnderVoltage() != 0) {
@@ -205,7 +201,12 @@ public class SRXDrive {
 			if (!slave.isAlive()) {
 				Logger.defaultLogger.warn(name + " - rear drivetrain motor is stopped by motor safety.");
 			}
-		}	
+		}
+		
+		public void clearStickyFaults() {
+			master.clearStickyFaults();
+			slave.clearStickyFaults();
+		}
 	}
 	
 	private DriveMotorPair left = new DriveMotorPair("Left",
@@ -352,6 +353,11 @@ public class SRXDrive {
 	public void diagnose() {
 		left.diagnose();
 		right.diagnose();
+	}
+	
+	public void clearStickyFaults() {
+		left.clearStickyFaults();
+		right.clearStickyFaults();
 	}
 	
 	public double getLeftRPM() {

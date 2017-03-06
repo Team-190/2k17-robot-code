@@ -51,8 +51,8 @@ public class Robot extends IterativeRobot {
 	public static Shifters shifters;
 	public static LEDStrip leftLEDs;
 	public static LEDStrip rightLEDs;
-	private static Compressor compressor;
-	private static PowerDistributionPanel pdp;
+	public static Compressor compressor;
+	public static PowerDistributionPanel pdp;
 	
 	public static OI oi;
 	
@@ -69,10 +69,10 @@ public class Robot extends IterativeRobot {
     	Logger.init();
     	Logger.resetTimestamp();
     	interceptOutputStream();
-    	leftLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_LEFT_R.get(),
-				RobotMap.getInstance().PWM_LEDS_LEFT_G.get(), RobotMap.getInstance().PWM_LEDS_LEFT_B.get());
-		rightLEDs = new LEDStrip(RobotMap.getInstance().PWM_LEDS_RIGHT_R.get(),
-				RobotMap.getInstance().PWM_LEDS_RIGHT_G.get(), RobotMap.getInstance().PWM_LEDS_RIGHT_B.get());
+    	leftLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_LEFT_R.get(),
+				RobotMap.getInstance().DIO_LEDS_LEFT_G.get(), RobotMap.getInstance().DIO_LEDS_LEFT_B.get());
+		rightLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_RIGHT_R.get(),
+				RobotMap.getInstance().DIO_LEDS_RIGHT_G.get(), RobotMap.getInstance().DIO_LEDS_RIGHT_B.get());
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before drivetrain. Do not change order.
     	prefs = Preferences.getInstance();
@@ -86,8 +86,8 @@ public class Robot extends IterativeRobot {
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
-		compressor = new Compressor();
-		pdp = new PowerDistributionPanel();
+		compressor = new Compressor(RobotMap.getInstance().CAN_PCM.get());
+		pdp = new PowerDistributionPanel(RobotMap.getInstance().CAN_PDP.get());
 		// OI must be initialized last
 		oi = new OI();
 		
@@ -101,6 +101,7 @@ public class Robot extends IterativeRobot {
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
 		
 		diagnose();
+		Diagnostics.start();
     }
 	
 	/**
@@ -109,7 +110,6 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	Logger.lowLogger.trace("disabledInit at " + Utility.getFPGATime());
     	Logger.defaultLogger.info("Robot Disabled.");
     	Logger.kangarooVoice.info("disabled");
     	
@@ -117,8 +117,8 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
-		Logger.lowLogger.trace("disabledPeriodic at " + Utility.getFPGATime());
 		Scheduler.getInstance().run();
+		Diagnostics.resetDisconnected();
 		
 		leftLEDs.updateRainbow();
     	rightLEDs.updateRainbow();
@@ -134,7 +134,6 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Logger.lowLogger.trace("autonomousInit at " + Utility.getFPGATime());
     	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
     	
@@ -159,12 +158,11 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	Logger.lowLogger.trace("autonomousPeriodic at " + Utility.getFPGATime());
         Scheduler.getInstance().run();
+        Diagnostics.resetDisconnected();
     }
 
     public void teleopInit() {
-    	Logger.lowLogger.trace("teleopInit at " + Utility.getFPGATime());
     	Logger.kangarooVoice.info("teleop");
     	Logger.defaultLogger.info("Teleop mode started.");
 
@@ -177,205 +175,21 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	Logger.lowLogger.trace("teleopPeriodic at " + Utility.getFPGATime());
-		drivetrain.outputEncoderValues();
-        Scheduler.getInstance().run();        
+        Scheduler.getInstance().run();   
+        Diagnostics.resetDisconnected();
+        
+        drivetrain.outputEncoderValues();
     }
     
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    	Logger.lowLogger.trace("testPeriodic at " + Utility.getFPGATime());
         LiveWindow.run();
-    }
-    
-    /**
-     * Called once when the robot realizes that the driver station has become disconnected.
-     * Think about safety, do not actuate anything here!
-     */
-    public void disconnectedInit() {
-    	Logger.lowLogger.trace("disconnectedInit at " + Utility.getFPGATime());
-    	Logger.defaultLogger.warn("Driver station disconnected.");
-    	
-    	leftLEDs.override(Color.YELLOW);
-    	rightLEDs.override(Color.YELLOW);
-    }
-    
-    /**
-     * Called periodically when the driver station has lost connection.
-     * Think about safety, do not actuate anything here!
-     */
-    public void disconnectedPeriodic() {
-    	Logger.lowLogger.trace("disconnectedPeriodic at " + Utility.getFPGATime());
-    	
-    }
-    
-    /**
-     * Called once when the driver station becomes connected.
-     */
-    public void connected() {
-    	(new LEDStripsQuickBlink(Color.MAGENTA)).start();
+        Diagnostics.resetDisconnected();
     }
     
 	/**
-	 * Overrides main robot loop from IterativeRobot
-	 */
-	public void startCompetition() {
-		boolean disabledInitialized = false;
-		boolean autonomousInitialized = false;
-		boolean teleopInitialized = false;
-		boolean testInitialized = false;
-		boolean disconnectedInitialized = false;
-		double sleepTime = 1d / RobotMap.getInstance().ROBOT_MAIN_LOOP_RATE.get();
-		long lastReceivedDSPacket = 0L;
-		/*
-		 * The timeout of the system watchdog, which is part of the FPGA and out
-		 * of the control of this program. When the system watchdog expires, the
-		 * FPGA disables all outputs until a new packet is received, so the
-		 * program loop should also be paused because nothing will actuate
-		 * anyway.
-		 */
-		long systemTimeoutMicros = 125000L;
-		/*
-		 * The timeout after which disconnectedInit() and disconnectedPeriodic() should be run.
-		 * Set this longer than the system watchdog timeout so that network
-		 * congestion and other short disconnections do not cause log messages
-		 * and LED changes. People will think there is something wrong with the
-		 * robot if normal packet loss is made visible.
-		 */
-		long timeoutMicros = RobotMap.getInstance().ROBOT_COMMS_TIMEOUT.get() * 1000L;
-		
-		Logger.defaultLogger.trace("Robot comms timeout configured to " + timeoutMicros + " microseconds.");
-		Logger.defaultLogger.trace("Robot main loop sleep time configured to " + sleepTime + " seconds.");
-		
-		HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
-
-		robotInit();
-
-		// Tell the DS that the robot is ready to be enabled
-		HAL.observeUserProgramStarting();
-
-		// loop forever, calling the appropriate mode-dependent function
-		LiveWindow.setEnabled(false);
-		long currentTime;
-		while (true) {
-			currentTime = Utility.getFPGATime();
-			// sleep for the appropriate amount of time so that the loop runs
-			// at the frequency specified in RobotMap
-			sleep(sleepTime);
-			if (m_ds.isNewControlData()) {
-				Logger.lowLogger.trace("packet received sometime in the last loop, at " + Utility.getFPGATime());
-				leftLEDs.disableOverride();
-				rightLEDs.disableOverride();
-				disconnectedInitialized = false;
-				lastReceivedDSPacket = currentTime;
-			}
-			if (currentTime < lastReceivedDSPacket + systemTimeoutMicros) {
-				Logger.lowLogger.trace("iteration of main loop at " + Utility.getFPGATime());
-				// Call the appropriate function depending upon the current robot
-				// mode
-				if (isDisabled()) {
-					// call DisabledInit() if we are now just entering disabled mode
-					// from
-					// either a different mode or from power-on
-					if (!disabledInitialized) {
-						LiveWindow.setEnabled(false);
-						disabledInit();
-						disabledInitialized = true;
-						// reset the initialization flags for the other modes
-						autonomousInitialized = false;
-						teleopInitialized = false;
-						testInitialized = false;
-					}
-					HAL.observeUserProgramDisabled();
-					disabledPeriodic();
-				} else if (isTest()) {
-					// call TestInit() if we are now just entering test mode from
-					// either
-					// a different mode or from power-on
-					if (!testInitialized) {
-						LiveWindow.setEnabled(true);
-						testInit();
-						testInitialized = true;
-						autonomousInitialized = false;
-						teleopInitialized = false;
-						disabledInitialized = false;
-					}
-					HAL.observeUserProgramTest();
-					testPeriodic();
-				} else if (isAutonomous()) {
-					// call Autonomous_Init() if this is the first time
-					// we've entered autonomous_mode
-					if (!autonomousInitialized) {
-						LiveWindow.setEnabled(false);
-						// KBS NOTE: old code reset all PWMs and relays to "safe
-						// values"
-						// whenever entering autonomous mode, before calling
-						// "Autonomous_Init()"
-						autonomousInit();
-						autonomousInitialized = true;
-						testInitialized = false;
-						teleopInitialized = false;
-						disabledInitialized = false;
-					}
-					HAL.observeUserProgramAutonomous();
-					autonomousPeriodic();
-				} else {
-					// call Teleop_Init() if this is the first time
-					// we've entered teleop_mode
-					if (!teleopInitialized) {
-						LiveWindow.setEnabled(false);
-						teleopInit();
-						teleopInitialized = true;
-						testInitialized = false;
-						autonomousInitialized = false;
-						disabledInitialized = false;
-					}
-					HAL.observeUserProgramTeleop();
-					teleopPeriodic();
-				}
-				robotPeriodic();
-			} else if (currentTime >= lastReceivedDSPacket + timeoutMicros) {
-				Logger.lowLogger.trace("iteration of disconnected loop at " + Utility.getFPGATime());
-				if (!disconnectedInitialized) {
-					disconnectedInit();
-					disconnectedInitialized = true;
-				}
-				disconnectedPeriodic();
-			}
-		}
-	}
-    
-    /**
-     * Sleep for a certain number of seconds
-     * @param timeout the number of seconds to sleep
-     * 
-     */
-    private void sleep(double timeout) {
-    	long startTime = Utility.getFPGATime();
-        long timeoutMicros = (long)(timeout * 1000000);
-        if(!(timeout > 0)) {
-        	return;
-        }
-        while (true) {
-        	long now = Utility.getFPGATime();
-        	if (now < startTime + timeoutMicros) {
-        		// We still have time to wait
-        		long microsLeft = startTime + timeoutMicros - now;
-        		try {
-        			Thread.sleep(microsLeft / 1000L, (int) ((microsLeft % 1000L) * 1000L));
-        		} catch (InterruptedException ex) {
-        			// do nothing
-        		}
-        	} else {
-        		// Time has elapsed.
-        		return;
-        	}
-        }
-    }
-    
-    /**
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
@@ -392,8 +206,8 @@ public class Robot extends IterativeRobot {
     /**
      * Call the diagnose functions on all of the subsystems.
      */
-    public void diagnose() {
-    	Logger.defaultLogger.info("Running diagnostics...");
+    public static void diagnose() {
+    	Logger.defaultLogger.info("\n====================\nRunning diagnostics...");
     	if(isKitBot()) {
     		Logger.defaultLogger.info("This is the kit bot.");
     	} else {
@@ -406,8 +220,27 @@ public class Robot extends IterativeRobot {
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
-    	Logger.defaultLogger.info("Diagnostics complete.");
+    	if(compressor.getCompressorCurrentTooHighStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-current-too-high sticky bit set.");
+    	}
+    	if(compressor.getCompressorNotConnectedStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-not-connected sticky bit set. Is the compressor connected properly?");
+    	}
+    	if(compressor.getCompressorShortedStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-shorted sticky bit set. Is the compressor output shorted?");
+    	}
+    	Logger.defaultLogger.info("Diagnostics complete.\n====================\n");
     }
+    
+    public static void clearStickyFaults() {
+		Robot.compressor.clearAllPCMStickyFaults();
+		Robot.pdp.clearStickyFaults();
+		drivetrain.clearStickyFaults();
+    	shooter.clearStickyFaults();
+    	shooterFeeder.clearStickyFaults();
+    	agitator.clearStickyFaults();
+    	climber.clearStickyFaults();
+	}
     
     public static int getNavxErrorCount() {
     	return CustomStream.getNavxErrorCount();
@@ -417,22 +250,14 @@ public class Robot extends IterativeRobot {
     	CustomStream.resetNavxErrorCount();
     }
     
-    public static int getCanTimeoutErrorCount() {
-    	return CustomStream.getCanTimeoutErrorCount();
-    }
-    
-    public static void resetCanTimeoutErrorCount() {
-    	CustomStream.resetCanTimeoutErrorCount();
-    }
-    
     private void interceptOutputStream() {
     	System.setOut(new CustomStream(System.out));
+    	System.setErr(new CustomStream(System.err));
     }
     
     private static class CustomStream extends PrintStream {
 
     	private static int navxErrorCount = 0;
-    	private static int canTimeoutErrorCount = 0;
     	
     	public static int getNavxErrorCount() {
     		return navxErrorCount;
@@ -440,14 +265,6 @@ public class Robot extends IterativeRobot {
     	
     	public static void resetNavxErrorCount() {
     		navxErrorCount = 0;
-    	}
-    	
-    	public static int getCanTimeoutErrorCount() {
-    		return canTimeoutErrorCount;
-    	}
-    	
-    	public static void resetCanTimeoutErrorCount() {
-    		canTimeoutErrorCount = 0;
     	}
     	
     	public CustomStream(OutputStream out) {
@@ -460,11 +277,8 @@ public class Robot extends IterativeRobot {
     			navxErrorCount++;
     		} else {
     			super.println(s);
-    			if (s.contains("CTRE CAN Receive Timeout")) {
-    				canTimeoutErrorCount++;
-    			}
     		}
     	}
-
+    	
     }
 }

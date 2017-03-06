@@ -48,10 +48,8 @@ private final CANTalon motor;
     }
     
     public void diagnose() {
-    	Robot.resetCanTimeoutErrorCount();
-		int result = motor.getStickyFaultOverTemp();
-		if (Robot.getCanTimeoutErrorCount() == 0) {
-			if (result != 0) {
+		if (motor.getBusVoltage() != 4.0) {
+			if (motor.getStickyFaultOverTemp() != 0) {
 				Logger.defaultLogger.warn("Feeder motor has over-temperature sticky bit set.");
 			}
 			if (motor.getStickyFaultUnderVoltage() != 0) {
@@ -66,6 +64,10 @@ private final CANTalon motor;
 		if (!motor.isAlive()) {
 			Logger.defaultLogger.warn("Feeder motor is stopped by motor safety.");
 		}
+    }
+    
+    public void clearStickyFaults() {
+    	motor.clearStickyFaults();
     }
 }
 

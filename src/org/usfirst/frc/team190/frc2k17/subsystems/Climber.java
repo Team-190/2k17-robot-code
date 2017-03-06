@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  *
  */
 public class Climber extends Subsystem {
-	private final CANTalon climberMotor;
+	private final CANTalon motor;
 	
 	public enum State {
 		CLIMB(1), STOP(0);
@@ -42,69 +42,70 @@ public class Climber extends Subsystem {
 	}
 	
 	public Climber(){
-		climberMotor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
-		climberMotor.ConfigRevLimitSwitchNormallyOpen(false);
-		LiveWindow.addActuator("climber", "climber", climberMotor);
-		diagnose();
+		motor = new CANTalon(RobotMap.getInstance().CAN_CLIMBER_MOTOR.get());
+		motor.ConfigRevLimitSwitchNormallyOpen(false);
+		LiveWindow.addActuator("climber", "climber", motor);
 	}
 	
     public void set(State state) {
-    	if(climberMotor.getControlMode() == TalonControlMode.PercentVbus) {
+    	if(motor.getControlMode() == TalonControlMode.PercentVbus) {
     		Logger.defaultLogger.debug("Setting climber to " + state.getPercentVbusMode() + "%.");
-    		climberMotor.set(state.getPercentVbusMode());
-    	} else if(climberMotor.getControlMode() == TalonControlMode.Current) {
+    		motor.set(state.getPercentVbusMode());
+    	} else if(motor.getControlMode() == TalonControlMode.Current) {
     		Logger.defaultLogger.debug("Setting climber to " + state.getCurrentMode() + "A.");
-    		climberMotor.set(state.getCurrentMode());
+    		motor.set(state.getCurrentMode());
     	} else {
     		assert false;
     	}
 	}
     
     public void enableCurrentPid() {
-    	climberMotor.changeControlMode(TalonControlMode.Current);
-    	climberMotor.configPeakOutputVoltage(+12.0f, -12.0f);
-    	climberMotor.setProfile(0);
-    	climberMotor.setP(RobotMap.getInstance().CLIMBER_PID_KP.get());
-    	climberMotor.setI(RobotMap.getInstance().CLIMBER_PID_KI.get());
-    	climberMotor.setD(RobotMap.getInstance().CLIMBER_PID_KD.get());
-    	climberMotor.setF(RobotMap.getInstance().CLIMBER_PID_KF.get());
+    	motor.changeControlMode(TalonControlMode.Current);
+    	motor.configPeakOutputVoltage(+12.0f, -12.0f);
+    	motor.setProfile(0);
+    	motor.setP(RobotMap.getInstance().CLIMBER_PID_KP.get());
+    	motor.setI(RobotMap.getInstance().CLIMBER_PID_KI.get());
+    	motor.setD(RobotMap.getInstance().CLIMBER_PID_KD.get());
+    	motor.setF(RobotMap.getInstance().CLIMBER_PID_KF.get());
     	Logger.defaultLogger.debug("Climber current closed-loop PID enabled.");
     }
     
     public void disableCurrentPid() {
-    	climberMotor.set(0.0);
-    	climberMotor.changeControlMode(TalonControlMode.PercentVbus);
+    	motor.set(0.0);
+    	motor.changeControlMode(TalonControlMode.PercentVbus);
     	Logger.defaultLogger.debug("Climber current closed-loop PID disabled.");
     }
     
     public double getOutputCurrent() {
-    	return climberMotor.getOutputCurrent();
+    	return motor.getOutputCurrent();
     }
     
     public double getOutputVoltage() {
-    	return climberMotor.getOutputVoltage();
+    	return motor.getOutputVoltage();
     }
     
     public boolean isLimitSwitchPressed() {
-    	return climberMotor.isFwdLimitSwitchClosed();
+    	return motor.isFwdLimitSwitchClosed();
     }
     
     public void diagnose() {
-    	Robot.resetCanTimeoutErrorCount();
-		int result = climberMotor.getStickyFaultOverTemp();
-		if (Robot.getCanTimeoutErrorCount() == 0) {
-			if (result != 0) {
+		if (motor.getBusVoltage() != 4.0) {
+			if (motor.getStickyFaultOverTemp() != 0) {
 				Logger.defaultLogger.warn("Climber motor has over-temperature sticky bit set.");
 			}
-			if (climberMotor.getStickyFaultUnderVoltage() != 0) {
+			if (motor.getStickyFaultUnderVoltage() != 0) {
 				Logger.defaultLogger.warn("Climber motor has under-voltage sticky bit set.");
 			}
 		} else {
 			Logger.defaultLogger.warn("Climber motor controller not reachable over CAN.");
 		}
-		if (!climberMotor.isAlive()) {
+		if (!motor.isAlive()) {
 			Logger.defaultLogger.warn("Climber motor is stopped by motor safety.");
 		}
+    }
+    
+    public void clearStickyFaults() {
+    	motor.clearStickyFaults();
     }
     
     public void initDefaultCommand() {

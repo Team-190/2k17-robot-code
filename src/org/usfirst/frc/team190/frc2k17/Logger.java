@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class Logger {
 	
 	public static final Logger defaultLogger = new Logger(new StdOutputter());
-	public static final Logger lowLogger = new Logger(new BlackHole());
 	public static Logger kangarooVoice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 

@@ -12,12 +12,12 @@ import com.ctre.CANTalon.FeedbackDevice;
 public class RobotMap {
 	public final Key<Integer>
 		RELAY_CAMERA_LIGHT = new Key<Integer>(0),
-		PWM_LEDS_LEFT_R = new Key<Integer>(1),
-		PWM_LEDS_LEFT_G = new Key<Integer>(2),
-		PWM_LEDS_LEFT_B = new Key<Integer>(3),
-		PWM_LEDS_RIGHT_R = new Key<Integer>(4),
-		PWM_LEDS_RIGHT_G = new Key<Integer>(5),
-		PWM_LEDS_RIGHT_B = new Key<Integer>(6),
+		DIO_LEDS_LEFT_R = new Key<Integer>(1),
+		DIO_LEDS_LEFT_G = new Key<Integer>(2),
+		DIO_LEDS_LEFT_B = new Key<Integer>(3),
+		DIO_LEDS_RIGHT_R = new Key<Integer>(4),
+		DIO_LEDS_RIGHT_G = new Key<Integer>(5),
+		DIO_LEDS_RIGHT_B = new Key<Integer>(6),
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
@@ -31,6 +31,7 @@ public class RobotMap {
 		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
 		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
 		CAN_PCM = new Key<Integer>(20),
+		CAN_PDP = new Key<Integer>(1),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
 		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
@@ -104,7 +105,7 @@ public class RobotMap {
 		LED_RAINBOW_TIME = new Key<Double>(5.0),
 		LED_RAINBOW_REFRESH_RATE = ROBOT_MAIN_LOOP_RATE, // hz
 		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
-		PEGASSIST_TOLERANCE = new Key<Double>(1.0), // degrees
+		PEGASSIST_TOLERANCE = new Key<Double>(2.0), // degrees
 		
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
 		SHOOTER_PID_KP = new Key<Double>(0.0),
@@ -126,7 +127,7 @@ public class RobotMap {
 	public final Key<Long>
 		ROBOT_COMMS_TIMEOUT = new Key<Long>(250L), // milliseconds
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
-		PEGASSIST_REFRESH_TIME = new Key<Long>(300L); // milliseconds
+		PEGASSIST_REFRESH_TIME = new Key<Long>(200L); // milliseconds
 			
 	private static RobotMap instance = null;
 	

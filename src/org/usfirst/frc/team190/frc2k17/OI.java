@@ -35,6 +35,7 @@ import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -78,12 +79,12 @@ public class OI {
 	
 	private FilteredJoystick joystick0;
 	private FilteredJoystick joystick1;
-	private XboxController joystick2;
+	private GenericHID joystick2;
 
 	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
 	private Button boopButton, climbButton, shiftHighButton, shiftLowButton, shooterSpinButton, shooterFeedButton,
-			shooterStopButton, gearOutButton, gearInButton, cameraLightOnButton, cameraLightOffButton, blinkLEDsButton;
+			shooterStopButton, gearOutButton, gearInButton, pegAssistOnButton, pegAssistOffButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
@@ -113,6 +114,8 @@ public class OI {
 			bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		} else {
+			joystick2 = new FilteredJoystick(2);
+			
 			boopButton = new JoystickButton(joystick2, 1);
 			climbButton = new JoystickButton(joystick2, 2);
 			shiftHighButton = new JoystickButton(joystick2, 7);
@@ -122,8 +125,8 @@ public class OI {
 			shooterFeedButton = new JoystickButton(joystick2, 5);
 			gearOutButton = new JoystickButton(joystick2, 6);
 			gearInButton = new JoystickButton(joystick2, 4);
-			cameraLightOnButton = new JoystickButton(joystick2, 9);
-			cameraLightOffButton = new JoystickButton(joystick2, 10);
+			pegAssistOnButton = new JoystickButton(joystick2, 9);
+			pegAssistOffButton = new JoystickButton(joystick2, 10);
 			blinkLEDsButton = new JoystickButton(joystick2, 3);
 			
 			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
@@ -137,11 +140,13 @@ public class OI {
 			shooterFeedButton.whileHeld(new ShooterFeedCommand());
 			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
-			cameraLightOnButton.whenPressed(new GearCameraLightOnCommand());
-			cameraLightOffButton.whenPressed(new GearCameraLightOffCommand());
+			Command pegAssistCommand = new PegAssist();
+			pegAssistOnButton.whenPressed(pegAssistCommand);
+			pegAssistOffButton.cancelWhenPressed(pegAssistCommand);
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
+		pegPresentTrigger = new PegPresentTrigger();
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		
 		highShiftButton = new JoystickButton(joystick0, 3);
@@ -156,8 +161,6 @@ public class OI {
 		
 		povUpTrigger = new PovUpTrigger(joystick2);
 		povDownTrigger = new PovDownTrigger(joystick2);
-		
-		pegPresentTrigger = new PegPresentTrigger();
 		
 		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120));
