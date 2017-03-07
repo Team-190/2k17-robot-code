@@ -71,6 +71,7 @@ public class EncoderDifferenceController implements DriveController{
 	 * @param inches the desired difference in inches
 	 */
 	public void enable(double inches) {
+		srxdrive.zeroEncoderPositions();
 		getSmartDashboardPidValues();
 		loopOutput = 0;
 		// reset *before* enabling

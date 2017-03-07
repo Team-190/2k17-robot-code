@@ -7,6 +7,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  * Drive to peg from some distance away using the camera to track on course
@@ -15,6 +16,9 @@ public class PlaceGearCommand extends CommandGroup {
 
     public PlaceGearCommand() {
     	addSequential(new GearCameraLightOnCommand());
+    	//addSequential(new DriveStraightForDistanceCommand(60), 5);
+    	addSequential(new SearchForPegCommand());
+    	addSequential(new WaitCommand(0.5));
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());
     	addSequential(new GearCameraLightOffCommand());

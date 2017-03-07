@@ -176,7 +176,7 @@ public class OI {
 		SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
 		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
 		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
-		SmartDashboard.putData("Drive to Peg command", new DriveToPegCommand());
+		SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
 		SmartDashboard.putData("Peg Assist", new PegAssist());

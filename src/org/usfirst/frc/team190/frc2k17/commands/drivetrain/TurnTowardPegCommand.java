@@ -15,11 +15,9 @@ public class TurnTowardPegCommand extends Command {
 
     public TurnTowardPegCommand() {
         requires(Robot.drivetrain);
-        requires(Robot.gearCamera);
     }
 
     protected void initialize() {
-    	Robot.gearCamera.lightOn();
     	wasPegVisible = Robot.gearCamera.isPegVisible();
     	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());
     }
@@ -40,7 +38,6 @@ public class TurnTowardPegCommand extends Command {
 
     protected void end() {
     	Robot.drivetrain.disableTurningControl();
-    	Robot.gearCamera.lightOff();
     }
 
     protected void interrupted() {

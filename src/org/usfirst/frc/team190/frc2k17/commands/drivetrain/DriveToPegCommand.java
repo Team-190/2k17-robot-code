@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveToPegCommand extends Command {
 	
-	private DriveStraightForDistanceCommand driveCommand;
+	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
 	
     /**
      * get the distance to the peg and drive for that distance
@@ -22,12 +22,20 @@ public class DriveToPegCommand extends Command {
     protected void initialize() {
     	double dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	driveCommand = new DriveStraightForDistanceCommand(dist - 3, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
+    	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist - 2, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
     	driveCommand.start();
     }
 
     protected boolean isFinished() {
         return driveCommand.isFinished();
+    }
+    
+    protected void end() {
+    	driveCommand.cancel();
+    }
+    
+    protected void interrupted() {
+    	end();
     }
 
 }
