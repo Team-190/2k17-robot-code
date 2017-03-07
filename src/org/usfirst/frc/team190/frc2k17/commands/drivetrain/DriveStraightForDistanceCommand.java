@@ -18,6 +18,7 @@ public class DriveStraightForDistanceCommand extends Command {
     public DriveStraightForDistanceCommand(double inches) {
     	requires(Robot.drivetrain);
     	this.inches = inches;
+    	speedLimit = 1;
     }
     
     /**
