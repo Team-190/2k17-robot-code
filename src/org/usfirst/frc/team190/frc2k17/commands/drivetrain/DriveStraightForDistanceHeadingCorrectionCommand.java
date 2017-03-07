@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
 	
+	private boolean useNavx;
 	private double inches;
 	private double speedLimit;
 	
@@ -32,12 +33,20 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
     }
 
     protected void initialize() {
+    	useNavx = Robot.drivetrain.isNavxPresent();
     	Robot.drivetrain.enableDistanceControl(inches);
-    	Robot.drivetrain.enableTurningControl(0);
+    	Robot.drivetrain.enableEncoderDiffControl(0);
+    	if(useNavx) {
+    		Robot.drivetrain.enableTurningControl(0);
+    	}
     }
 
     protected void execute() {
-    	Robot.drivetrain.controlTurningAndDistance(speedLimit);
+    	if(useNavx) {
+    		Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
+    	} else {
+    		Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+    	}
     }
 
     protected boolean isFinished() {
@@ -46,7 +55,10 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
 
     protected void end() {
     	Robot.drivetrain.disableDistanceControl();
-    	Robot.drivetrain.disableTurningControl();
+    	Robot.drivetrain.disableEncoderDiffControl();
+    	if(useNavx) {
+    		Robot.drivetrain.disableTurningControl();
+    	}
     }
 
     protected void interrupted() {

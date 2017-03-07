@@ -37,7 +37,7 @@ public class DistanceController implements DriveController{
 		 */
 		@Override
 		public double pidGet() {
-			return srxdrive.averageEncoderPositions();
+			return srxdrive.getAverageEncoderPosition();
 		}
 	}
 	

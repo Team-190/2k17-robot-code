@@ -314,11 +314,27 @@ public class SRXDrive {
 	 * Get average encoder position
 	 * @return average position of both encoders in inches
 	 */
-	public double averageEncoderPositions() {
+	public double getAverageEncoderPosition() {
 		double value = (left.getEncoderPosition() + right.getEncoderPosition()) / 2;
 		SmartDashboard.putNumber("Encoder averages (inches)", value);
 		
 		return value;
+	}
+	
+	/**
+	 * Get left encoder position
+	 * @return position of left encoder in inches
+	 */
+	public double getLeftEncoderPosition() {
+		return left.getEncoderPosition();
+	}
+	
+	/**
+	 * Get right encoder position
+	 * @return position of right encoder in inches
+	 */
+	public double getRightEncoderPosition() {
+		return right.getEncoderPosition();
 	}
 	
 	/**

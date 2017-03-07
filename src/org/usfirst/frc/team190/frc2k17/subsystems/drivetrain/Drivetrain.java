@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private DriveController turningController;
+	private DriveController turningController, encoderDiffController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
@@ -36,6 +36,7 @@ public class Drivetrain extends Subsystem {
 		navx = new AHRS(SPI.Port.kMXP);
 		distanceController = new DistanceController(srxdrive);
 		turningController = new TurningController(navx);
+		encoderDiffController = new EncoderDifferenceController(srxdrive);
 	}
 	
 	/**
@@ -59,6 +60,29 @@ public class Drivetrain extends Subsystem {
 	 */
 	public boolean isDistanceControlOnTarget() {
 		return distanceController.isOnTarget();
+	}
+	
+	/**
+	 * Enables the encoder difference control loop
+	 * @param inches the desired difference in inches
+	 */
+	public void enableEncoderDiffControl(double inches) {
+		encoderDiffController.enable(inches);
+	}
+	
+	/**
+	 * Disables the encoder difference control loop
+	 */
+	public void disableEncoderDiffControl() {
+		encoderDiffController.disable();
+	}
+	
+	/**
+	 * Checks if the encoder difference control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isEncoderDiffControlOnTarget() {
+		return encoderDiffController.isOnTarget();
 	}
 	
 	
@@ -126,7 +150,6 @@ public class Drivetrain extends Subsystem {
 	public void controlTurning() {
 		if(isNavxPresent()) {
 			arcadeDrive(0, turningController.getLoopOutput());
-			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
 		}
 	}
 	
@@ -144,9 +167,28 @@ public class Drivetrain extends Subsystem {
 	public void controlTurningAndDistance(double speedLimit) {
 		if(isNavxPresent()) {
 			arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), turningController.getLoopOutput());
-			SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
 		} else {
 			controlDistance(0);
+		}
+	}
+	
+	/**
+	 * Drives the robot based off the output of the encoder difference and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlEncoderDiffAndDistance(double speedLimit) {
+		arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), encoderDiffController.getLoopOutput());
+	}
+	
+	/**
+	 * Drives the robot based off the output of the turning, encoder difference, and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlTurningAndEncoderDiffAndDistance(double speedLimit) {
+		if(isNavxPresent()) {
+			arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), turningController.getLoopOutput() + encoderDiffController.getLoopOutput());
+		} else {
+			controlEncoderDiffAndDistance(speedLimit);
 		}
 	}
 	
