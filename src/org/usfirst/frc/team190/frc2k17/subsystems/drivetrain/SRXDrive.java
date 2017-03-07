@@ -51,10 +51,6 @@ public class SRXDrive {
 			slave = new CANTalon(slaveID);
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
-			
-			master.setInverted(motorInverted);
-			master.reverseOutput(false);
-			master.reverseSensor(encoderInverted);
 
 			setControlMode(TalonControlMode.Speed);
 			
@@ -63,8 +59,8 @@ public class SRXDrive {
 		}
 		
 		public void enableCoast(boolean set) {
-				master.enableBrakeMode(!set);
-				slave.enableBrakeMode(!set);
+			master.enableBrakeMode(!set);
+			slave.enableBrakeMode(!set);
 		}
 		
 		/**
@@ -94,9 +90,17 @@ public class SRXDrive {
 			if (mode == TalonControlMode.Speed) {
 				master.changeControlMode(TalonControlMode.Speed);
 				inSpeedControlMode = true;
+				
+				master.setInverted(false);
+				master.reverseOutput(motorInverted);
+				master.reverseSensor(encoderInverted);
 			} else if (mode == TalonControlMode.PercentVbus){
 				master.changeControlMode(TalonControlMode.PercentVbus);
 				inSpeedControlMode = false;
+				
+				master.setInverted(motorInverted);
+				master.reverseOutput(false);
+				master.reverseSensor(encoderInverted);
 			}
 		}
 		
