@@ -123,18 +123,18 @@ private static class FastLoop2 extends TimerTask {
 		@Override
 		public void run() {
 			double time = DriverStation.getInstance().getMatchTime();
-			if(time <= 6) {
-				if(lastSpoke > 6) {
+			if(time <= 6d) {
+				if(lastSpoke > 6d) {
 					Logger.voice.info("five");
 					lastSpoke = time;
 				}
-			} else if(time <= 11) {
-				if (lastSpoke > 11) {
+			} else if(time <= 11d) {
+				if (lastSpoke > 11d) {
 					Logger.voice.info("ten");
 					lastSpoke = time;
 				}
 			} else if(time <= 31) {
-				if (lastSpoke > 31) {
+				if (lastSpoke > 31d) {
 					Logger.voice.info("thirty");
 					lastSpoke = time;
 				}

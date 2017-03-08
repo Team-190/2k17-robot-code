@@ -33,6 +33,7 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
     }
 
     protected void initialize() {
+    	Robot.drivetrain.enableCoast(false);
     	useNavx = Robot.drivetrain.isNavxPresent();
     	Robot.drivetrain.enableDistanceControl(inches);
     	Robot.drivetrain.enableEncoderDiffControl(0);

@@ -41,7 +41,6 @@ public class RobotMap {
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
-		SHIFT_PAUSE = new Key<Integer>(20), // milliseconds
 		
 		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
 
@@ -88,7 +87,7 @@ public class RobotMap {
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
-		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.1),
+		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.5),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
 		
 		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
@@ -110,6 +109,8 @@ public class RobotMap {
 		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
 		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		
+		SHIFT_PAUSE = new Key<Double>(0.020), // seconds
 		
 		AUTO_TIME_TO_STOP = new Key<Double>(14.5),
 		LED_RAINBOW_TIME = new Key<Double>(5.0),

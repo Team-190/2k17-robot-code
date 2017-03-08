@@ -18,6 +18,7 @@ public class TurnTowardPegCommand extends Command {
     }
 
     protected void initialize() {
+    	Robot.drivetrain.enableCoast(false);
     	wasPegVisible = Robot.gearCamera.isPegVisible();
     	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());
     }

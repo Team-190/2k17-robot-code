@@ -9,6 +9,7 @@ import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -93,7 +94,9 @@ public class AutoShiftCommand extends Command {
 
     protected void end() {
     	Logger.defaultLogger.info("Auto-shifting deactivated.");
-    	Logger.voice.info("manual");
+    	if(!DriverStation.getInstance().isDisabled()) {
+    		Logger.voice.info("manual");
+    	}
     }
 
     protected void interrupted() {

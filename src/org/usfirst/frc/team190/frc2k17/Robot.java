@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import java.io.OutputStream;
@@ -56,6 +57,8 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 	
+	public static Command autoShiftCommand;
+	
     private Command autonomousCommand;
     //SendableChooser chooser;
     
@@ -68,12 +71,15 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
 		// RobotMap must be initialized before almost anything else.
-    	Logger.init();
-    	Logger.resetTimestamp();
     	interceptOutputStream();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before everything else. Do not change order.
     	prefs = Preferences.getInstance();
+    	Logger.init();
+    	Logger.resetTimestamp();
+    	if(isKitBot()) {
+			Logger.voice.info("kit bot");
+		}
     	leftLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_LEFT_R.get(),
 				RobotMap.getInstance().DIO_LEDS_LEFT_G.get(), RobotMap.getInstance().DIO_LEDS_LEFT_B.get());
 		rightLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_RIGHT_R.get(),
@@ -90,6 +96,7 @@ public class Robot extends IterativeRobot {
     	shifters = new Shifters();
 		compressor = new Compressor(RobotMap.getInstance().CAN_PCM.get());
 		pdp = new PowerDistributionPanel(RobotMap.getInstance().CAN_PDP.get());
+		autoShiftCommand = new AutoShiftCommand();
 		// OI must be initialized last
 		oi = new OI();
 		
@@ -166,6 +173,7 @@ public class Robot extends IterativeRobot {
     	Logger.defaultLogger.info("Teleop mode started.");
 
     	compressor.start();
+    	autoShiftCommand.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
@@ -195,20 +203,24 @@ public class Robot extends IterativeRobot {
     	boolean isKitBot  = Robot.prefs.getBoolean("Is kit bot", false);
     	if(wasKitBot == null) {
     		wasKitBot = isKitBot;
-    		if(isKitBot) {
-    			Logger.voice.info("kit bot");
-    		}
     	} else if(wasKitBot != isKitBot) {
     		// The "Is kit bot" setting on the smart dashboard has changed.
 			// In order to make sure that all of the new settings get applied,
 			// the robot code must restart. It is not safe to just start
 			// returning the new value from this method; we would get a
 			// frankenstein robot using constants from both modes.
+    		Robot.prefs.putBoolean("Is kit bot", isKitBot);
 			Logger.defaultLogger.critical("The \"Is kit bot\" setting on the smart dashboard has changed value. "
 					+ "In order to apply the new setting, the robot code must restart.");
 			Logger.defaultLogger.info("ROBOT CODE IS NOW INTENTIONALLY RESTARTING");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
 			System.exit(0);
     	}
+    	assert wasKitBot != null;
     	return wasKitBot;
     }
     
@@ -238,7 +250,7 @@ public class Robot extends IterativeRobot {
     	}
     	double vbat = pdp.getVoltage();
     	Logger.defaultLogger.info("Battery voltage is " + vbat + " volts.");
-    	if(vbat < 11.7) {
+    	if(vbat < 11.5) {
     		Logger.voice.warn("battery");
     	}
     	drivetrain.diagnose();
@@ -251,10 +263,10 @@ public class Robot extends IterativeRobot {
     		Logger.defaultLogger.warn("PCM has compressor-current-too-high sticky bit set.");
     		Logger.voice.warn("check compressor");
     	}
-    	if(compressor.getCompressorNotConnectedStickyFault()) {
+    	/*if(compressor.getCompressorNotConnectedStickyFault()) {
     		Logger.defaultLogger.warn("PCM has compressor-not-connected sticky bit set. Is the compressor connected properly?");
     		Logger.voice.warn("check compressor");
-    	}
+    	}*/
     	if(compressor.getCompressorShortedStickyFault()) {
     		Logger.defaultLogger.warn("PCM has compressor-shorted sticky bit set. Is the compressor output shorted?");
     		Logger.voice.warn("check compressor");

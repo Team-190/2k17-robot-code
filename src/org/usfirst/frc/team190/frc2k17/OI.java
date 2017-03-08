@@ -84,7 +84,7 @@ public class OI {
 	private FilteredJoystick joystick1;
 	private GenericHID joystick2;
 
-	private Button highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
+	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
 	private Button boopButton, climbButton, autoShiftButton, cancelAutoShiftButton, shooterSpinButton, shooterFeedButton,
 			shooterStopButton, gearOutButton, gearInButton, pegAssistOnButton, pegAssistOffButton, blinkLEDsButton;
@@ -94,7 +94,6 @@ public class OI {
 		joystick0 = new FilteredJoystick(0);
 		joystick0.setDeadband(RobotMap.getInstance().JOYSTICK_DEADBAND.get());
 		joystick1 = new FilteredJoystick(1);
-		Command autoShiftCommand = new AutoShiftCommand();
 		if(Robot.usingXboxController()) {
 			joystick2 = new XboxController(2);
 			
@@ -137,9 +136,9 @@ public class OI {
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
-			autoShiftButton.whenPressed(autoShiftCommand);
+			autoShiftButton.whenPressed(Robot.autoShiftCommand);
 			cancelAutoShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-			cancelAutoShiftButton.cancelWhenPressed(autoShiftCommand);
+			cancelAutoShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
@@ -155,15 +154,16 @@ public class OI {
 		pegPresentTrigger = new PegPresentTrigger();
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		
-		highShiftButton = new JoystickButton(joystick0, 3);
-		lowShiftButton = new JoystickButton(joystick0, 2);
+		highShiftButton = new JoystickButton(joystick1, 3);
+		lowShiftButton = new JoystickButton(joystick1, 2);
+		driverAutoShiftButton = new JoystickButton(joystick1, 1);
 		//driveToPegButton = new JoystickButton(joystick0, 3);
 		//gearKickButton = new JoystickButton(joystick0, 2);
 		
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
-		highShiftButton.cancelWhenPressed(autoShiftCommand);
+		highShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-		lowShiftButton.cancelWhenPressed(autoShiftCommand);
+		lowShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		//driveToPegButton.whenPressed(new PlaceGearCommand());
 		//gearKickButton.whenPressed(new KickGearCommand());
 		
