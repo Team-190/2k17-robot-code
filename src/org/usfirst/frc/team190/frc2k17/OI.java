@@ -133,7 +133,8 @@ public class OI {
 			
 			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
-			climbButton.whileActive(new ClimberClimbCommand());
+			Command climbCommand = new ClimberClimbCommand();
+			climbButton.whenPressed(climbCommand);
 			shiftHighButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			shiftLowButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 			Command shooterSpinCommand = new StartShooterCommand();
