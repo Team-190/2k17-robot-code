@@ -98,6 +98,7 @@ public class Climber extends Subsystem {
 			}
 		} else {
 			Logger.defaultLogger.warn("Climber motor controller not reachable over CAN.");
+			Logger.voice.warn("check climber");
 		}
 		if (!motor.isAlive()) {
 			Logger.defaultLogger.warn("Climber motor is stopped by motor safety.");

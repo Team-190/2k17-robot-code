@@ -62,7 +62,9 @@ public class EncoderDifferenceController implements DriveController{
 	 * @return Distance PID loop output
 	 */
 	public double getLoopOutput() {
-		SmartDashboard.putNumber("Encoder difference PID loop output", loopOutput);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Encoder difference PID loop output", loopOutput);
+		}
 		return loopOutput;
 	}
 	
@@ -86,7 +88,9 @@ public class EncoderDifferenceController implements DriveController{
 	 */
 	public void disable() {
 		encoderDiffPID.disable();
-		SmartDashboard.putNumber("Encoder difference PID loop output", 0);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Encoder difference PID loop output", 0);
+		}
 		Logger.defaultLogger.debug("Encoder difference PID disabled.");
 	}
 	

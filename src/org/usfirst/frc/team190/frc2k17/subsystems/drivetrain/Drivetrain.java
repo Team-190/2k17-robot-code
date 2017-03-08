@@ -92,7 +92,9 @@ public class Drivetrain extends Subsystem {
 	 */
 	public void enableTurningControl(double angle) {
 		if(isNavxPresent()) {
-			SmartDashboard.putNumber("Degrees to turn", angle);
+			if(Robot.debug()) {
+				SmartDashboard.putNumber("Degrees to turn", angle);
+			}
 			turningController.enable(angle);
 		} else {
 			Logger.defaultLogger.severe("NavX not connected! Not enabling turning control.");
@@ -277,6 +279,7 @@ public class Drivetrain extends Subsystem {
 				navx.free();
 				navx = null;
 				turningController = null;
+				Logger.voice.warn("check Nav-X");
 			}
 		}
 	}

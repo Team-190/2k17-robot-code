@@ -59,6 +59,8 @@ public class Robot extends IterativeRobot {
     private Command autonomousCommand;
     //SendableChooser chooser;
     
+    private static Boolean wasKitBot = null;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -69,13 +71,13 @@ public class Robot extends IterativeRobot {
     	Logger.init();
     	Logger.resetTimestamp();
     	interceptOutputStream();
+    	// prefs must not be initialized statically. Do not move from robotInit().
+    	// prefs MUST be initialized before everything else. Do not change order.
+    	prefs = Preferences.getInstance();
     	leftLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_LEFT_R.get(),
 				RobotMap.getInstance().DIO_LEDS_LEFT_G.get(), RobotMap.getInstance().DIO_LEDS_LEFT_B.get());
 		rightLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_RIGHT_R.get(),
 				RobotMap.getInstance().DIO_LEDS_RIGHT_G.get(), RobotMap.getInstance().DIO_LEDS_RIGHT_B.get());
-    	// prefs must not be initialized statically. Do not move from robotInit().
-    	// prefs MUST be initialized before drivetrain. Do not change order.
-    	prefs = Preferences.getInstance();
     	drivetrain = new Drivetrain();
     	// gearCamera must not be initialized statically. Do not move from robotInit().
     	gearCamera = new GearCamera();
@@ -111,7 +113,6 @@ public class Robot extends IterativeRobot {
      */
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
-    	Logger.kangarooVoice.info("disabled");
     	
     	compressor.stop();
     }
@@ -134,7 +135,6 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
     	
         //autonomousCommand = (Command) chooser.getSelected();
@@ -163,7 +163,6 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	Logger.kangarooVoice.info("teleop");
     	Logger.defaultLogger.info("Teleop mode started.");
 
     	compressor.start();
@@ -193,6 +192,30 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
+    	boolean isKitBot  = Robot.prefs.getBoolean("Is kit bot", false);
+    	if(wasKitBot == null) {
+    		wasKitBot = isKitBot;
+    		if(isKitBot) {
+    			Logger.voice.info("kit bot");
+    		}
+    	} else if(wasKitBot != isKitBot) {
+    		// The "Is kit bot" setting on the smart dashboard has changed.
+			// In order to make sure that all of the new settings get applied,
+			// the robot code must restart. It is not safe to just start
+			// returning the new value from this method; we would get a
+			// frankenstein robot using constants from both modes.
+			Logger.defaultLogger.critical("The \"Is kit bot\" setting on the smart dashboard has changed value. "
+					+ "In order to apply the new setting, the robot code must restart.");
+			Logger.defaultLogger.info("ROBOT CODE IS NOW INTENTIONALLY RESTARTING");
+			System.exit(0);
+    	}
+    	return wasKitBot;
+    }
+    
+    /**
+     * @return whether to enable debug mode
+     */
+    public static boolean debug() {
     	return true;
     }
     
@@ -213,7 +236,11 @@ public class Robot extends IterativeRobot {
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
     	}
-    	Logger.defaultLogger.info("Battery voltage is " + pdp.getVoltage() + " volts.");
+    	double vbat = pdp.getVoltage();
+    	Logger.defaultLogger.info("Battery voltage is " + vbat + " volts.");
+    	if(vbat < 11.7) {
+    		Logger.voice.warn("battery");
+    	}
     	drivetrain.diagnose();
     	shooter.diagnose();
     	shooterFeeder.diagnose();
@@ -222,12 +249,15 @@ public class Robot extends IterativeRobot {
     	gearPlacer.diagnose();
     	if(compressor.getCompressorCurrentTooHighStickyFault()) {
     		Logger.defaultLogger.warn("PCM has compressor-current-too-high sticky bit set.");
+    		Logger.voice.warn("check compressor");
     	}
     	if(compressor.getCompressorNotConnectedStickyFault()) {
     		Logger.defaultLogger.warn("PCM has compressor-not-connected sticky bit set. Is the compressor connected properly?");
+    		Logger.voice.warn("check compressor");
     	}
     	if(compressor.getCompressorShortedStickyFault()) {
     		Logger.defaultLogger.warn("PCM has compressor-shorted sticky bit set. Is the compressor output shorted?");
+    		Logger.voice.warn("check compressor");
     	}
     	Logger.defaultLogger.info("Diagnostics complete.\n====================\n");
     }

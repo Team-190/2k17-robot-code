@@ -65,7 +65,9 @@ public class DistanceController implements DriveController{
 	 * @return Distance PID loop output
 	 */
 	public double getLoopOutput() {
-		SmartDashboard.putNumber("Distance PID loop output", loopOutput);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Distance PID loop output", loopOutput);
+		}
 		return loopOutput;
 	}
 	
@@ -89,7 +91,9 @@ public class DistanceController implements DriveController{
 	 */
 	public void disable() {
 		distancePID.disable();
-		SmartDashboard.putNumber("Distance PID loop output", 0);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Distance PID loop output", 0);
+		}
 		Logger.defaultLogger.debug("Distance PID disabled.");
 	}
 	

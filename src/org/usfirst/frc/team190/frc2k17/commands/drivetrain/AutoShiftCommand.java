@@ -33,7 +33,8 @@ public class AutoShiftCommand extends Command {
     	return (Math.abs(Robot.drivetrain.getLeftRPM())+Math.abs(Robot.drivetrain.getLeftRPM()))/2.0;
     }
     
-    protected void initialize() {	
+    protected void initialize() {
+    	Logger.defaultLogger.info("Auto-shifting activated.");
     }
     
     protected void execute() {
@@ -91,10 +92,11 @@ public class AutoShiftCommand extends Command {
     }
 
     protected void end() {
-    	Robot.shifters.shift(Shifters.Gear.LOW);
+    	Logger.defaultLogger.info("Auto-shifting deactivated.");
+    	Logger.voice.info("manual");
     }
 
     protected void interrupted() {
-    	end(); //Might want to add more elegant interrupt handeling later
+    	end(); //Might want to add more elegant interrupt handling later
     }
 }

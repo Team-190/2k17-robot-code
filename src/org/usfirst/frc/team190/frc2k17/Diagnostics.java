@@ -23,6 +23,7 @@ public class Diagnostics {
 	public static void start() {
 		timer = new Timer();
 		timer.schedule(new FastLoop(), 0, 250);
+		timer.schedule(new FastLoop2(), 0, 250);
 		timer.schedule(new SlowLoop(), 20000, 20000);
 	}
 	
@@ -104,6 +105,38 @@ public class Diagnostics {
 					ledStates.remove(LedState.CYAN);
 					updateLEDs();
 					brownedOutRun = false;
+				}
+			}
+		}
+		
+	}
+	
+private static class FastLoop2 extends TimerTask {
+		
+		private double lastSpoke;
+	
+		public FastLoop2() {
+			super();
+			lastSpoke = DriverStation.getInstance().getMatchTime();
+		}
+	
+		@Override
+		public void run() {
+			double time = DriverStation.getInstance().getMatchTime();
+			if(time <= 6) {
+				if(lastSpoke > 6) {
+					Logger.voice.info("five");
+					lastSpoke = time;
+				}
+			} else if(time <= 11) {
+				if (lastSpoke > 11) {
+					Logger.voice.info("ten");
+					lastSpoke = time;
+				}
+			} else if(time <= 31) {
+				if (lastSpoke > 31) {
+					Logger.voice.info("thirty");
+					lastSpoke = time;
 				}
 			}
 		}

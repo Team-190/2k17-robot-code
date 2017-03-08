@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class Logger {
 	
 	public static final Logger defaultLogger = new Logger(new StdOutputter());
-	public static Logger kangarooVoice;
+	public static Logger voice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
 	
@@ -17,9 +17,9 @@ public class Logger {
 		TRACE("trace"),
 		DEBUG("debug"),
 		INFO(""),
-		WARN("warning"),
-		ERROR("error"),
-		SEVERE("severe error"),
+		WARN(""),
+		ERROR(""),
+		SEVERE("error"),
 		CRITICAL("critical");
 		
 		private final String kangarooVoice;
@@ -37,7 +37,7 @@ public class Logger {
 	 * Initializes loggers besides defaultLogger.
 	 */
 	public static void init() {
-		kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
+		voice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
 	}
 	
 	public static void resetTimestamp() {

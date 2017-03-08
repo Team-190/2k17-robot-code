@@ -35,7 +35,6 @@ public class SRXDrive {
 			{
 				//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
 				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
-				SmartDashboard.putNumber("Encoder Ticks", RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 			}
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -73,7 +72,9 @@ public class SRXDrive {
 				speed *= maxSpeed;
 			}
 			
-			SmartDashboard.putNumber(name + " setpoint", speed);
+			if(Robot.debug()) {
+				SmartDashboard.putNumber(name + " setpoint", speed);
+			}
 			
 			// TODO: Implement switching between speed and percentvbus mode somewhere
 			// 		 Most likely need to implement a failsafe if an encoder fails and
@@ -188,6 +189,7 @@ public class SRXDrive {
 				}
 			} else {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
+				Logger.voice.warn("check drivetrain front " + name);
 			}
 			if (slave.getBusVoltage() != 4.0) {
 				if (slave.getStickyFaultOverTemp() != 0) {
@@ -198,6 +200,7 @@ public class SRXDrive {
 				}
 			} else {
 				Logger.defaultLogger.warn(name + " - rear drivetrain motor controller not reachable over CAN.");
+				Logger.voice.warn("check drivetrain rear " + name);
 			}
 			if (!master.isAlive()) {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor is stopped by motor safety.");
@@ -310,8 +313,10 @@ public class SRXDrive {
 		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", right.getSpeed());
 		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
-		SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
-		SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
+			SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
+		}
 	}
 	
 	/**
