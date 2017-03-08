@@ -170,19 +170,21 @@ public class OI {
 		povUpTrigger = new PovUpTrigger(joystick2);
 		povDownTrigger = new PovDownTrigger(joystick2);
 		
-		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
-		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120,1));
-		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
-		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
-		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
-		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
-		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
-		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+		SmartDashboard.putData("Auto Shift", Robot.autoShiftCommand);
+		if(Robot.debug()) {
+			SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120,1));
+			SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
+			SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
+			SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
+			SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
+			SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
+			SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+			SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
+			SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
+			SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
+		}
 		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
 		SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
-		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
-		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
-		SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
 		SmartDashboard.putData("Peg Assist", new PegAssist());
