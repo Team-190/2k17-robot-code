@@ -10,6 +10,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberStopCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
@@ -133,8 +134,8 @@ public class OI {
 			
 			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
-			Command climbCommand = new ClimberClimbCommand();
-			climbButton.whenPressed(climbCommand);
+			climbButton.whenPressed(new ClimberClimbCommand());
+			climbButton.whenReleased(new ClimberStopCommand());
 			shiftHighButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			shiftLowButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 			Command shooterSpinCommand = new StartShooterCommand();
