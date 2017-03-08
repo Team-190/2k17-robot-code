@@ -8,6 +8,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,8 +26,9 @@ public class GearCamera extends Subsystem {
 	private boolean pegIsVisible;
 
 	public GearCamera() {
-		spike = new Relay(RobotMap.getInstance().PWM_CAMERA_LIGHT.get());
+		spike = new Relay(RobotMap.getInstance().RELAY_CAMERA_LIGHT.get());
 		grip = NetworkTable.getTable("/GRIP/frontCameraReport");
+		LiveWindow.addActuator("gear and boopers", "camera light", spike);
 	}
 
 	/**
@@ -84,13 +86,13 @@ public class GearCamera extends Subsystem {
 				pegIsVisible = false;
 			}
 
-			Logger.defaultLogger.info("Peg found, degreesToTurn set to " + degreesToTurn);
-			Logger.kangarooVoice.info(String.format("%1$.3f", degreesToTurn) + " degrees");
 		} else {
 			degreesToTurn = 0;
 			inchesToDrive = 0;
-			Logger.defaultLogger.info("Peg not seen, degreesToTurn not set.");
 		}
+		
+		SmartDashboard.putNumber("Degrees to turn", degreesToTurn);
+		SmartDashboard.putNumber("Inches to drive", inchesToDrive);
 	}
 
 	public boolean isPegVisible() {

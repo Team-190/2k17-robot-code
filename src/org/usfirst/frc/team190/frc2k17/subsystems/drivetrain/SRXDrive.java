@@ -35,7 +35,6 @@ public class SRXDrive {
 			{
 				//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
 				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
-				SmartDashboard.putNumber("Encoder Ticks", RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
 			}
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -51,17 +50,16 @@ public class SRXDrive {
 			slave = new CANTalon(slaveID);
 			slave.changeControlMode(CANTalon.TalonControlMode.Follower);
 			slave.set(master.getDeviceID());
-			
-			master.setInverted(motorInverted);
-			master.reverseOutput(false);
-			master.reverseSensor(encoderInverted);
 
 			setControlMode(TalonControlMode.Speed);
+			
+			LiveWindow.addActuator("drivetrain", name + " master", master);
+			LiveWindow.addActuator("drivetrain", name + " slave", slave);
 		}
 		
 		public void enableCoast(boolean set) {
-				master.enableBrakeMode(!set);
-				slave.enableBrakeMode(!set);
+			master.enableBrakeMode(!set);
+			slave.enableBrakeMode(!set);
 		}
 		
 		/**
@@ -74,7 +72,9 @@ public class SRXDrive {
 				speed *= maxSpeed;
 			}
 			
-			SmartDashboard.putNumber(name + " setpoint", speed);
+			if(Robot.debug()) {
+				SmartDashboard.putNumber(name + " setpoint", speed);
+			}
 			
 			// TODO: Implement switching between speed and percentvbus mode somewhere
 			// 		 Most likely need to implement a failsafe if an encoder fails and
@@ -91,9 +91,17 @@ public class SRXDrive {
 			if (mode == TalonControlMode.Speed) {
 				master.changeControlMode(TalonControlMode.Speed);
 				inSpeedControlMode = true;
+				
+				master.setInverted(false);
+				master.reverseOutput(motorInverted);
+				master.reverseSensor(encoderInverted);
 			} else if (mode == TalonControlMode.PercentVbus){
 				master.changeControlMode(TalonControlMode.PercentVbus);
 				inSpeedControlMode = false;
+				
+				master.setInverted(motorInverted);
+				master.reverseOutput(false);
+				master.reverseSensor(encoderInverted);
 			}
 		}
 		
@@ -177,17 +185,32 @@ public class SRXDrive {
 		 * Diagnose various sensors for the drive pair
 		 */
 		public void diagnose() {
-			if (master.getStickyFaultOverTemp() != 0) {
-				Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
+			if (master.getBusVoltage() != 4.0) {
+				if (master.getStickyFaultOverTemp() != 0) {
+					Logger.defaultLogger.warn(name + " - front drivetrain motor has over-temperature sticky bit set.");
+				}
+				if (master.getStickyFaultUnderVoltage() != 0) {
+					Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
+				}
+				if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+					Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
+				} else {
+					Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+				}
+			} else {
+				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
+				Logger.voice.warn("check drivetrain front " + name);
 			}
-			if (master.getStickyFaultUnderVoltage() != 0) {
-				Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
-			}
-			if (slave.getStickyFaultOverTemp() != 0) {
-				Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
-			}
-			if (slave.getStickyFaultUnderVoltage() != 0) {
-				Logger.defaultLogger.warn(name + " - rear drivetrain motor has under-voltage sticky bit set.");
+			if (slave.getBusVoltage() != 4.0) {
+				if (slave.getStickyFaultOverTemp() != 0) {
+					Logger.defaultLogger.warn(name + " - rear drivetrain motor has over-temperature sticky bit set.");
+				}
+				if (slave.getStickyFaultUnderVoltage() != 0) {
+					Logger.defaultLogger.warn(name + " - rear drivetrain motor has under-voltage sticky bit set.");
+				}
+			} else {
+				Logger.defaultLogger.warn(name + " - rear drivetrain motor controller not reachable over CAN.");
+				Logger.voice.warn("check drivetrain rear " + name);
 			}
 			if (!master.isAlive()) {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor is stopped by motor safety.");
@@ -195,23 +218,23 @@ public class SRXDrive {
 			if (!slave.isAlive()) {
 				Logger.defaultLogger.warn(name + " - rear drivetrain motor is stopped by motor safety.");
 			}
-			if (master.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-				Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
-			} else {
-				Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
-			}
-		}	
+		}
+		
+		public void clearStickyFaults() {
+			master.clearStickyFaults();
+			slave.clearStickyFaults();
+		}
 	}
 	
 	private DriveMotorPair left = new DriveMotorPair("Left",
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_FRONT.get(),
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_REAR.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_MASTER.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_LEFT_SLAVE.get(),
 												RobotMap.getInstance().DRIVE_LEFT_MOTOR_INVERTED.get(),
 												RobotMap.getInstance().DRIVE_LEFT_ENC_INVERTED.get());
 	
 	private DriveMotorPair right= new DriveMotorPair("Right",
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_FRONT.get(),
-												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_REAR.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_MASTER.get(),
+												RobotMap.getInstance().CAN_DRIVE_MOTOR_RIGHT_SLAVE.get(),
 												RobotMap.getInstance().DRIVE_RIGHT_MOTOR_INVERTED.get(),
 												RobotMap.getInstance().DRIVE_RIGHT_ENC_INVERTED.get());
 	
@@ -300,19 +323,37 @@ public class SRXDrive {
 		SmartDashboard.putNumber("Right Drivetrain Encoder Velocity", right.getSpeed());
 		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
-		SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
-		SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
+			SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
+		}
 	}
 	
 	/**
 	 * Get average encoder position
 	 * @return average position of both encoders in inches
 	 */
-	public double averageEncoderPositions() {
+	public double getAverageEncoderPosition() {
 		double value = (left.getEncoderPosition() + right.getEncoderPosition()) / 2;
 		SmartDashboard.putNumber("Encoder averages (inches)", value);
 		
 		return value;
+	}
+	
+	/**
+	 * Get left encoder position
+	 * @return position of left encoder in inches
+	 */
+	public double getLeftEncoderPosition() {
+		return left.getEncoderPosition();
+	}
+	
+	/**
+	 * Get right encoder position
+	 * @return position of right encoder in inches
+	 */
+	public double getRightEncoderPosition() {
+		return right.getEncoderPosition();
 	}
 	
 	/**
@@ -347,6 +388,11 @@ public class SRXDrive {
 	public void diagnose() {
 		left.diagnose();
 		right.diagnose();
+	}
+	
+	public void clearStickyFaults() {
+		left.clearStickyFaults();
+		right.clearStickyFaults();
 	}
 	
 	public double getLeftRPM() {

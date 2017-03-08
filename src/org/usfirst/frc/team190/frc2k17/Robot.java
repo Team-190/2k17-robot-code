@@ -4,7 +4,13 @@ package org.usfirst.frc.team190.frc2k17;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
+import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
@@ -15,9 +21,14 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.hal.HAL;
+import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
+import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -30,7 +41,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static Preferences prefs;
-	
 	public static Drivetrain drivetrain;
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
@@ -40,13 +50,20 @@ public class Robot extends IterativeRobot {
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
 	public static Shifters shifters;
+	public static LEDStrip leftLEDs;
+	public static LEDStrip rightLEDs;
+	public static Compressor compressor;
+	public static PowerDistributionPanel pdp;
+	
 	public static OI oi;
 	
-	private static Compressor compressor;
+	public static Command autoShiftCommand;
 	
-    Command autonomousCommand;
+    private Command autonomousCommand;
     //SendableChooser chooser;
-        
+    
+    private static Boolean wasKitBot = null;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -54,11 +71,19 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
 		// RobotMap must be initialized before almost anything else.
+    	interceptOutputStream();
+    	// prefs must not be initialized statically. Do not move from robotInit().
+    	// prefs MUST be initialized before everything else. Do not change order.
+    	prefs = Preferences.getInstance();
     	Logger.init();
     	Logger.resetTimestamp();
-    	// prefs must not be initialized statically. Do not move from robotInit().
-    	// prefs MUST be initialized before drivetrain. Do not change order.
-    	prefs = Preferences.getInstance();
+    	if(isKitBot()) {
+			Logger.voice.info("kit bot");
+		}
+    	leftLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_LEFT_R.get(),
+				RobotMap.getInstance().DIO_LEDS_LEFT_G.get(), RobotMap.getInstance().DIO_LEDS_LEFT_B.get());
+		rightLEDs = new LEDStrip(RobotMap.getInstance().DIO_LEDS_RIGHT_R.get(),
+				RobotMap.getInstance().DIO_LEDS_RIGHT_G.get(), RobotMap.getInstance().DIO_LEDS_RIGHT_B.get());
     	drivetrain = new Drivetrain();
     	// gearCamera must not be initialized statically. Do not move from robotInit().
     	gearCamera = new GearCamera();
@@ -69,7 +94,12 @@ public class Robot extends IterativeRobot {
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
     	shifters = new Shifters();
+		compressor = new Compressor(RobotMap.getInstance().CAN_PCM.get());
+		pdp = new PowerDistributionPanel(RobotMap.getInstance().CAN_PDP.get());
+		autoShiftCommand = new AutoShiftCommand();
+		// OI must be initialized last
 		oi = new OI();
+		
         //chooser = new SendableChooser();
         //chooser.addObject("My Auto", new MyAutoCommand());
         //SmartDashboard.putData("Auto mode", chooser);
@@ -79,8 +109,8 @@ public class Robot extends IterativeRobot {
 							 RobotMap.getInstance().CAMERA_RESOLUTION_Y.get());
 		camera.setExposureManual(RobotMap.getInstance().CAMERA_EXPOSURE.get());
 		
-		compressor = new Compressor();
 		diagnose();
+		Diagnostics.start();
     }
 	
 	/**
@@ -90,13 +120,16 @@ public class Robot extends IterativeRobot {
      */
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
-    	Logger.kangarooVoice.info("disabled");
     	
     	compressor.stop();
     }
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		Diagnostics.resetDisconnected();
+		
+		leftLEDs.updateRainbow();
+    	rightLEDs.updateRainbow();
 	}
 
 	/**
@@ -109,8 +142,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Logger.kangarooVoice.info("auto");
     	Logger.defaultLogger.info("Autonomous mode started.");
+    	
         //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -133,28 +166,26 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        Diagnostics.resetDisconnected();
     }
 
     public void teleopInit() {
-    	Logger.kangarooVoice.info("teleop");
     	Logger.defaultLogger.info("Teleop mode started.");
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-    	
+
     	compressor.start();
+    	autoShiftCommand.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
-        //if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-		drivetrain.outputEncoderValues();
-        Scheduler.getInstance().run();        
+        Scheduler.getInstance().run();   
+        Diagnostics.resetDisconnected();
+        
+        drivetrain.outputEncoderValues();
     }
     
     /**
@@ -162,23 +193,65 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+        Diagnostics.resetDisconnected();
     }
     
-    /**
+	/**
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
+    	boolean isKitBot  = Robot.prefs.getBoolean("Is kit bot", false);
+    	if(wasKitBot == null) {
+    		wasKitBot = isKitBot;
+    	} else if(wasKitBot != isKitBot) {
+    		// The "Is kit bot" setting on the smart dashboard has changed.
+			// In order to make sure that all of the new settings get applied,
+			// the robot code must restart. It is not safe to just start
+			// returning the new value from this method; we would get a
+			// frankenstein robot using constants from both modes.
+    		Robot.prefs.putBoolean("Is kit bot", isKitBot);
+			Logger.defaultLogger.critical("The \"Is kit bot\" setting on the smart dashboard has changed value. "
+					+ "In order to apply the new setting, the robot code must restart.");
+			Logger.defaultLogger.info("ROBOT CODE IS NOW INTENTIONALLY RESTARTING");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			System.exit(0);
+    	}
+    	assert wasKitBot != null;
+    	return wasKitBot;
+    }
+    
+    /**
+     * @return whether to enable debug mode
+     */
+    public static boolean debug() {
     	return true;
+    }
+    
+    /**
+     * @return whether we are using an xbox controller for the operator
+     */
+    public static boolean usingXboxController() {
+    	return false;
     }
     
     /**
      * Call the diagnose functions on all of the subsystems.
      */
-    public void diagnose() {
+    public static void diagnose() {
+    	Logger.defaultLogger.info("\n====================\nRunning diagnostics...");
     	if(isKitBot()) {
     		Logger.defaultLogger.info("This is the kit bot.");
     	} else {
     		Logger.defaultLogger.info("This is the real (non-kit) robot.");
+    	}
+    	double vbat = pdp.getVoltage();
+    	Logger.defaultLogger.info("Battery voltage is " + vbat + " volts.");
+    	if(vbat < 11.5) {
+    		Logger.voice.warn("battery");
     	}
     	drivetrain.diagnose();
     	shooter.diagnose();
@@ -186,5 +259,68 @@ public class Robot extends IterativeRobot {
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
+    	if(compressor.getCompressorCurrentTooHighStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-current-too-high sticky bit set.");
+    		Logger.voice.warn("check compressor");
+    	}
+    	/*if(compressor.getCompressorNotConnectedStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-not-connected sticky bit set. Is the compressor connected properly?");
+    		Logger.voice.warn("check compressor");
+    	}*/
+    	if(compressor.getCompressorShortedStickyFault()) {
+    		Logger.defaultLogger.warn("PCM has compressor-shorted sticky bit set. Is the compressor output shorted?");
+    		Logger.voice.warn("check compressor");
+    	}
+    	Logger.defaultLogger.info("Diagnostics complete.\n====================\n");
+    }
+    
+    public static void clearStickyFaults() {
+		Robot.compressor.clearAllPCMStickyFaults();
+		Robot.pdp.clearStickyFaults();
+		drivetrain.clearStickyFaults();
+    	shooter.clearStickyFaults();
+    	shooterFeeder.clearStickyFaults();
+    	agitator.clearStickyFaults();
+    	climber.clearStickyFaults();
+	}
+    
+    public static int getNavxErrorCount() {
+    	return CustomStream.getNavxErrorCount();
+    }
+    
+    public static void resetNavxErrorCount() {
+    	CustomStream.resetNavxErrorCount();
+    }
+    
+    private void interceptOutputStream() {
+    	System.setOut(new CustomStream(System.out));
+    	System.setErr(new CustomStream(System.err));
+    }
+    
+    private static class CustomStream extends PrintStream {
+
+    	private static int navxErrorCount = 0;
+    	
+    	public static int getNavxErrorCount() {
+    		return navxErrorCount;
+    	}
+    	
+    	public static void resetNavxErrorCount() {
+    		navxErrorCount = 0;
+    	}
+    	
+    	public CustomStream(OutputStream out) {
+			super(out);
+		}
+    	
+    	@Override
+    	public void println(String s) {
+    		if (s.contains("navX-MXP SPI Read:  CRC error")){
+    			navxErrorCount++;
+    		} else {
+    			super.println(s);
+    		}
+    	}
+    	
     }
 }

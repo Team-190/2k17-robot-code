@@ -1,10 +1,13 @@
 
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Color;
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ArcadeDriveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TankDriveCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -18,11 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Drivetrain extends Subsystem {
 	
-	private final DriveController turningController;
+	private DriveController turningController, encoderDiffController;
 	private final DriveController distanceController;
 	
 	private final SRXDrive srxdrive;
-	private final AHRS navx;
+	private AHRS navx;
 	
 	
 	/**
@@ -31,9 +34,9 @@ public class Drivetrain extends Subsystem {
 	public Drivetrain(){
 		srxdrive = new SRXDrive();
 		navx = new AHRS(SPI.Port.kMXP);
-		
-		turningController = new TurningController(navx);
 		distanceController = new DistanceController(srxdrive);
+		turningController = new TurningController(navx);
+		encoderDiffController = new EncoderDifferenceController(srxdrive);
 	}
 	
 	/**
@@ -59,21 +62,52 @@ public class Drivetrain extends Subsystem {
 		return distanceController.isOnTarget();
 	}
 	
+	/**
+	 * Enables the encoder difference control loop
+	 * @param inches the desired difference in inches
+	 */
+	public void enableEncoderDiffControl(double inches) {
+		encoderDiffController.enable(inches);
+	}
+	
+	/**
+	 * Disables the encoder difference control loop
+	 */
+	public void disableEncoderDiffControl() {
+		encoderDiffController.disable();
+	}
+	
+	/**
+	 * Checks if the encoder difference control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isEncoderDiffControlOnTarget() {
+		return encoderDiffController.isOnTarget();
+	}
+	
 	
 	/**
 	 * Enables the turning control loop and resets the navx positions to zero
 	 * @param angle the angle to turn in degrees
 	 */
 	public void enableTurningControl(double angle) {
-		SmartDashboard.putNumber("Degrees to turn", angle);
-		turningController.enable(angle);
+		if(isNavxPresent()) {
+			if(Robot.debug()) {
+				SmartDashboard.putNumber("Degrees to turn", angle);
+			}
+			turningController.enable(angle);
+		} else {
+			Logger.defaultLogger.severe("NavX not connected! Not enabling turning control.");
+		}
 	}
 	
 	/**
 	 * Disables the turning control loop
 	 */
 	public void disableTurningControl() {
-		turningController.disable();
+		if(turningController != null) {
+			turningController.disable();
+		}
 	}
 	
 	/**
@@ -81,7 +115,11 @@ public class Drivetrain extends Subsystem {
 	 * @return true if the loop is on target
 	 */
 	public boolean isTurningControlOnTarget() {
-		return turningController.isOnTarget();
+		if(isNavxPresent()) {
+			return turningController.isOnTarget();
+		} else {
+			return true;
+		}
 	}
 	
 	/**
@@ -98,27 +136,70 @@ public class Drivetrain extends Subsystem {
 	public void controlDistance(double rotation) {
 		arcadeDrive(distanceController.getLoopOutput(), rotation);
 	}
+	
+	/**
+	 * Drives the robot based off the driving control loop's output
+	 * @param rotation the rotation value for arcade drive
+	 * @param speedLimit the maximum speed to drive
+	 */
+	public void controlDistance(double rotation, double speedLimit) {
+		arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), rotation);
+	}
 
 	/**
 	 * Drives the robot based off the turning control loop's output
 	 */
 	public void controlTurning() {
-		arcadeDrive(0, turningController.getLoopOutput());
-
-    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging`
+		if(isNavxPresent()) {
+			arcadeDrive(0, turningController.getLoopOutput());
+		}
 	}
 	
 	/**
 	 * Drives the robot based off the output of the turning and driving control loops
 	 */
 	public void controlTurningAndDistance() {
-		arcadeDrive(distanceController.getLoopOutput(), turningController.getLoopOutput());
-		
-    	SmartDashboard.putNumber("NavX Heading", navx.getAngle()); // TODO: Remove this, used for debugging
+		controlTurningAndDistance(1);
+	}
+	
+	/**
+	 * Drives the robot based off the output of the turning and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlTurningAndDistance(double speedLimit) {
+		if(isNavxPresent()) {
+			arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), turningController.getLoopOutput());
+		} else {
+			controlDistance(0);
+		}
+	}
+	
+	/**
+	 * Drives the robot based off the output of the encoder difference and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlEncoderDiffAndDistance(double speedLimit) {
+		arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), encoderDiffController.getLoopOutput());
+	}
+	
+	/**
+	 * Drives the robot based off the output of the turning, encoder difference, and driving control loops
+	 * @param speedLimit the maximum speed of the robot
+	 */
+	public void controlTurningAndEncoderDiffAndDistance(double speedLimit) {
+		if(isNavxPresent()) {
+			arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), turningController.getLoopOutput() + encoderDiffController.getLoopOutput());
+		} else {
+			controlEncoderDiffAndDistance(speedLimit);
+		}
 	}
 	
 	public boolean isMoving() {
-		return navx.isMoving();
+		if(isNavxPresent()) {
+			return navx.isMoving();
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -155,7 +236,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDriveCommand());
+		setDefaultCommand(new TankDriveCommand());
 	}
 	
 	public double getLeftRPM() {
@@ -180,6 +261,35 @@ public class Drivetrain extends Subsystem {
 	
 	public void diagnose() {
 		srxdrive.diagnose();
+		
+		if (navx == null) {
+			Logger.defaultLogger.info("NavX is null, not checking.");
+		} else {
+			Logger.defaultLogger.info("Checking NavX, please wait...");
+			Robot.resetNavxErrorCount();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			if (Robot.getNavxErrorCount() == 0) {
+				Logger.defaultLogger.info("NavX is present.");
+			} else {
+				Logger.defaultLogger.warn("NavX is not connected.");
+				navx.free();
+				navx = null;
+				turningController = null;
+				Logger.voice.warn("check Nav-X");
+			}
+		}
 	}
+	
+	public void clearStickyFaults() {
+		srxdrive.clearStickyFaults();
+	}
+	
+	public boolean isNavxPresent() {
+		return navx != null;
+    }
 }
 

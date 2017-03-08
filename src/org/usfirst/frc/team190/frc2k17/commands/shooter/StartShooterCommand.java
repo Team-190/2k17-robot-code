@@ -14,15 +14,22 @@ public class StartShooterCommand extends Command {
     }
 
     protected void initialize() {
-    	Robot.shooter.shooterOn(1500);
+    	Robot.shooter.shooterOn(5285);
+    }
+    
+    protected void execute() {
+    	//Robot.shooter.printEncoderValues();
     }
 
     protected boolean isFinished() {
         return Robot.shooter.isAtSpeed();
+    	//return false;
     }
+    
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.shooter.shooterOff();
     }
 
     // Called when another command which requires one or more of the same

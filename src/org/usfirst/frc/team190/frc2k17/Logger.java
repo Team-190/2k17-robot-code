@@ -3,12 +3,13 @@ package org.usfirst.frc.team190.frc2k17;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Logger {
 	
 	public static final Logger defaultLogger = new Logger(new StdOutputter());
-	public static Logger kangarooVoice;
+	public static Logger voice;
 	private static long beginningOfTime = 0;
 	private ArrayList<Outputter> outputters; 
 	
@@ -16,9 +17,9 @@ public class Logger {
 		TRACE("trace"),
 		DEBUG("debug"),
 		INFO(""),
-		WARN("warning"),
-		ERROR("error"),
-		SEVERE("severe error"),
+		WARN(""),
+		ERROR(""),
+		SEVERE("error"),
 		CRITICAL("critical");
 		
 		private final String kangarooVoice;
@@ -36,7 +37,7 @@ public class Logger {
 	 * Initializes loggers besides defaultLogger.
 	 */
 	public static void init() {
-		kangarooVoice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
+		voice = new Logger(new NetworkTablesOutputter(RobotMap.getInstance().NETWORKTABLE_KANGAROO_TABLE_NAME.get(), RobotMap.getInstance().NETWORKTABLE_KANGAROO_VOICE_LOG.get()));
 	}
 	
 	public static void resetTimestamp() {
@@ -120,11 +121,30 @@ public class Logger {
 		public void output(Message msg);
 	}
 	
+	/**
+	 * Use BlackHole when you want a logger to discard all messages.
+	 */
+	private static class BlackHole implements Outputter {
+
+		@Override
+		public void output(Message msg) {
+			// do absolutely nothing!
+			// the message is jettisoned into the void, never to be seen again.
+		}
+		
+	}
+	
 	private static class StdOutputter implements Outputter {
 
 		@Override
 		public void output(Message msg){
 			System.out.println((System.currentTimeMillis() - beginningOfTime) + " [" + msg.getLevel() + "] " + msg.getMessage());
+			/*if(msg.getLevel() == Level.WARN) {
+				DriverStation.reportWarning(msg.getMessage(), false);
+			}
+			if(msg.getLevel() == Level.ERROR || msg.getLevel() == Level.SEVERE || msg.getLevel() == Level.CRITICAL) {
+				DriverStation.reportError(msg.getMessage(), false);
+			}*/
 		}
 		
 	}
