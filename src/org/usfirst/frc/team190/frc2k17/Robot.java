@@ -107,7 +107,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
         autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Drive straight", new DriveStraightForTimeCommand(6));
+        autoChooser.addObject("Drive straight", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Look pretty", new TimedCommand(0));
         SmartDashboard.putData("Autonomous", autoChooser);
 		

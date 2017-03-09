@@ -3,11 +3,12 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
-public class DriveStraightForTimeCommand extends Command {
+public class DriveStraightForTimeCommand extends TimedCommand {
 	
 	private double speed;
 	
@@ -15,8 +16,8 @@ public class DriveStraightForTimeCommand extends Command {
 	 * @param seconds time to drive in seconds
 	 */
     public DriveStraightForTimeCommand(double seconds) {
+    	super(seconds);
     	requires(Robot.drivetrain);
-    	setTimeout(seconds);
     	speed = 1;
     }
     
@@ -25,8 +26,8 @@ public class DriveStraightForTimeCommand extends Command {
 	 * @param speed the speed to drive
 	 */
     public DriveStraightForTimeCommand(double seconds, double speed) {
+    	super(seconds);
     	requires(Robot.drivetrain);
-    	setTimeout(seconds);
     	this.speed = speed;
     }
 
