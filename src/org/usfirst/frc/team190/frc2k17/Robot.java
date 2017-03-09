@@ -7,6 +7,8 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveForeverCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import java.io.OutputStream;
@@ -143,6 +145,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
+    	autonomousCommand = new DriveStraightForDistanceHeadingCorrectionCommand(1200, 0.5);
     	
         //autonomousCommand = (Command) chooser.getSelected();
         
@@ -158,7 +161,7 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
-    //    if (autonomousCommand != null) autonomousCommand.start();
+        if (autonomousCommand != null) autonomousCommand.start();
     }
 
     /**

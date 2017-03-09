@@ -87,7 +87,7 @@ public class OI {
 	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
 	private Button boopButton, climbButton, autoShiftButton, cancelAutoShiftButton, shooterSpinButton, shooterFeedButton,
-			shooterStopButton, gearOutButton, gearInButton, pegAssistOnButton, pegAssistOffButton, blinkLEDsButton;
+			shooterStopButton, gearOutButton, gearInButton, pegOnButton, pegOffButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
@@ -125,12 +125,12 @@ public class OI {
 			cancelAutoShiftButton = new JoystickButton(joystick2, 8);
 			shooterSpinButton = new JoystickButton(joystick2, 11);
 			shooterStopButton = new JoystickButton(joystick2, 12);
-			shooterFeedButton = new JoystickButton(joystick2, 5);
+			shooterFeedButton = new JoystickButton(joystick2, 9);
 			gearOutButton = new JoystickButton(joystick2, 6);
 			gearInButton = new JoystickButton(joystick2, 4);
-			pegAssistOnButton = new JoystickButton(joystick2, 9);
-			pegAssistOffButton = new JoystickButton(joystick2, 10);
-			blinkLEDsButton = new JoystickButton(joystick2, 3);
+			pegOnButton = new JoystickButton(joystick2, 3);
+			pegOffButton = new JoystickButton(joystick2, 5);
+			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
 			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
@@ -146,8 +146,10 @@ public class OI {
 			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
 			Command pegAssistCommand = new PegAssist();
-			pegAssistOnButton.whenPressed(pegAssistCommand);
-			pegAssistOffButton.cancelWhenPressed(pegAssistCommand);
+			pegOnButton.whenPressed(pegAssistCommand);
+			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+			pegOffButton.cancelWhenPressed(pegAssistCommand);
+			pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
