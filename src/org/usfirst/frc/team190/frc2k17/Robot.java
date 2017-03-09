@@ -9,6 +9,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveForeverCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import java.io.OutputStream;
@@ -28,10 +29,13 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,7 +66,7 @@ public class Robot extends IterativeRobot {
 	public static Command autoShiftCommand;
 	
     private Command autonomousCommand;
-    //SendableChooser chooser;
+    SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
     
@@ -102,9 +106,10 @@ public class Robot extends IterativeRobot {
 		// OI must be initialized last
 		oi = new OI();
 		
-        //chooser = new SendableChooser();
-        //chooser.addObject("My Auto", new MyAutoCommand());
-        //SmartDashboard.putData("Auto mode", chooser);
+        autoChooser = new SendableChooser<Command>();
+        autoChooser.addObject("Drive straight", new DriveStraightForTimeCommand(6));
+        autoChooser.addObject("Look pretty", new TimedCommand(0));
+        SmartDashboard.putData("Autonomous", autoChooser);
 		
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
@@ -145,23 +150,11 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
-    	autonomousCommand = new DriveForeverCommand();
     	
     	compressor.start();
     	
-        //autonomousCommand = (Command) chooser.getSelected();
+        autonomousCommand = autoChooser.getSelected();
         
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
-    	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
