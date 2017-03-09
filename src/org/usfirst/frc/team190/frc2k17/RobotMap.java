@@ -105,8 +105,8 @@ public class RobotMap {
 		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
 		AUTOSHIFT_MIDDLE_THRESHOLD = new Key<Double>(302.0), // RPM
 		AUTOSHIFT_MIDDLE_THRESHOLD_RATE = new Key<Double>(250.0), // delta(RPM)/sec
-		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
-		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(275.0), // RPM
+		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(250.0), // milliseconds
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
 		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		
