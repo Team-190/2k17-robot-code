@@ -62,6 +62,9 @@ public class ClimberClimbCommand extends Command {
     }
 
     protected void interrupted() {
-    	end();
+    	Robot.climber.set(Climber.State.STOP);
+    	Robot.climber.disableCurrentPid();
+    	Logger.defaultLogger.info("Climbing finished in " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
+    	(new SetAutoKickEnabledCommand(true)).start();
     }
 }

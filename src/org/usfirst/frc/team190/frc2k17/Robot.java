@@ -145,7 +145,9 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
-    	autonomousCommand = new DriveStraightForDistanceHeadingCorrectionCommand(1200, 0.5);
+    	autonomousCommand = new DriveForeverCommand();
+    	
+    	compressor.start();
     	
         //autonomousCommand = (Command) chooser.getSelected();
         
