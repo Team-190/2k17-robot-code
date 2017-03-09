@@ -39,10 +39,6 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     	Robot.drivetrain.arcadeDrive(speed, 0);
     }
 
-    protected boolean isFinished() {
-        return false;
-    }
-
     protected void end() {
     	Robot.drivetrain.arcadeDrive(0, 0);
     }
@@ -50,4 +46,5 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     protected void interrupted() {
     	end();
     }
+    
 }
