@@ -133,6 +133,7 @@ public class OI {
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
 			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
+			climbUnsafeButton.whenReleased(new ClimberStopCommand());
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
