@@ -10,6 +10,8 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveForeverCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
 
 import java.io.OutputStream;
@@ -107,7 +109,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
         autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Drive straight", new DriveStraightForTimeCommand(6, 0.25));
+        autoChooser.addObject("Left peg", new LeftPegAuto());
+        autoChooser.addObject("Center peg", new DriveStraightForTimeCommand(6, 0.25));
+        autoChooser.addObject("Right peg", new RightPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
         SmartDashboard.putData("Autonomous", autoChooser);
 		

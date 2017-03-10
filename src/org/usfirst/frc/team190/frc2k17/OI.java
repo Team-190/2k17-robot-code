@@ -15,7 +15,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
@@ -182,7 +182,7 @@ public class OI {
 			SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
 			SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
 			SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
-			SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
+			SmartDashboard.putData("Place Gear Command", new RightPegAuto());
 			SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
 		}
 		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
