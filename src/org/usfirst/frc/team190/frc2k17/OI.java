@@ -10,6 +10,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbUnsafeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberStopCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
@@ -81,8 +82,9 @@ public class OI {
 
 	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Button boopButton, climbButton, autoShiftButton, cancelAutoShiftButton, shooterSpinButton, shooterFeedButton,
-			shooterStopButton, gearOutButton, gearInButton, pegOnButton, pegOffButton, blinkLEDsButton;
+	private Button boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
+			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
+			pegOffButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
@@ -116,8 +118,7 @@ public class OI {
 			
 			boopButton = new JoystickButton(joystick2, 1);
 			climbButton = new JoystickButton(joystick2, 2);
-			autoShiftButton = new JoystickButton(joystick2, 7);
-			cancelAutoShiftButton = new JoystickButton(joystick2, 8);
+			climbUnsafeButton = new JoystickButton(joystick2, 7);
 			shooterSpinButton = new JoystickButton(joystick2, 11);
 			shooterStopButton = new JoystickButton(joystick2, 12);
 			shooterFeedButton = new JoystickButton(joystick2, 9);
@@ -131,9 +132,7 @@ public class OI {
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
-			autoShiftButton.whenPressed(Robot.autoShiftCommand);
-			cancelAutoShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-			cancelAutoShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
+			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);

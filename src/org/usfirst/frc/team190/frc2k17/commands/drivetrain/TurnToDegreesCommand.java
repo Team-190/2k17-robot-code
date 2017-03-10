@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +20,7 @@ public class TurnToDegreesCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Logger.defaultLogger.info("Turning " + degrees + " degrees.");
     	Robot.drivetrain.enableCoast(false);
     	Robot.drivetrain.enableTurningControl(degrees);
     }

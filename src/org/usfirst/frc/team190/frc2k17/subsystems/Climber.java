@@ -82,10 +82,6 @@ public class Climber extends Subsystem {
     	return motor.getOutputVoltage();
     }
     
-    public boolean isLimitSwitchPressed() {
-    	return motor.isFwdLimitSwitchClosed();
-    }
-    
     public void diagnose() {
 		if (motor.getBusVoltage() != 4.0) {
 			if (motor.getStickyFaultOverTemp() != 0) {

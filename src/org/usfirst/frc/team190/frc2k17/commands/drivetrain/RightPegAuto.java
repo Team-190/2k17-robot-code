@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 
@@ -22,12 +23,12 @@ public class RightPegAuto extends CommandGroup {
     	addSequential(new GearCameraLightOnCommand());
     	addSequential(new DriveStraightForDistanceCommand(distanceToDrive), 5);
     	addSequential(new TurnToDegreesCommand(-60));
-    	addSequential(new SearchForPegCommand());
+    	//addSequential(new SearchForPegCommand());
     	addSequential(new WaitCommand(0.5));
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveHalfwayToPegCommand());
     	addSequential(new WaitCommand(0.5));
-    	addSequential(new SearchForPegCommand());
+    	//addSequential(new SearchForPegCommand());
     	addSequential(new TurnTowardPegCommand());
     	addSequential(new DriveToPegCommand());
     	addSequential(new GearCameraLightOffCommand());

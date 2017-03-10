@@ -264,7 +264,7 @@ public class Drivetrain extends Subsystem {
 			Logger.defaultLogger.info("Checking NavX, please wait...");
 			Robot.resetNavxErrorCount();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// do nothing
 			}

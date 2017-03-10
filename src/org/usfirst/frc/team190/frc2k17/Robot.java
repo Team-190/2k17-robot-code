@@ -115,6 +115,7 @@ public class Robot extends IterativeRobot {
 		
 		diagnose();
 		Diagnostics.start();
+		gearCamera.lightOn();
     }
 	
 	/**

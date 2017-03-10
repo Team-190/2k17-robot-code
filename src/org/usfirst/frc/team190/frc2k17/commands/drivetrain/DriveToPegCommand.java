@@ -19,6 +19,7 @@ public class DriveToPegCommand extends Command {
      * get the distance to the peg and drive for that distance
      */
     protected void initialize() {
+    	Logger.defaultLogger.info("Drive to peg.");
     	double dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
     	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist + 6, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
@@ -26,7 +27,7 @@ public class DriveToPegCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return driveCommand.isFinished();
+        return !driveCommand.isRunning();
     }
     
     protected void end() {
