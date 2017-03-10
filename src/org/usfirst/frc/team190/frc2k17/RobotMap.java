@@ -65,7 +65,7 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.1),
+		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.1, 0.05),
 		DRIVE_PID_ENCODERDIFF_KI = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_KD = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_I_ERROR_LIMIT = new Key<Double>(5.0),

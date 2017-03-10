@@ -21,7 +21,7 @@ public class LeftPegAuto extends CommandGroup {
     	
     	addSequential(new GearCameraLightOnCommand());
     	addSequential(new DriveStraightForDistanceCommand(distanceToDrive), 5);
-    	addSequential(new TurnToDegreesCommand(30));
+    	addSequential(new TurnToDegreesCommand(60));
     	addSequential(new SearchForPegCommand());
     	addSequential(new WaitCommand(0.5));
     	addSequential(new TurnTowardPegCommand());

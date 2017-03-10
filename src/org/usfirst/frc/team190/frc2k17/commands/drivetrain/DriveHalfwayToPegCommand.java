@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * that the robot is driving straight by getting the angle value from the camera
  * while driving.
  */
-public class DriveToPegCommand extends Command {
+public class DriveHalfwayToPegCommand extends Command {
 	
 	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
 	
@@ -21,7 +21,7 @@ public class DriveToPegCommand extends Command {
     protected void initialize() {
     	double dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist + 6, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
+    	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist / 2, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
     	driveCommand.start();
     }
 
