@@ -116,6 +116,7 @@ public class Robot extends IterativeRobot {
 		diagnose();
 		Diagnostics.start();
 		gearCamera.lightOn();
+		Robot.prefs.putBoolean("queue mode", false);
     }
 	
 	/**
@@ -126,6 +127,11 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
     	
+    	if(queueMode()) {
+    		leftLEDs.setColor(0);
+    		rightLEDs.setColor(0);
+    	}
+    	
     	compressor.stop();
     }
 	
@@ -133,8 +139,10 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		Diagnostics.resetDisconnected();
 		
-		leftLEDs.updateRainbow();
-    	rightLEDs.updateRainbow();
+		if(!queueMode()) {
+			leftLEDs.updateRainbow();
+			rightLEDs.updateRainbow();
+		}
 	}
 
 	/**
@@ -234,6 +242,13 @@ public class Robot extends IterativeRobot {
      */
     public static boolean usingXboxController() {
     	return false;
+    }
+    
+    /**
+     * @return whether the robot should run in queue mode
+     */
+    public static boolean queueMode() {
+    	return Robot.prefs.getBoolean("queue mode", false);
     }
     
     /**
