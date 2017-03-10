@@ -1,22 +1,19 @@
 
 package org.usfirst.frc.team190.frc2k17;
 
-import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
-import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
-import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
-import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
-import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveForeverCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
-
-import java.io.OutputStream;
-import java.io.PrintStream;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
+import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
+import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
@@ -28,13 +25,9 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import edu.wpi.first.wpilibj.hal.HAL;
-import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
-import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

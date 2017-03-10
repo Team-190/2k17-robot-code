@@ -1,13 +1,9 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
