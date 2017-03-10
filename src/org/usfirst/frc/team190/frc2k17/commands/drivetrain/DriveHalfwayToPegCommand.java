@@ -14,26 +14,57 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveHalfwayToPegCommand extends Command {
 	
 	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
+	private double speedLimit;
+	private double dist;
+	private boolean useNavx;
+	
+	public DriveHalfwayToPegCommand() {
+		requires(Robot.drivetrain);
+    	speedLimit = 1;
+	}
+	
+	public DriveHalfwayToPegCommand(double speedLimit) {
+		requires(Robot.drivetrain);
+    	this.speedLimit = speedLimit;
+	}
 	
     /**
      * get the distance to the peg and drive for that distance
      */
     protected void initialize() {
     	Logger.defaultLogger.info("Drive halfway to peg.");
-    	double dist = Robot.gearCamera.getDistanceToPeg();
+    	dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	driveCommand = new DriveStraightForDistanceHeadingCorrectionCommand(dist / 2, RobotMap.getInstance().DRIVE_TO_PEG_MAX_SPEED.get());
-    	driveCommand.start();
+    	dist /= 2;
+    	Robot.drivetrain.enableCoast(false);
+    	useNavx = Robot.drivetrain.isNavxPresent();
+    	Robot.drivetrain.enableDistanceControl(dist);
+    	Robot.drivetrain.enableEncoderDiffControl(0);
+    	if(useNavx) {
+    		Robot.drivetrain.enableTurningControl(0);
+    	}
+    }
+    
+    protected void execute() {
+    	if(useNavx) {
+    		Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
+    	} else {
+    		Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+    	}
     }
 
     protected boolean isFinished() {
-        return !driveCommand.isRunning();
+        return Robot.drivetrain.isDistanceControlOnTarget();
     }
     
     protected void end() {
-    	driveCommand.cancel();
+    	Robot.drivetrain.disableDistanceControl();
+    	Robot.drivetrain.disableEncoderDiffControl();
+    	if(useNavx) {
+    		Robot.drivetrain.disableTurningControl();
+    	}
     }
-    
+
     protected void interrupted() {
     	end();
     }
