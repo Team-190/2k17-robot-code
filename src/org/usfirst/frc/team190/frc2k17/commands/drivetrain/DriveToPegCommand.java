@@ -35,7 +35,7 @@ public class DriveToPegCommand extends Command {
     	Logger.defaultLogger.info("Drive halfway to peg.");
     	dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	dist += 6;
+    	dist += 18;
     	Robot.drivetrain.enableCoast(false);
     	useNavx = Robot.drivetrain.isNavxPresent();
     	Robot.drivetrain.enableDistanceControl(dist);
