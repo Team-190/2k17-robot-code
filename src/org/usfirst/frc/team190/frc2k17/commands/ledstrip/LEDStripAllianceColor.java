@@ -45,11 +45,13 @@ public class LEDStripAllianceColor extends LEDStripCommand {
 			blinkTimer.cancel();
 			blinkTimer = new Timer();
 			blinkTimer1Started = false;
+			blinkTimer2Started = false;
 			strip.setColor(color);
 		}
 		if (blinkTimer2Started && !(Robot.gearPlacer.get() == GearPlacer.State.EXTENDED)) {
 			blinkTimer.cancel();
 			blinkTimer = new Timer();
+			blinkTimer1Started = false;
 			blinkTimer2Started = false;
 			strip.setColor(color);
 		}
