@@ -1,17 +1,19 @@
 
 package org.usfirst.frc.team190.frc2k17;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
+import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
+import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
-import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsQuickBlink;
-
-import java.io.OutputStream;
-import java.io.PrintStream;
-import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
@@ -23,13 +25,12 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.hal.HAL;
-import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
-import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -60,7 +61,7 @@ public class Robot extends IterativeRobot {
 	public static Command autoShiftCommand;
 	
     private Command autonomousCommand;
-    //SendableChooser chooser;
+    SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
     
@@ -100,9 +101,12 @@ public class Robot extends IterativeRobot {
 		// OI must be initialized last
 		oi = new OI();
 		
-        //chooser = new SendableChooser();
-        //chooser.addObject("My Auto", new MyAutoCommand());
-        //SmartDashboard.putData("Auto mode", chooser);
+        autoChooser = new SendableChooser<Command>();
+        autoChooser.addObject("Left peg", new LeftPegAuto());
+        autoChooser.addObject("Center peg", new DriveStraightForTimeCommand(6, 0.25));
+        autoChooser.addObject("Right peg", new RightPegAuto());
+        autoChooser.addObject("Look pretty", new TimedCommand(0));
+        SmartDashboard.putData("Autonomous", autoChooser);
 		
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(RobotMap.getInstance().CAMERA_RESOLUTION_X.get(),
@@ -111,6 +115,7 @@ public class Robot extends IterativeRobot {
 		
 		diagnose();
 		Diagnostics.start();
+		gearCamera.lightOn();
     }
 	
 	/**
@@ -144,21 +149,12 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
     	
-        //autonomousCommand = (Command) chooser.getSelected();
-        
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
+    	compressor.start();
     	
+        autonomousCommand = autoChooser.getSelected();
+        
     	// schedule the autonomous command (example)
-    //    if (autonomousCommand != null) autonomousCommand.start();
+        if (autonomousCommand != null) autonomousCommand.start();
     }
 
     /**
@@ -171,6 +167,8 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	Logger.defaultLogger.info("Teleop mode started.");
+    	
+    	gearCamera.lightOff();
 
     	compressor.start();
     	autoShiftCommand.start();
@@ -228,7 +226,7 @@ public class Robot extends IterativeRobot {
      * @return whether to enable debug mode
      */
     public static boolean debug() {
-    	return true;
+    	return false;
     }
     
     /**

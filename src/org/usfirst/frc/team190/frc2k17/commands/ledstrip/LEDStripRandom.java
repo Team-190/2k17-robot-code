@@ -2,8 +2,6 @@ package org.usfirst.frc.team190.frc2k17.commands.ledstrip;
 
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 
-import edu.wpi.first.wpilibj.command.Command;
-
 /**
  *
  */

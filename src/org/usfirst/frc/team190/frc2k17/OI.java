@@ -10,25 +10,22 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbUnsafeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberStopCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PlaceGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
-import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
@@ -39,7 +36,6 @@ import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -86,8 +82,9 @@ public class OI {
 
 	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Button boopButton, climbButton, autoShiftButton, cancelAutoShiftButton, shooterSpinButton, shooterFeedButton,
-			shooterStopButton, gearOutButton, gearInButton, pegAssistOnButton, pegAssistOffButton, blinkLEDsButton;
+	private Button boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
+			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
+			pegOffButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
 	
 	public OI() {
@@ -121,24 +118,22 @@ public class OI {
 			
 			boopButton = new JoystickButton(joystick2, 1);
 			climbButton = new JoystickButton(joystick2, 2);
-			autoShiftButton = new JoystickButton(joystick2, 7);
-			cancelAutoShiftButton = new JoystickButton(joystick2, 8);
+			climbUnsafeButton = new JoystickButton(joystick2, 7);
 			shooterSpinButton = new JoystickButton(joystick2, 11);
 			shooterStopButton = new JoystickButton(joystick2, 12);
-			shooterFeedButton = new JoystickButton(joystick2, 5);
+			shooterFeedButton = new JoystickButton(joystick2, 9);
 			gearOutButton = new JoystickButton(joystick2, 6);
 			gearInButton = new JoystickButton(joystick2, 4);
-			pegAssistOnButton = new JoystickButton(joystick2, 9);
-			pegAssistOffButton = new JoystickButton(joystick2, 10);
-			blinkLEDsButton = new JoystickButton(joystick2, 3);
+			pegOnButton = new JoystickButton(joystick2, 3);
+			pegOffButton = new JoystickButton(joystick2, 5);
+			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
 			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
-			autoShiftButton.whenPressed(Robot.autoShiftCommand);
-			cancelAutoShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-			cancelAutoShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
+			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
+			climbUnsafeButton.whenReleased(new ClimberStopCommand());
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
@@ -146,8 +141,10 @@ public class OI {
 			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
 			Command pegAssistCommand = new PegAssist();
-			pegAssistOnButton.whenPressed(pegAssistCommand);
-			pegAssistOffButton.cancelWhenPressed(pegAssistCommand);
+			pegOnButton.whenPressed(pegAssistCommand);
+			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+			pegOffButton.cancelWhenPressed(pegAssistCommand);
+			pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
@@ -163,6 +160,7 @@ public class OI {
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 		highShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
+		driverAutoShiftButton.whenPressed(Robot.autoShiftCommand);
 		lowShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		//driveToPegButton.whenPressed(new PlaceGearCommand());
 		//gearKickButton.whenPressed(new KickGearCommand());
@@ -170,19 +168,21 @@ public class OI {
 		povUpTrigger = new PovUpTrigger(joystick2);
 		povDownTrigger = new PovDownTrigger(joystick2);
 		
-		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
-		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120,1));
-		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
-		SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
-		SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
-		SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
-		SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
-		SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+		SmartDashboard.putData("Auto Shift", Robot.autoShiftCommand);
+		if(Robot.debug()) {
+			SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120,1));
+			SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
+			SmartDashboard.putData("Turn 20 deg", new TurnToDegreesCommand(20));
+			SmartDashboard.putData("Drive 6ft Box", new AutoDriveBoxCommand());
+			SmartDashboard.putData("Drive Back and Forth", new AutoDriveBackAndForthCommand());
+			SmartDashboard.putData("Drive to Hopper (turn)", new AutoDriveToHopperTurnCommand());
+			SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand());
+			SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
+			SmartDashboard.putData("Place Gear Command", new RightPegAuto());
+			SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
+		}
 		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
 		SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
-		SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
-		SmartDashboard.putData("Place Gear Command", new PlaceGearCommand());
-		SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
 		SmartDashboard.putData("Peg Assist", new PegAssist());

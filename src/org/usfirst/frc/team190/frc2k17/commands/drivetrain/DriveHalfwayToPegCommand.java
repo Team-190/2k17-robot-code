@@ -11,19 +11,19 @@ import edu.wpi.first.wpilibj.command.Command;
  * that the robot is driving straight by getting the angle value from the camera
  * while driving.
  */
-public class DriveToPegCommand extends Command {
+public class DriveHalfwayToPegCommand extends Command {
 	
 	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
 	private double speedLimit;
 	private double dist;
 	private boolean useNavx;
 	
-	public DriveToPegCommand() {
+	public DriveHalfwayToPegCommand() {
 		requires(Robot.drivetrain);
     	speedLimit = 1;
 	}
 	
-	public DriveToPegCommand(double speedLimit) {
+	public DriveHalfwayToPegCommand(double speedLimit) {
 		requires(Robot.drivetrain);
     	this.speedLimit = speedLimit;
 	}
@@ -35,7 +35,7 @@ public class DriveToPegCommand extends Command {
     	Logger.defaultLogger.info("Drive halfway to peg.");
     	dist = Robot.gearCamera.getDistanceToPeg();
     	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	dist += 18;
+    	dist /= 2;
     	Robot.drivetrain.enableCoast(false);
     	useNavx = Robot.drivetrain.isNavxPresent();
     	Robot.drivetrain.enableDistanceControl(dist);

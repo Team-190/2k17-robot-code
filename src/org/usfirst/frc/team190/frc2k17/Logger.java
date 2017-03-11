@@ -3,7 +3,6 @@ package org.usfirst.frc.team190.frc2k17;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Logger {
