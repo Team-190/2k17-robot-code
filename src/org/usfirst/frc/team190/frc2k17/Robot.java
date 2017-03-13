@@ -115,8 +115,8 @@ public class Robot extends IterativeRobot {
 		
 		diagnose();
 		Diagnostics.start();
-		gearCamera.lightOn();
 		Robot.prefs.putBoolean("queue mode", false);
+		gearCamera.lightOn();
     }
 	
 	/**
@@ -130,6 +130,7 @@ public class Robot extends IterativeRobot {
     	if(queueMode()) {
     		leftLEDs.setColor(0);
     		rightLEDs.setColor(0);
+    		gearCamera.lightOff();
     	}
     	
     	compressor.stop();
