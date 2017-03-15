@@ -64,6 +64,7 @@ public class Robot extends IterativeRobot {
     SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
+    private static boolean firstTimeDisabled = true;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -116,7 +117,6 @@ public class Robot extends IterativeRobot {
 		diagnose();
 		Diagnostics.start();
 		Robot.prefs.putBoolean("queue mode", false);
-		gearCamera.lightOn();
     }
 	
 	/**
@@ -131,7 +131,12 @@ public class Robot extends IterativeRobot {
     		leftLEDs.setColor(0);
     		rightLEDs.setColor(0);
     		gearCamera.lightOff();
+    	} else if (firstTimeDisabled) {
+    		gearCamera.lightOn();
+    	} else {
+    		gearCamera.lightOff();
     	}
+    	firstTimeDisabled = false; 
     	
     	compressor.stop();
     }
