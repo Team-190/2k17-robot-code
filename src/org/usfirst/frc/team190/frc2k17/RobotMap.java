@@ -11,7 +11,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  */
 public class RobotMap {
 	public final Key<Integer>
-		RELAY_CAMERA_LIGHT = new Key<Integer>(3),
+		DIO_CAMERA_LIGHT = new Key<Integer>(3),
 		DIO_LEDS_LEFT_R = new Key<Integer>(1),
 		DIO_LEDS_LEFT_G = new Key<Integer>(2),
 		DIO_LEDS_LEFT_B = new Key<Integer>(3),
