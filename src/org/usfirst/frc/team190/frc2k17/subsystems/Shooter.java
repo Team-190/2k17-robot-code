@@ -72,19 +72,44 @@ public class Shooter extends Subsystem {
 	 * Perform health checks and log warnings.
 	 */
 	public void diagnose() {
-		if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
-			Logger.defaultLogger.warn("Shooter flywheel motor has over-temperature sticky bit set.");
+		if (flywheelMotor1.getBusVoltage() != 4.0) {
+			if (flywheelMotor1.getStickyFaultOverTemp() != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor 1 has over-temperature sticky bit set.");
+			}
+			if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor 1 has under-voltage sticky bit set.");
+			}
+			if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+				Logger.defaultLogger.warn("Shooter flywheel 1 encoder not present.");
+			}
+		} else {
+			Logger.defaultLogger.warn("Shooter flywheel motor 1 controller not reachable over CAN.");
 		}
-		if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
-			Logger.defaultLogger.warn("Shooter flywheel motor has under-voltage sticky bit set.");
+		if (flywheelMotor2.getBusVoltage() != 4.0) {
+			if (flywheelMotor2.getStickyFaultOverTemp() != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor 2 has over-temperature sticky bit set.");
+			}
+			if (flywheelMotor2.getStickyFaultUnderVoltage() != 0) {
+				Logger.defaultLogger.warn("Shooter flywheel motor 2 has under-voltage sticky bit set.");
+			}
+			if (flywheelMotor2.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+				Logger.defaultLogger.warn("Shooter flywheel 2 encoder not present.");
+			}
+		} else {
+			Logger.defaultLogger.warn("Shooter flywheel motor 2 controller not reachable over CAN.");
 		}
 		if (!flywheelMotor1.isAlive()) {
-			Logger.defaultLogger.warn("Shooter flywheel motor is stopped by motor safety.");
+			Logger.defaultLogger.warn("Shooter flywheel motor 1 is stopped by motor safety.");
 		}
-		if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-			Logger.defaultLogger.warn("Shooter flywheel encoder not present.");
+		if (!flywheelMotor2.isAlive()) {
+			Logger.defaultLogger.warn("Shooter flywheel motor 2 is stopped by motor safety.");
 		}
 	}
+	
+	public void clearStickyFaults() {
+		flywheelMotor1.clearStickyFaults();
+		flywheelMotor2.clearStickyFaults();
+    }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

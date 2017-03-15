@@ -49,7 +49,9 @@ public class TurningController implements DriveController {
 	 * @return loop output
 	 */
 	public double getLoopOutput() {
-		SmartDashboard.putNumber("Turning PID loop output", loopOutput);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Turning PID loop output", loopOutput);
+		}
 		if (turningPID.onTarget()) {
 			if (onTargetSince == null) {
 				onTargetSince = Instant.now();
@@ -83,7 +85,9 @@ public class TurningController implements DriveController {
 	 */
 	public void disable() {
 		turningPID.disable();
-		SmartDashboard.putNumber("Turning PID loop output", 0);
+		if(Robot.debug()) {
+			SmartDashboard.putNumber("Turning PID loop output", 0);
+		}
 		assert enabledAt != null;
 		Logger.defaultLogger.debug("Turning PID disabled. Ran for " + Duration.between(enabledAt, Instant.now()).toMillis() + " milliseconds.");
 	}

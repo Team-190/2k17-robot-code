@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TurnTowardPegCommand extends Command {
 	
-	private double degreesToTurn = 0;
 	private boolean wasPegVisible;
 
     public TurnTowardPegCommand() {
@@ -19,11 +18,9 @@ public class TurnTowardPegCommand extends Command {
     }
 
     protected void initialize() {
-    	degreesToTurn = Robot.gearCamera.getAngleToPeg();
+    	Robot.drivetrain.enableCoast(false);
     	wasPegVisible = Robot.gearCamera.isPegVisible();
-    	Robot.drivetrain.enableTurningControl(degreesToTurn);
-
-    	SmartDashboard.putNumber("Degrees to turn", degreesToTurn);
+    	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());
     }
 
     protected void execute() {

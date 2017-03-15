@@ -36,7 +36,6 @@ public class GearPlacer extends Subsystem {
 		pegPresenceSensor = new DigitalInput(RobotMap.getInstance().DIO_PEG_LIMIT_SWITCH.get());
 		LiveWindow.addActuator("gear and boopers", "gear placer", solenoid);
 		LiveWindow.addSensor("gear and boopers", "gear limit switch", pegPresenceSensor);
-		diagnose();
 	}
 
 	public void initDefaultCommand() {

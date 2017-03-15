@@ -35,7 +35,6 @@ public class ArcadeDriveCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.setControlMode(TalonControlMode.Speed);
-    	Robot.drivetrain.enableCoast(false);
     }
 
     // Called when another command which requires one or more of the same

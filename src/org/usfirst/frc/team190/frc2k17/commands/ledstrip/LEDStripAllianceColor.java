@@ -36,14 +36,18 @@ public class LEDStripAllianceColor extends LEDStripCommand {
     }
     
     protected void execute() {
-    	if(blinkTimerStarted && !(DriverStation.getInstance().isAutonomous() || DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get())) {
-    		blinkTimer.cancel();
-    		blinkTimer = new Timer();
-    		blinkTimerStarted = false;
-    		strip.setColor(color);
-    	}
-    	if(!blinkTimerStarted && (DriverStation.getInstance().isAutonomous() || DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get())) {
-    		blinkTimer.schedule(new TimerTask() {
+		if (blinkTimerStarted && !(DriverStation.getInstance().isAutonomous()
+				|| (DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get()
+						&& DriverStation.getInstance().getMatchTime() >= 0))) {
+			blinkTimer.cancel();
+			blinkTimer = new Timer();
+			blinkTimerStarted = false;
+			strip.setColor(color);
+		}
+		if (!blinkTimerStarted && (DriverStation.getInstance().isAutonomous()
+				|| (DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get()
+						&& DriverStation.getInstance().getMatchTime() >= 0))) {
+			blinkTimer.schedule(new TimerTask() {
 
     			@Override
     			public void run() {

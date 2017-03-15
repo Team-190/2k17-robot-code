@@ -8,42 +8,60 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
+	
+	private boolean useNavx;
 	private double inches;
+	private double speedLimit;
+	
 	/**
-	 * 
 	 * @param inches Distance to drive in inches
 	 */
     public DriveStraightForDistanceHeadingCorrectionCommand(double inches) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	this.inches = inches;
+    	speedLimit = 1;
     	requires(Robot.drivetrain);
     }
+    
+    /**
+	 * @param inches Distance to drive in inches
+	 * @param speedLimit the maximum speed to drive
+	 */
+    public DriveStraightForDistanceHeadingCorrectionCommand(double inches, double speedLimit) {
+    	requires(Robot.drivetrain);
+    	this.inches = inches;
+    	this.speedLimit = speedLimit;
+    }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drivetrain.enableCoast(false);
+    	useNavx = Robot.drivetrain.isNavxPresent();
     	Robot.drivetrain.enableDistanceControl(inches);
-    	Robot.drivetrain.enableTurningControl(0);
+    	Robot.drivetrain.enableEncoderDiffControl(0);
+    	if(useNavx) {
+    		Robot.drivetrain.enableTurningControl(0);
+    	}
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.controlTurningAndDistance();
+    	if(useNavx) {
+    		Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
+    	} else {
+    		Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+    	}
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return Robot.drivetrain.isDistanceControlOnTarget();
     }
 
-    // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.disableDistanceControl();
-    	Robot.drivetrain.disableTurningControl();
+    	Robot.drivetrain.disableEncoderDiffControl();
+    	if(useNavx) {
+    		Robot.drivetrain.disableTurningControl();
+    	}
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
     	end();
     }

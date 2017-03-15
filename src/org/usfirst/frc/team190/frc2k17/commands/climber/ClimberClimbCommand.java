@@ -7,12 +7,18 @@ import org.usfirst.frc.team190.frc2k17.DSPFilter;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Climb the rope.
+ * NOTE: Auto-kick is disabled when this command starts, and is
+ * re-enabled when this command is interrupted. It is NOT re-enabled if this
+ * command finishes normally.
  */
 public class ClimberClimbCommand extends Command {
 	
@@ -24,6 +30,8 @@ public class ClimberClimbCommand extends Command {
     }
 
     protected void initialize() {
+    	(new GearPlacerSetCommand(GearPlacer.State.RETRACTED)).start();
+    	(new SetAutoKickEnabledCommand(false)).start();
     	filter = new DSPFilter(DSPFilter.FilterType.LOW_PASS, RobotMap.getInstance().CLIMBER_FREQ_CUTOFF.get(),
 				Robot.climber.getOutputCurrent(), RobotMap.getInstance().CLIMBER_SAMPLE_RATE.get());
     	Robot.climber.enableCurrentPid();
@@ -53,6 +61,9 @@ public class ClimberClimbCommand extends Command {
     }
 
     protected void interrupted() {
-    	end();
+    	Robot.climber.set(Climber.State.STOP);
+    	Robot.climber.disableCurrentPid();
+    	Logger.defaultLogger.info("Climbing canceled after " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
+    	(new SetAutoKickEnabledCommand(true)).start();
     }
 }
