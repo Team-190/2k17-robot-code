@@ -10,7 +10,6 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurningController implements DriveController {

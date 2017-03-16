@@ -1,9 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.Logger;
-import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.subsystems.Agitator.State;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;

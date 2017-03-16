@@ -20,46 +20,34 @@ import edu.wpi.first.wpilibj.command.Command;
  * re-enabled when this command is interrupted. It is NOT re-enabled if this
  * command finishes normally.
  */
-public class ClimberClimbCommand extends Command {
+public class ClimberClimbUnsafeCommand extends Command {
 	
 	private Instant start;
-	private DSPFilter filter;
 
-    public ClimberClimbCommand() {
+    public ClimberClimbUnsafeCommand() {
     	requires(Robot.climber);
     }
 
     protected void initialize() {
     	(new GearPlacerSetCommand(GearPlacer.State.RETRACTED)).start();
     	(new SetAutoKickEnabledCommand(false)).start();
-    	filter = new DSPFilter(DSPFilter.FilterType.LOW_PASS, RobotMap.getInstance().CLIMBER_FREQ_CUTOFF.get(),
-				Robot.climber.getOutputCurrent(), RobotMap.getInstance().CLIMBER_SAMPLE_RATE.get());
-    	Robot.climber.enableCurrentPid();
     	Robot.climber.set(Climber.State.CLIMB);
-    	Logger.defaultLogger.info("Climbing started.");
+    	Logger.defaultLogger.info("Climbing (unsafe mode) started.");
     	start = Instant.now();
     }
 
     protected boolean isFinished() {
-    	double current = filter.processNextPoint(Robot.climber.getOutputCurrent());
-    	Logger.defaultLogger.info("Climbing current: " + Robot.climber.getOutputCurrent() + " (filtered: " + current + "), voltage: " + Robot.climber.getOutputVoltage());
-    	if(current > RobotMap.getInstance().CLIMBER_KILL_CURRENT.get()) {
-    		Logger.defaultLogger.info("Climbing stopped due to current.");
-    		return true;
-    	}
     	return false;
     }
 
     protected void end() {
     	Robot.climber.set(Climber.State.STOP);
-    	Robot.climber.disableCurrentPid();
     	Logger.defaultLogger.info("Climbing canceled after " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
     	(new SetAutoKickEnabledCommand(true)).start();
     }
 
     protected void interrupted() {
     	Robot.climber.set(Climber.State.STOP);
-    	Robot.climber.disableCurrentPid();
     	Logger.defaultLogger.info("Climbing finished in " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
     	(new SetAutoKickEnabledCommand(true)).start();
     }

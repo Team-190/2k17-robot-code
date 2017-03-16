@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * that the robot is driving straight by getting the angle value from the camera
  * while driving.
  */
-public class DriveToPegCommand extends Command {
+public class DriveHalfwayToPegCommand extends Command {
 	
 	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
 	private double speedLimit;
@@ -19,12 +19,12 @@ public class DriveToPegCommand extends Command {
 	private boolean wasPegVisible;
 	private boolean useNavx;
 	
-	public DriveToPegCommand() {
+	public DriveHalfwayToPegCommand() {
 		requires(Robot.drivetrain);
     	speedLimit = 1;
 	}
 	
-	public DriveToPegCommand(double speedLimit) {
+	public DriveHalfwayToPegCommand(double speedLimit) {
 		requires(Robot.drivetrain);
     	this.speedLimit = speedLimit;
 	}
@@ -33,31 +33,31 @@ public class DriveToPegCommand extends Command {
      * get the distance to the peg and drive for that distance
      */
     protected void initialize() {
-		wasPegVisible = Robot.gearCamera.isPegVisible();
-		if (wasPegVisible) {
-			Logger.defaultLogger.info("Drive halfway to peg.");
-			dist = Robot.gearCamera.getDistanceToPeg();
-			Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-			dist += 18;
-			Robot.drivetrain.enableCoast(false);
-			useNavx = Robot.drivetrain.isNavxPresent();
-			Robot.drivetrain.enableDistanceControl(dist);
-			Robot.drivetrain.enableEncoderDiffControl(0);
-			if (useNavx) {
-				Robot.drivetrain.enableTurningControl(0);
-			}
-		} else {
-			Logger.defaultLogger.warn("Peg not visible.");
-		}
+    	wasPegVisible = Robot.gearCamera.isPegVisible();
+    	if(wasPegVisible) {
+	    	Logger.defaultLogger.info("Drive halfway to peg.");
+	    	dist = Robot.gearCamera.getDistanceToPeg();
+	    	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
+	    	dist /= 2;
+	    	Robot.drivetrain.enableCoast(false);
+	    	useNavx = Robot.drivetrain.isNavxPresent();
+	    	Robot.drivetrain.enableDistanceControl(dist);
+	    	Robot.drivetrain.enableEncoderDiffControl(0);
+	    	if(useNavx) {
+	    		Robot.drivetrain.enableTurningControl(0);
+	    	}
+    	} else {
+    		Logger.defaultLogger.warn("Peg not visible.");
+    	}
     }
     
     protected void execute() {
     	if(wasPegVisible) {
-    		if(useNavx) {
-    			Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
-    		} else {
-    			Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
-    		}
+	    	if(useNavx) {
+	    		Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
+	    	} else {
+	    		Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+	    	}
     	}
     }
 

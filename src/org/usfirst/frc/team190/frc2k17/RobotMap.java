@@ -11,7 +11,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  */
 public class RobotMap {
 	public final Key<Integer>
-		RELAY_CAMERA_LIGHT = new Key<Integer>(3),
+		DIO_CAMERA_LIGHT = new Key<Integer>(9),
 		DIO_LEDS_LEFT_R = new Key<Integer>(1),
 		DIO_LEDS_LEFT_G = new Key<Integer>(2),
 		DIO_LEDS_LEFT_B = new Key<Integer>(3),
@@ -65,7 +65,7 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.1),
+		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.1, 0.05),
 		DRIVE_PID_ENCODERDIFF_KI = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_KD = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_I_ERROR_LIMIT = new Key<Double>(5.0),
@@ -83,11 +83,11 @@ public class RobotMap {
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
 		CAMERA_HFOV = new Key<Double>(54.8),
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(0.1),
-		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>(1.0),
+		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>(0.5),
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
 		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
-		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.5),
+		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.25),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
 		
 		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
@@ -110,8 +110,8 @@ public class RobotMap {
 		AUTOSHIFT_COOLDOWN = new Key<Double>(200.0), // milliseconds
 		AUTOSHIFT_MIDDLE_THRESHOLD = new Key<Double>(302.0), // RPM
 		AUTOSHIFT_MIDDLE_THRESHOLD_RATE = new Key<Double>(250.0), // delta(RPM)/sec
-		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(250.0), // RPM
-		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
+		AUTOSHIFT_LOWER_THRESHOLD = new Key<Double>(300.0), // RPM
+		AUTOSHIFT_LOWER_THRESHOLD_DELAY = new Key<Double>(100.0), // milliseconds
 		AUTOSHIFT_UPPER_THRESHOLD = new Key<Double>(370.0), // RPM
 		AUTOSHIFT_UPPER_THRESHOLD_DELAY = new Key<Double>(500.0), // milliseconds
 		

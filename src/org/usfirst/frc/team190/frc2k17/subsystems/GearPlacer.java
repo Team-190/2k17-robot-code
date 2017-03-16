@@ -16,6 +16,7 @@ public class GearPlacer extends Subsystem {
 
 	private final Solenoid solenoid;
 	private final DigitalInput pegPresenceSensor;
+	private State state;
 	
 	public enum State {
 		EXTENDED(true), RETRACTED(false);
@@ -48,6 +49,11 @@ public class GearPlacer extends Subsystem {
 	public void set(final State state) {
 		Logger.defaultLogger.trace("Setting gear placer to state " + state.name());
 		solenoid.set(state.get());
+		this.state = state;
+	}
+	
+	public State get() {
+		return state;
 	}
 	
 	/**
