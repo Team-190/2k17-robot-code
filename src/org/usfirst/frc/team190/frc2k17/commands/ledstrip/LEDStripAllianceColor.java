@@ -4,7 +4,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.usfirst.frc.team190.frc2k17.Color;
+import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
+import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,7 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class LEDStripAllianceColor extends LEDStripCommand {
 
 	private Color color;
-	private boolean blinkTimerStarted, blinkOn;
+	private boolean blinkTimer1Started, blinkTimer2Started, blinkOn;
 	private Timer blinkTimer;
 	
     public LEDStripAllianceColor(LEDStrip subsystem) {
@@ -25,7 +27,8 @@ public class LEDStripAllianceColor extends LEDStripCommand {
 
     protected void initialize() {
     	blinkTimer = new Timer();
-    	blinkTimerStarted = false;
+    	blinkTimer1Started = false;
+    	blinkTimer2Started = false;
     	boolean blinkOn = true;
     	if (DriverStation.getInstance().getAlliance() == Alliance.Red) {
     		color = Color.RED;
@@ -36,15 +39,23 @@ public class LEDStripAllianceColor extends LEDStripCommand {
     }
     
     protected void execute() {
-		if (blinkTimerStarted && !(DriverStation.getInstance().isAutonomous()
+		if (blinkTimer1Started && !(DriverStation.getInstance().isAutonomous()
 				|| (DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get()
 						&& DriverStation.getInstance().getMatchTime() >= 0))) {
 			blinkTimer.cancel();
 			blinkTimer = new Timer();
-			blinkTimerStarted = false;
+			blinkTimer1Started = false;
+			blinkTimer2Started = false;
 			strip.setColor(color);
 		}
-		if (!blinkTimerStarted && (DriverStation.getInstance().isAutonomous()
+		if (blinkTimer2Started && !(Robot.gearPlacer.get() == GearPlacer.State.EXTENDED)) {
+			blinkTimer.cancel();
+			blinkTimer = new Timer();
+			blinkTimer1Started = false;
+			blinkTimer2Started = false;
+			strip.setColor(color);
+		}
+		if (!blinkTimer1Started && (DriverStation.getInstance().isAutonomous()
 				|| (DriverStation.getInstance().getMatchTime() <= RobotMap.getInstance().LED_CLIMBING_SIGNAL_TIME.get()
 						&& DriverStation.getInstance().getMatchTime() >= 0))) {
 			blinkTimer.schedule(new TimerTask() {
@@ -61,7 +72,24 @@ public class LEDStripAllianceColor extends LEDStripCommand {
     			}
         		
         	}, 0, 1000);
-    		blinkTimerStarted = true;
+    		blinkTimer1Started = true;
+    	}
+		if (!blinkTimer2Started && Robot.gearPlacer.get() == GearPlacer.State.EXTENDED) {
+			blinkTimer.schedule(new TimerTask() {
+
+    			@Override
+    			public void run() {
+    				if(blinkOn) {
+    					strip.setColor(0);
+    					blinkOn = false;
+    				} else {
+    					strip.setColor(color);
+    					blinkOn = true;
+    				}
+    			}
+        		
+        	}, 0, 250);
+    		blinkTimer2Started = true;
     	}
     }
     

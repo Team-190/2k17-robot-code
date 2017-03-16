@@ -23,7 +23,7 @@ public class GearDriveBackCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.tankDrive(-0.5, -0.5);
+    	Robot.drivetrain.tankDrive(-1, -1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

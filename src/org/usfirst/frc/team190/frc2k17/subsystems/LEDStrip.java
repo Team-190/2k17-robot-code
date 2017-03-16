@@ -3,15 +3,11 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 import java.util.concurrent.Semaphore;
 
 import org.usfirst.frc.team190.frc2k17.Color;
-import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripAllianceColor;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRainbow;
-import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripSetColor;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *

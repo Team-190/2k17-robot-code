@@ -5,7 +5,6 @@ import org.usfirst.frc.team190.frc2k17.Robot;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *

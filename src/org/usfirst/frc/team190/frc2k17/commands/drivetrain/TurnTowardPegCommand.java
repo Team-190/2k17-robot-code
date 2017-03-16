@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -18,6 +19,7 @@ public class TurnTowardPegCommand extends Command {
     }
 
     protected void initialize() {
+    	Logger.defaultLogger.info("Turn towards peg.");
     	Robot.drivetrain.enableCoast(false);
     	wasPegVisible = Robot.gearCamera.isPegVisible();
     	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());

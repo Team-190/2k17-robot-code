@@ -1,6 +1,5 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
-import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,41 +7,36 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TurnToDegreesCommand extends Command {
-	
-	double degrees = 0.0;
+public class DriveForeverCommand extends Command {
 
-    public TurnToDegreesCommand(double degrees) {
-        requires(Robot.drivetrain);
-        
-        this.degrees = degrees;
+    public DriveForeverCommand() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Logger.defaultLogger.info("Turning " + degrees + " degrees.");
-    	Robot.drivetrain.enableCoast(false);
-    	Robot.drivetrain.enableTurningControl(degrees);
     }
-    
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.controlTurning();
+    	Robot.drivetrain.tankDrive(0.25, 0.25);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.drivetrain.isTurningControlOnTarget();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.disableTurningControl();
+    	Robot.drivetrain.tankDrive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrain.disableTurningControl();
+    	end();
     }
 }

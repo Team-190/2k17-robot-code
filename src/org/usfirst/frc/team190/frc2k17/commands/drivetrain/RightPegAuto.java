@@ -1,0 +1,37 @@
+
+package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
+
+import org.usfirst.frc.team190.frc2k17.Logger;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
+import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+
+/**
+ * Drive to right peg
+ */
+public class RightPegAuto extends CommandGroup {
+	
+	Alliance alliance = DriverStation.getInstance().getAlliance();
+
+    public RightPegAuto() {
+    	double distanceToDrive = alliance == Alliance.Red ? 66.5 : 64.666;
+    	
+    	addSequential(new GearCameraLightOnCommand());
+    	addSequential(new DriveStraightForDistanceCommand(distanceToDrive), 3);
+    	addSequential(new TurnToDegreesCommand(-60));
+    	addSequential(new SearchForPegCommand());
+    	addSequential(new WaitCommand(0.2));
+    	addSequential(new TurnTowardPegCommand());
+    	addSequential(new DriveHalfwayToPegCommand());
+    	addSequential(new SearchForPegCommand());
+    	addSequential(new WaitCommand(0.2));
+    	addSequential(new TurnTowardPegCommand());
+    	addSequential(new DriveToPegCommand(0.5));
+    	addSequential(new GearCameraLightOffCommand());
+    	addSequential(new DriveStraightForTimeCommand(6, 0.25));
+    } 
+}
