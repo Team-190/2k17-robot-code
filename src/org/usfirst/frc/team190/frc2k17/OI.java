@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17;
 
+import org.usfirst.frc.team190.frc2k17.commands.AutoCurveThreaded;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBackAndForthCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
@@ -170,6 +171,7 @@ public class OI {
 		povUpTrigger = new PovUpTrigger(joystick2);
 		povDownTrigger = new PovDownTrigger(joystick2);
 		
+		SmartDashboard.putData("Auto Curve Threaded", new AutoCurveThreaded(5));
 		SmartDashboard.putData("Auto Shift", new AutoShiftCommand());
 		SmartDashboard.putData("Drive 120 Inches", new DriveStraightForDistanceHeadingCorrectionCommand(120,1));
 		SmartDashboard.putData("Turn 90 deg", new TurnToDegreesCommand(90));
