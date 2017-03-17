@@ -88,20 +88,14 @@ public class SRXDrive {
 		 * @param mode control mode, either Speed or PercentVbus
 		 */
 		public void setControlMode(TalonControlMode mode) {
+			master.changeControlMode(mode);
+			master.setInverted(motorInverted);
+			master.reverseOutput(false);
+			master.reverseSensor(encoderInverted);
 			if (mode == TalonControlMode.Speed) {
-				master.changeControlMode(TalonControlMode.Speed);
 				inSpeedControlMode = true;
-				
-				master.setInverted(false);
-				master.reverseOutput(motorInverted);
-				master.reverseSensor(encoderInverted);
-			} else if (mode == TalonControlMode.PercentVbus){
-				master.changeControlMode(TalonControlMode.PercentVbus);
+			} else {
 				inSpeedControlMode = false;
-				
-				master.setInverted(motorInverted);
-				master.reverseOutput(false);
-				master.reverseSensor(encoderInverted);
 			}
 		}
 		
@@ -164,21 +158,12 @@ public class SRXDrive {
 		}
 		
 		/**
-		 * Converts inches to encoder ticks
-		 * @param inches
-		 * @return encoder ticks
-		 */
-		private double inchesToTicks(double inches) {
-			return inches / (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
-		}
-		
-		/**
 		 * Converts encoder ticks to inches
 		 * @param encoder ticks
 		 * @return inches
 		 */
 		private double ticksToInches(double ticks) {
-			return ticks * (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+			return ticks * RobotMap.getInstance().DRIVE_WHEEL_DIAMETER_INCHES.get() * Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
 		}
 		
 		/**
