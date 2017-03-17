@@ -187,7 +187,6 @@ public class Robot extends IterativeRobot {
     	gearCamera.lightOff();
 
     	compressor.start();
-    	autoShiftCommand.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
