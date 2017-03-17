@@ -22,9 +22,11 @@ import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -185,7 +187,6 @@ public class Robot extends IterativeRobot {
     	gearCamera.lightOff();
 
     	compressor.start();
-    	autoShiftCommand.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
@@ -254,6 +255,13 @@ public class Robot extends IterativeRobot {
      * @return whether the robot should run in queue mode
      */
     public static boolean queueMode() {
+    	if(Utility.getUserButton() && !Robot.prefs.getBoolean("queue mode", false)) {
+    		Robot.prefs.putBoolean("queue mode", true);
+    		if(DriverStation.getInstance().isDisabled()) {
+    			gearCamera.lightOff();
+    		}
+    		Logger.defaultLogger.info("Queue mode enabled by user button on RoboRIO.");
+    	}
     	return Robot.prefs.getBoolean("queue mode", false);
     }
     
