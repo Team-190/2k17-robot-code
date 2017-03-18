@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoCurveThreaded extends Command {
 	
-	private FalconPathPlanner path;
+	public final FalconPathPlanner path;
 	private double duration;
 	private Timer timer;
 	private int step;
@@ -25,30 +25,36 @@ public class AutoCurveThreaded extends Command {
 	private boolean timerDone;
 
     public AutoCurveThreaded(double duration) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.drivetrain);
+    	if(Robot.drivetrain != null) {
+    		requires(Robot.drivetrain);
+    	}
     	this.duration = duration;
+    	double[][] waypoints = new double[][]{
+        	{0,0},
+        	{0,12},
+        	{42.2,150},
+    		{42.2,192.1}
+        }; 
+    	path = new FalconPathPlanner(waypoints);
+    	path.calculate(duration, RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get(),
+				RobotMap.getInstance().DRIVE_CURVE_TRACK_WIDTH.get());
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	timerDone = false;
+    	Logger.defaultLogger.debug(this.getClass().getSimpleName() + " initializing.");
     	step = 0;
-
-        double[][] waypoints = new double[][]{
-        	{0,0},
-    		{-48,0}
-			/*
-			{60, 12},
-			{108, 12},
-			{144, 108},
-			{180, 72}*/
-	}; 
-    	
-    	path = new FalconPathPlanner(waypoints);
-    	path.calculate(duration, RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get(),
-				RobotMap.getInstance().DRIVE_CURVE_TRACK_WIDTH.get());
+		double sum = 0;
+		for(int i = 0; i < path.smoothLeftVelocity.length; i++) {
+			sum += path.smoothLeftVelocity[i][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
+		}
+		Logger.defaultLogger.debug("The left side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
+		sum = 0;
+		for(int i = 0; i < path.smoothRightVelocity.length; i++) {
+			sum += path.smoothRightVelocity[i][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
+		}
+		Logger.defaultLogger.debug("The right side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
     	
     	timer = new Timer();   	
     	timer.schedule(new TimerTask() {
@@ -81,22 +87,17 @@ public class AutoCurveThreaded extends Command {
     	  	
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         return timerDone;
     }
 
-    // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.tankDrive(0, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     protected void interrupted() {
     	end();
     }

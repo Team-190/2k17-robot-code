@@ -213,7 +213,10 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
-    	boolean isKitBot  = Robot.prefs.getBoolean("Is kit bot", false);
+    	if(prefs == null) {
+    		return true;
+    	}
+    	boolean isKitBot  = prefs.getBoolean("Is kit bot", false);
     	if(wasKitBot == null) {
     		wasKitBot = isKitBot;
     	} else if(wasKitBot != isKitBot) {
@@ -222,7 +225,7 @@ public class Robot extends IterativeRobot {
 			// the robot code must restart. It is not safe to just start
 			// returning the new value from this method; we would get a
 			// frankenstein robot using constants from both modes.
-    		Robot.prefs.putBoolean("Is kit bot", isKitBot);
+    		prefs.putBoolean("Is kit bot", isKitBot);
 			Logger.defaultLogger.critical("The \"Is kit bot\" setting on the smart dashboard has changed value. "
 					+ "In order to apply the new setting, the robot code must restart.");
 			Logger.defaultLogger.info("ROBOT CODE IS NOW INTENTIONALLY RESTARTING");
