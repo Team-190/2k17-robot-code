@@ -43,8 +43,8 @@ public class AutoCurveThreaded extends Command {
     		{42.2,192.1}*/
     		{0,0},
         	{0,12},
-        	{42.2 + 32, 150},
-    		{42.2 + 32, 192.1 - 9}
+        	{42.2 + 31, 150},
+    		{42.2 + 31, 192.1 + 10}
         }; 
     	path = new FalconPathPlanner(waypoints);
     	path.calculate(duration, RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get(),
