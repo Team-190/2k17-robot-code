@@ -89,13 +89,16 @@ public class SRXDrive {
 		 */
 		public void setControlMode(TalonControlMode mode) {
 			master.changeControlMode(mode);
-			master.setInverted(motorInverted);
-			master.reverseOutput(false);
-			master.reverseSensor(encoderInverted);
 			if (mode == TalonControlMode.Speed) {
 				inSpeedControlMode = true;
+				master.setInverted(false);
+				master.reverseOutput(motorInverted);
+				master.reverseSensor(encoderInverted);
 			} else {
 				inSpeedControlMode = false;
+				master.setInverted(motorInverted);
+				master.reverseOutput(false);
+				master.reverseSensor(encoderInverted);
 			}
 		}
 		
