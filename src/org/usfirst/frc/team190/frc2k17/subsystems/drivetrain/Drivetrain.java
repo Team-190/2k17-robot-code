@@ -251,6 +251,18 @@ public class Drivetrain extends Subsystem {
 		srxdrive.setControlMode(mode);
 	}
 	
+	public void zeroEncoderPositions() {
+		srxdrive.zeroEncoderPositions();
+	}
+	
+	public double getLeftEncoderPosition() {
+		return srxdrive.getLeftEncoderPosition();
+	}
+	
+	public double getRightEncoderPosition() {
+		return srxdrive.getRightEncoderPosition();
+	}
+	
 	public void enableCoast(boolean set) {
 		srxdrive.enableCoast(set);
 	}

@@ -22,7 +22,7 @@ public class AutoCurveThreaded extends Command {
 	private double headingCorrectionP = 0.0095;
 	
 	public final FalconPathPlanner path;
-	private double duration;
+	private double duration, runningSumLeft, runningSumRight;
 	private Timer timer;
 	private int step;
 	private DecimalFormat df = new DecimalFormat("#.00"); 
@@ -32,7 +32,6 @@ public class AutoCurveThreaded extends Command {
     	if(Robot.drivetrain != null) {
     		requires(Robot.drivetrain);
     		gyro = new ADXRS450_Gyro();
-    		
     	}
     	this.duration = duration;
     	double[][] waypoints = new double[][]{
@@ -55,6 +54,9 @@ public class AutoCurveThreaded extends Command {
     protected void initialize() {
     	gyro.reset();
     	timerDone = false;
+    	Robot.drivetrain.zeroEncoderPositions();
+    	runningSumLeft = 0;
+    	runningSumRight = 0;
     	Logger.defaultLogger.debug(this.getClass().getSimpleName() + " initializing.");
     	step = 0;
 		double sum = 0;
@@ -68,7 +70,7 @@ public class AutoCurveThreaded extends Command {
 		}
 		Logger.defaultLogger.debug("The right side of the drivetrain is going to travel a total of " + df.format(sum) + " inches.");
     	
-    	timer = new Timer();   	
+    	timer = new Timer();
     	timer.schedule(new TimerTask() {
 			
 			@Override
@@ -79,6 +81,13 @@ public class AutoCurveThreaded extends Command {
 					timerDone = true;
 					return;
 				}
+				
+				double leftError = Robot.drivetrain.getLeftEncoderPosition() - runningSumLeft;
+				double rightError = Robot.drivetrain.getRightEncoderPosition() - runningSumRight;
+				
+				runningSumLeft += path.smoothLeftVelocity[step][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
+				runningSumRight += path.smoothRightVelocity[step][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
+				
 				double angleError = gyro.getAngle()*gyrofudge - path.heading[step][1];
 				
 				double leftVel = path.smoothLeftVelocity[step][1] + angleError*headingCorrectionP;
@@ -90,15 +99,16 @@ public class AutoCurveThreaded extends Command {
 		    	double rightRPM = rightVel / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
 				double leftRatio = leftRPM / RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
 		    	double rightRatio = rightRPM / RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
-				Logger.defaultLogger.trace("Falcon output: left " + df.format(path.smoothLeftVelocity[step][1]) + " in/sec, " + df.format(leftRPM)
-						+ " RPM, " + df.format(leftRatio * 100) + " percent; right " + df.format(path.smoothRightVelocity[step][1]) + " in/sec, "
-						+ df.format(rightRPM) + " RPM, " + df.format(rightRatio * 100) + " percent.");
+				Logger.defaultLogger.trace("Falcon output: left " + df.format(path.smoothLeftVelocity[step][1])
+						+ " in/sec, " + df.format(leftRPM) + " RPM, " + df.format(leftRatio * 100) + " percent; right "
+						+ df.format(path.smoothRightVelocity[step][1]) + " in/sec, " + df.format(rightRPM) + " RPM, "
+						+ df.format(rightRatio * 100) + " percent. Left error: " + leftError + " Right error: "
+						+ rightError + " Angle error: " + angleError);
 				if(Math.abs(leftRatio) > 1 || Math.abs(rightRatio) > 1) {
 					Logger.defaultLogger.error("Falcon output has exceeded robot capability.");
 				}
 		    	Robot.drivetrain.tankDrive(leftRatio, rightRatio);
 		    	step++;
-		    	
 				
 			}
 		}, 0, 20);
