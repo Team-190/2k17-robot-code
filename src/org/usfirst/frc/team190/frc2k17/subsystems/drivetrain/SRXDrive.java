@@ -152,6 +152,10 @@ public class SRXDrive {
 			return encoderInverted ? -pos : pos;
 		}
 		
+		public double getEncoderPositionTicks() {
+			return encoderInverted ? -master.getEncPosition() : master.getEncPosition();
+		}
+		
 		/**
 		 * Sets the encoder's current position
 		 * @param position position in inches
@@ -166,7 +170,7 @@ public class SRXDrive {
 		 * @return inches
 		 */
 		private double ticksToInches(double ticks) {
-			return ticks * RobotMap.getInstance().DRIVE_WHEEL_DIAMETER_INCHES.get() * Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
+			return ticks * RobotMap.getInstance().DRIVE_WHEEL_DIAMETER.get() * Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
 		}
 		
 		/**
@@ -312,6 +316,8 @@ public class SRXDrive {
 		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
 		if(Robot.debug()) {
+			SmartDashboard.putNumber("Left Drivetrain Encoder Position (ticks)", left.getEncoderPositionTicks());
+			SmartDashboard.putNumber("Right Drivetrain Encoder Position (ticks)", right.getEncoderPositionTicks());
 			SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
 			SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
 		}

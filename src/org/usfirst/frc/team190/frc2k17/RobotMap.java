@@ -76,7 +76,7 @@ public class RobotMap {
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
 		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
 		
-		DRIVE_WHEEL_DIAMETER_INCHES = new Key<Double>(4.0),
+		DRIVE_WHEEL_DIAMETER = new Key<Double>(4.0), // inches
 		
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
@@ -91,8 +91,7 @@ public class RobotMap {
 		
 		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
 		DRIVE_CURVE_TRACK_WIDTH = new Key<Double>(19.5),
-		DRIVE_CURVE_WHEEL_DIAMETER = new Key<Double>(4.0),
-		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_CURVE_WHEEL_DIAMETER.get()),
+		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_WHEEL_DIAMETER.get()),
 		
 		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz

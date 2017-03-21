@@ -21,6 +21,7 @@ public class AutoCurveThreaded extends Command {
 	private ADXRS450_Gyro gyro;
 	private double gyrofudge = 1.125;
 	private double headingCorrectionP = 0.0095;
+	private double distanceCorrectionP = 1;
 	
 	public final FalconPathPlanner path;
 	private double duration, runningSumLeft, runningSumRight, leftPreSum, rightPreSum;
@@ -39,8 +40,8 @@ public class AutoCurveThreaded extends Command {
     		// theoretical values
         	{0,0},
         	{0,12},
-        	{42.2,150},
-    		{42.2,192.1}
+        	{42.2,125},
+    		{42.2 + 6,192.1}
     		/*{0,0},
         	{0,12},
         	{42.2 + 31, 150},
@@ -71,6 +72,9 @@ public class AutoCurveThreaded extends Command {
 		}
 		Logger.defaultLogger.debug("The right side of the drivetrain is going to travel a total of " + df.format(rightPreSum) + " inches.");
     	
+		assert Robot.drivetrain.getLeftEncoderPosition() == 0;
+		assert Robot.drivetrain.getRightEncoderPosition() == 0;
+		
     	timer = new Timer();
     	timer.schedule(new TimerTask() {
 			
@@ -83,16 +87,29 @@ public class AutoCurveThreaded extends Command {
 					return;
 				}
 				
+				assert runningSumLeft >= 0;
+				assert runningSumRight >= 0;
+				
+				if (step == 0) {
+					assert runningSumLeft == 0;
+					assert runningSumRight == 0;
+				}
+				
 				double leftError = Robot.drivetrain.getLeftEncoderPosition() - runningSumLeft;
 				double rightError = Robot.drivetrain.getRightEncoderPosition() - runningSumRight;
+				
+				if (step == 0) {
+					assert leftError == 0;
+					assert rightError == 0;
+				}
 				
 				runningSumLeft += path.smoothLeftVelocity[step][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 				runningSumRight += path.smoothRightVelocity[step][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 				
 				double angleError = gyro.getAngle()*gyrofudge - path.heading[step][1];
 				
-				double leftVel = path.smoothLeftVelocity[step][1] ;//+ angleError*headingCorrectionP;
-				double rightVel = path.smoothRightVelocity[step][1] ;//- angleError*headingCorrectionP;
+				double leftVel = path.smoothLeftVelocity[step][1] - (leftError * distanceCorrectionP);// + (angleError * headingCorrectionP);
+				double rightVel = path.smoothRightVelocity[step][1] - (rightError * distanceCorrectionP);// - (angleError * headingCorrectionP);
 				
 				//double leftRPM = path.smoothLeftVelocity[step][1] / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
 		    	//double rightRPM = path.smoothRightVelocity[step][1] / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
@@ -112,7 +129,7 @@ public class AutoCurveThreaded extends Command {
 		    	step++;
 				
 			}
-		}, 0, 20);
+		}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
     	  	
     }
 
@@ -124,6 +141,7 @@ public class AutoCurveThreaded extends Command {
     }
 
     protected void end() {
+    	timer.cancel();
     	Robot.drivetrain.tankDrive(0, 0);
     	Logger.defaultLogger.debug("Left side error with respect to precalculated distance: " + df.format(Robot.drivetrain.getLeftEncoderPosition() - leftPreSum));
     	Logger.defaultLogger.debug("Right side error with respect to precalculated distance: " + df.format(Robot.drivetrain.getRightEncoderPosition() - rightPreSum));
