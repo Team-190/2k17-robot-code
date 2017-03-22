@@ -93,7 +93,7 @@ public class AutoCurveThreaded extends Command {
 							Robot.drivetrain.controlLeftRightDistance();
 						}
 						
-					}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
+					}, 1000, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
 					splineDone = true;
 					return;
 				}
@@ -165,10 +165,6 @@ public class AutoCurveThreaded extends Command {
     protected void end() {
     	timer.cancel();
     	Robot.drivetrain.tankDrive(0, 0);
-		Logger.defaultLogger.debug("Left side error with respect to precalculated distance: "
-				+ df.format(Robot.drivetrain.getLeftEncoderPosition() - leftPreSum));
-		Logger.defaultLogger.debug("Right side error with respect to precalculated distance: "
-				+ df.format(Robot.drivetrain.getRightEncoderPosition() - rightPreSum));
 		Logger.defaultLogger.debug(this.getClass().getSimpleName() + " terminating.");
     }
 
