@@ -44,20 +44,20 @@ public class LeftDistanceController implements DriveController{
 	public LeftDistanceController(SRXDrive drive) {
 		srxdrive = drive;
 		// the RobotMap PID values are only defaults
-		distancePID = new PIDController(RobotMap.getInstance().DRIVE_PID_DISTANCE_KP.get(),
-											RobotMap.getInstance().DRIVE_PID_DISTANCE_KI.get(),
-											RobotMap.getInstance().DRIVE_PID_DISTANCE_KD.get(),
+		distancePID = new PIDController(RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KP.get(),
+											RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KI.get(),
+											RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KD.get(),
 											new RobotDistanceSource(),
 											output -> this.loopOutput = output);
-		distancePID.setOutputRange(-RobotMap.getInstance().DRIVE_PID_DISTANCE_MAX.get(),
-				RobotMap.getInstance().DRIVE_PID_DISTANCE_MAX.get());
-		distancePID.setAbsoluteTolerance(RobotMap.getInstance().DRIVE_PID_DISTANCE_TOLERANCE.get());
-		distancePID.setMaxErrorToIntegrate(RobotMap.getInstance().DRIVE_PID_DISTANCE_I_ERROR_LIMIT.get());
+		distancePID.setOutputRange(-RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_MAX.get(),
+				RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_MAX.get());
+		distancePID.setAbsoluteTolerance(RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_TOLERANCE.get());
+		distancePID.setMaxErrorToIntegrate(RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_I_ERROR_LIMIT.get());
 		// reset SmartDashboard values to the RobotMap values
-		Robot.prefs.putDouble("Distance PID P", RobotMap.getInstance().DRIVE_PID_DISTANCE_KP.get());
-		Robot.prefs.putDouble("Distance PID I", RobotMap.getInstance().DRIVE_PID_DISTANCE_KI.get());
-		Robot.prefs.putDouble("Distance PID D", RobotMap.getInstance().DRIVE_PID_DISTANCE_KD.get());
-		Robot.prefs.putDouble("Distance PID MAX", RobotMap.getInstance().DRIVE_PID_DISTANCE_MAX.get());
+		Robot.prefs.putDouble("Small Distance PID P", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KP.get());
+		Robot.prefs.putDouble("Small Distance PID I", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KI.get());
+		Robot.prefs.putDouble("Small Distance PID D", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KD.get());
+		Robot.prefs.putDouble("Small Distance PID MAX", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_MAX.get());
 	}
 	
 	/**
@@ -109,11 +109,11 @@ public class LeftDistanceController implements DriveController{
 	 */
 	public void getSmartDashboardPidValues() {
 		distancePID.setPID(
-				Robot.prefs.getDouble("Distance PID P", RobotMap.getInstance().DRIVE_PID_DISTANCE_KP.get()),
-				Robot.prefs.getDouble("Distance PID I", RobotMap.getInstance().DRIVE_PID_DISTANCE_KI.get()),
-				Robot.prefs.getDouble("Distance PID D", RobotMap.getInstance().DRIVE_PID_DISTANCE_KD.get()));
+				Robot.prefs.getDouble("Small Distance PID P", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KP.get()),
+				Robot.prefs.getDouble("Small Distance PID I", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KI.get()),
+				Robot.prefs.getDouble("Small Distance PID D", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_KD.get()));
 		distancePID.setOutputRange(
-				-Robot.prefs.getDouble("Distance PID MAX", RobotMap.getInstance().DRIVE_PID_DISTANCE_MAX.get()),
-				Robot.prefs.getDouble("Distance PID MAX", RobotMap.getInstance().DRIVE_PID_DISTANCE_MAX.get()));
+				-Robot.prefs.getDouble("Small Distance PID MAX", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_MAX.get()),
+				Robot.prefs.getDouble("Small Distance PID MAX", RobotMap.getInstance().DRIVE_PID_SMALL_DISTANCE_MAX.get()));
 	}
 }

@@ -65,6 +65,13 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
+		DRIVE_PID_SMALL_DISTANCE_KP = new Key<Double>(DRIVE_PID_DISTANCE_KP.get() * 3),
+		DRIVE_PID_SMALL_DISTANCE_KI = new Key<Double>(DRIVE_PID_DISTANCE_KI.get()),
+		DRIVE_PID_SMALL_DISTANCE_KD = new Key<Double>(DRIVE_PID_DISTANCE_KD.get()),
+		DRIVE_PID_SMALL_DISTANCE_MAX = new Key<Double>(0.5),
+		DRIVE_PID_SMALL_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
+		DRIVE_PID_SMALL_DISTANCE_TOLERANCE = new Key<Double>(0.5),
+		
 		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.085, 0.05),
 		DRIVE_PID_ENCODERDIFF_KI = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_KD = new Key<Double>(0.0),

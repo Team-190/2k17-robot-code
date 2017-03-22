@@ -94,7 +94,7 @@ public class AutoCurveThreaded extends Command {
 							Robot.drivetrain.controlLeftRightDistance();
 						}
 						
-					}, 1000, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
+					}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
 					splineDone = true;
 					return;
 				}
