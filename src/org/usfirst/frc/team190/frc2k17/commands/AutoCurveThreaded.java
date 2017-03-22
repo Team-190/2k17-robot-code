@@ -84,6 +84,7 @@ public class AutoCurveThreaded extends Command {
 					Logger.defaultLogger.debug("Falcon has finished. Now running distance PID.");
 					Robot.drivetrain.enableLeftDistanceControl(leftPreSum - Robot.drivetrain.getLeftEncoderPosition());
 					Robot.drivetrain.enableRightDistanceControl(rightPreSum - Robot.drivetrain.getRightEncoderPosition());
+					Robot.drivetrain.zeroEncoderPositions();
 					timer.cancel();
 					timer = new Timer();
 					timer.schedule(new TimerTask() {
