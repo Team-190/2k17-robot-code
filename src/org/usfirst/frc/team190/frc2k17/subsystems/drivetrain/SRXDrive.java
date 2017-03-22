@@ -21,12 +21,13 @@ public class SRXDrive {
 		private boolean motorInverted;
 		private boolean encoderInverted;
 		private boolean inSpeedControlMode;
-		private double setpoint;
+		private double setpoint, encoderOffset;
 
 		public DriveMotorPair(String name, int masterID, int slaveID, boolean motorInverted, boolean encoderInverted) {
 			this.name = name;
 			this.motorInverted = motorInverted;
 			this.encoderInverted = encoderInverted;
+			encoderOffset = 0;
 			
 			master = new CANTalon(masterID);
 			
@@ -148,12 +149,11 @@ public class SRXDrive {
 		 * @return encoder position in inches
 		 */
 		public double getEncoderPosition() {
-			double pos = ticksToInches(master.getEncPosition());
-			return encoderInverted ? -pos : pos;
+			return ticksToInches(getEncoderPositionTicks());
 		}
 		
 		public double getEncoderPositionTicks() {
-			return encoderInverted ? -master.getEncPosition() : master.getEncPosition();
+			return encoderInverted ? -master.getEncPosition() + encoderOffset : master.getEncPosition() + encoderOffset;
 		}
 		
 		/**
@@ -161,7 +161,7 @@ public class SRXDrive {
 		 * @param position position in inches
 		 */
 		public void setEncoderPosition(int position) {
-			master.setEncPosition(position);
+			encoderOffset += position - getEncoderPositionTicks();
 		}
 		
 		/**
