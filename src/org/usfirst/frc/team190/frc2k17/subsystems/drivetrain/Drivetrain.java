@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 	
 	private DriveController turningController, encoderDiffController;
-	private final DriveController distanceController;
+	private final DriveController distanceController, leftDistanceController, rightDistanceController;
 	
 	private final SRXDrive srxdrive;
 	private AHRS navx;
@@ -31,6 +31,8 @@ public class Drivetrain extends Subsystem {
 		srxdrive = new SRXDrive();
 		navx = new AHRS(SPI.Port.kMXP);
 		distanceController = new DistanceController(srxdrive);
+		leftDistanceController = new LeftDistanceController(srxdrive);
+		rightDistanceController = new RightDistanceController(srxdrive);
 		turningController = new TurningController(navx);
 		encoderDiffController = new EncoderDifferenceController(srxdrive);
 	}
@@ -51,6 +53,36 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	/**
+	 * Enables the left distance control loop
+	 * @param distance the distance to drive
+	 */
+	public void enableLeftDistanceControl(double distance) {
+		leftDistanceController.enable(distance);
+	}
+	
+	/**
+	 * Disables the left distance control loop
+	 */
+	public void disableLeftDistanceControl() {
+		leftDistanceController.disable();
+	}
+	
+	/**
+	 * Enables the right distance control loop
+	 * @param distance the distance to drive
+	 */
+	public void enableRightDistanceControl(double distance) {
+		rightDistanceController.enable(distance);
+	}
+	
+	/**
+	 * Disables the right distance control loop
+	 */
+	public void disableRightDistanceControl() {
+		rightDistanceController.disable();
+	}
+	
+	/**
 	 * Checks if the distance control loop is on target
 	 * @return true if the loop is on target
 	 */
@@ -58,6 +90,22 @@ public class Drivetrain extends Subsystem {
 		return distanceController.isOnTarget();
 	}
 	
+	/**
+	 * Checks if the distance control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isLeftDistanceControlOnTarget() {
+		return leftDistanceController.isOnTarget();
+	}
+	
+	/**
+	 * Checks if the distance control loop is on target
+	 * @return true if the loop is on target
+	 */
+	public boolean isRightDistanceControlOnTarget() {
+		return rightDistanceController.isOnTarget();
+	}
+			
 	/**
 	 * Enables the encoder difference control loop
 	 * @param inches the desired difference in inches
@@ -141,7 +189,14 @@ public class Drivetrain extends Subsystem {
 	public void controlDistance(double rotation, double speedLimit) {
 		arcadeDrive(Math.min(distanceController.getLoopOutput(), speedLimit), rotation);
 	}
-
+	
+	/**
+	 * Drive the left and right sides of the drivetrain independently based on the separate left and right distance control loops
+	 */
+	public void controlLeftRightDistance() {
+		tankDrive(leftDistanceController.getLoopOutput(), rightDistanceController.getLoopOutput());
+	}
+	
 	/**
 	 * Drives the robot based off the turning control loop's output
 	 */
