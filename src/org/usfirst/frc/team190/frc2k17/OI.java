@@ -11,6 +11,7 @@ import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCo
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbCommand;
+import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberClimbUnsafeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.climber.ClimberStopCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
@@ -137,9 +138,8 @@ public class OI {
 			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
-			autoShiftButton.whenPressed(Robot.autoShiftCommand);
-			cancelAutoShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
-			cancelAutoShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
+			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
+			climbUnsafeButton.whenReleased(new ClimberStopCommand());
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
@@ -148,7 +148,9 @@ public class OI {
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
 			Command pegAssistCommand = new PegAssist();
 			pegOnButton.whenPressed(pegAssistCommand);
+			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
 			pegOffButton.cancelWhenPressed(pegAssistCommand);
+			pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
