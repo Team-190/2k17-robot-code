@@ -134,8 +134,8 @@ public class OI {
 			pegOffButton = new JoystickButton(joystick2, 5);
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
-			boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
-			boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
+			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
+			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
 			climbButton.whenReleased(new ClimberStopCommand());
 			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
@@ -143,6 +143,7 @@ public class OI {
 			Command shooterSpinCommand = new StartShooterCommand();
 			shooterSpinButton.whenPressed(shooterSpinCommand);
 			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
+			boopButton.cancelWhenPressed(shooterSpinCommand);
 			shooterFeedButton.whileHeld(new ShooterFeedCommand());
 			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
