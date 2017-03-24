@@ -165,6 +165,7 @@ public class OI {
 		
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 		highShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
+		driverAutoShiftButton.whenPressed(Robot.autoShiftCommand);
 		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		lowShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		//driveToPegButton.whenPressed(new PlaceGearCommand());
