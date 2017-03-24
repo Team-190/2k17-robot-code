@@ -48,8 +48,8 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
 		flywheelMotor1.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
-		flywheelMotor1.setInverted(true);
-		flywheelMotor1.reverseSensor(true);
+		flywheelMotor1.setInverted(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
+		flywheelMotor1.reverseSensor(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
 		
 		flywheelMotor2.setProfile(0);
 		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
@@ -57,8 +57,8 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
 		flywheelMotor2.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
-		flywheelMotor2.setInverted(true);
-		flywheelMotor2.reverseSensor(true);
+		flywheelMotor2.setInverted(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
+		flywheelMotor2.reverseSensor(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
 		
 		Robot.prefs.putDouble("Shooter PID F", RobotMap.getInstance().SHOOTER_PID_KF.get());
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
@@ -131,6 +131,7 @@ public class Shooter extends Subsystem {
     	double speed1 = flywheelMotor1.getSpeed();
     	double speed2 = flywheelMotor2.getSpeed();
     	int rpmTolerance = RobotMap.getInstance().SHOOTER_RPM_TOLERANCE.get();
+    	outputEncoderValues();
     	return (Math.abs(speed1 - requestedSpeed) <= rpmTolerance) && (Math.abs(speed2 - requestedSpeed) <= rpmTolerance);
     }
     
@@ -150,9 +151,12 @@ public class Shooter extends Subsystem {
     	flywheelMotor2.setF(f);
     }
     
-    public void printEncoderValues() {
-    	SmartDashboard.putNumber("Flywheel1 Speed", flywheelMotor1.getSpeed());
-    	SmartDashboard.putNumber("Flywheel2 Speed", flywheelMotor2.getSpeed());
+    public void outputEncoderValues() {
+    	// invert both encoder outputs
+    	double speed1 = -flywheelMotor1.getSpeed();
+    	double speed2 = -flywheelMotor2.getSpeed();
+    	SmartDashboard.putNumber("Flywheel1 Speed", speed1);
+    	SmartDashboard.putNumber("Flywheel2 Speed", speed2);
     }
 }
 
