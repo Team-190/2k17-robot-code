@@ -262,6 +262,8 @@ public class Robot extends IterativeRobot {
     		Robot.prefs.putBoolean("queue mode", true);
     		if(DriverStation.getInstance().isDisabled()) {
     			gearCamera.lightOff();
+    			leftLEDs.setColor(0);
+    			rightLEDs.setColor(0);
     		}
     		Logger.defaultLogger.info("Queue mode enabled by user button on RoboRIO.");
     	}
