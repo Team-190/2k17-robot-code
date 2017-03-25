@@ -246,7 +246,7 @@ public class Robot extends IterativeRobot {
      * @return whether to enable debug mode
      */
     public static boolean debug() {
-    	return true;
+    	return false;
     }
     
     /**

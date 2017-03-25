@@ -149,6 +149,7 @@ public class RobotMap {
 	public final Key<Long>
 		ROBOT_COMMS_TIMEOUT = new Key<Long>(250L), // milliseconds
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
+		DRIVE_PID_DIST_WAIT = new Key<Long>(100L), //milliseconds
 		PEGASSIST_REFRESH_TIME = new Key<Long>(200L); // milliseconds
 			
 	private static RobotMap instance = null;

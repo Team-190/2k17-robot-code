@@ -1,5 +1,8 @@
 package org.usfirst.frc.team190.frc2k17.subsystems.drivetrain;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.PIDController;
 import org.usfirst.frc.team190.frc2k17.Robot;
@@ -14,6 +17,7 @@ public class DistanceController implements DriveController{
 	SRXDrive srxdrive;
 	private final PIDController distancePID;
 	private double loopOutput = 0;
+	private Instant onTargetSince;
 
 	/**
 	 * A source for the PID distance controller using values in inches
@@ -68,6 +72,15 @@ public class DistanceController implements DriveController{
 		if(Robot.debug()) {
 			SmartDashboard.putNumber("Distance PID loop output", loopOutput);
 		}
+		if (distancePID.onTarget()) {
+			if (onTargetSince == null) {
+				onTargetSince = Instant.now();
+				Logger.defaultLogger.trace("Distance PID is on target. Waiting for " + RobotMap.getInstance().DRIVE_PID_DIST_WAIT.get() + " milliseconds.");
+			}
+		} else if (onTargetSince != null){
+			onTargetSince = null;
+			Logger.defaultLogger.trace("Distance PID is *no longer* on target.");
+		}
 		return loopOutput;
 	}
 	
@@ -102,7 +115,8 @@ public class DistanceController implements DriveController{
 	 * @return true if the loop is on target
 	 */
 	public boolean isOnTarget() {
-		return distancePID.onTarget();
+		return (distancePID.onTarget() && onTargetSince != null && Duration.between(onTargetSince, Instant.now())
+				.compareTo(Duration.ofMillis(500)) > 0);
 	}
 	
 	/**
