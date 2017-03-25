@@ -37,7 +37,9 @@ public class RobotMap {
 		CAN_PCM = new Key<Integer>(20),
 		CAN_PDP = new Key<Integer>(1),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
-		DRIVE_TICKS_PER_REV = new Key<Integer>(4096),//, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		// TODO Why do we need two different DRIVE_TICKS_PER_REV?!!!!
+		DRIVE_TICKS_PER_REV2 = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		DRIVE_TICKS_PER_REV = new Key<Integer>(4096),
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),

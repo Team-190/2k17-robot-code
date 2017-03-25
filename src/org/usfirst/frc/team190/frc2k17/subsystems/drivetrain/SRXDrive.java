@@ -35,7 +35,7 @@ public class SRXDrive {
 			if(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.QuadEncoder)
 			{
 				//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
-				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV2.get());
 			}
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
