@@ -121,6 +121,8 @@ public class OI {
 			bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		} else {
+			boolean idiotProof = true;
+			
 			joystick2 = new FilteredJoystick(2);
 			
 			boopButton = new JoystickButton(joystick2, 1);
@@ -146,13 +148,24 @@ public class OI {
 			shooterStopButton.cancelWhenPressed(shooterShootCommand);
 			boopButton.cancelWhenPressed(shooterShootCommand);
 			shooterFeedButton.whileHeld(new ShooterFeedCommand());
-			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
-			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
+			if(idiotProof) { 
+				gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
+				gearOutButton.whenReleased(new GearPlacerSetCommand(State.RETRACTED));
+			} else {
+				gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
+				gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
+			}
 			Command pegAssistCommand = new PegAssist();
-			pegOnButton.whenPressed(pegAssistCommand);
-			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
-			pegOffButton.cancelWhenPressed(pegAssistCommand);
-			pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
+			if(idiotProof) {
+				pegOnButton.whileHeld(pegAssistCommand);
+				pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+				pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
+			} else {
+				pegOnButton.whenPressed(pegAssistCommand);
+				pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+				pegOffButton.cancelWhenPressed(pegAssistCommand);
+				pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
+			} 
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
