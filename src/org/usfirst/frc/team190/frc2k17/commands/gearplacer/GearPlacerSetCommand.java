@@ -22,10 +22,9 @@ public class GearPlacerSetCommand extends Command {
 
 	protected void initialize() {
 		Robot.gearPlacer.set(state);
-		setTimeout(RobotMap.getInstance().GEAR_PLACER_SET_TIMEOUT.get());
 	}
 
 	protected boolean isFinished() {
-		return true;//isTimedOut();
+		return true;
 	}
 }

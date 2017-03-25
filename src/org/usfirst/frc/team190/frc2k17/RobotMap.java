@@ -91,7 +91,6 @@ public class RobotMap {
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(0.1),
 		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>(0.5),
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
-		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.25),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
