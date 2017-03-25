@@ -29,11 +29,8 @@ public class ShooterShootCommandGroup extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	addSequential(new StartShooterCommand());
-    	addSequential(new StartFeederCommand());
-    	addSequential(new TimedCommand(RobotMap.getInstance().AUTO_TIME_TO_STOP.get() - Timer.getMatchTime()));
-    	addSequential(new StopFeederCommand());
-    	addSequential(new StopShooterCommand());
+    	addSequential(new BackfeedShooterCommand());
+    	addSequential(new ShooterSpinCommand());
     	
     }
 }

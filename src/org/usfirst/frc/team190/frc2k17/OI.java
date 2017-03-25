@@ -32,7 +32,8 @@ import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterFeedCommand;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.StartShooterCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterShootCommandGroup;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer.State;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
@@ -113,7 +114,7 @@ public class OI {
 			lbButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			backButton.whenPressed(new GearCameraLightToggleCommand());
 			povUpTrigger.whileActive(new ClimberClimbCommand());
-			yButton.toggleWhenPressed(new StartShooterCommand());
+			yButton.toggleWhenPressed(new ShooterSpinCommand());
 			aButton.whileHeld(new ShooterFeedCommand());
 			xButton.whenPressed(new KickGearCommand());
 			startButton.whenPressed(new GearPlacerToggleCommand());
@@ -140,10 +141,10 @@ public class OI {
 			climbButton.whenReleased(new ClimberStopCommand());
 			climbUnsafeButton.whenPressed(new ClimberClimbUnsafeCommand());
 			climbUnsafeButton.whenReleased(new ClimberStopCommand());
-			Command shooterSpinCommand = new StartShooterCommand();
-			shooterSpinButton.whenPressed(shooterSpinCommand);
-			shooterStopButton.cancelWhenPressed(shooterSpinCommand);
-			boopButton.cancelWhenPressed(shooterSpinCommand);
+			Command shooterShootCommand = new ShooterShootCommandGroup();
+			shooterSpinButton.whenPressed(shooterShootCommand);
+			shooterStopButton.cancelWhenPressed(shooterShootCommand);
+			boopButton.cancelWhenPressed(shooterShootCommand);
 			shooterFeedButton.whileHeld(new ShooterFeedCommand());
 			gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 			gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
@@ -196,7 +197,7 @@ public class OI {
 		SmartDashboard.putData("Peg Assist", new PegAssist());
 		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
-		SmartDashboard.putData("Start Shooter", new StartShooterCommand());
+		SmartDashboard.putData("Start Shooter", new ShooterSpinCommand());
 		SmartDashboard.putData("Clear Sticky Faults", new ClearStickyFaultsCommand());
 	}
 	
