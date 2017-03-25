@@ -37,7 +37,7 @@ public class RobotMap {
 		CAN_PCM = new Key<Integer>(20),
 		CAN_PDP = new Key<Integer>(1),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
-		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		DRIVE_TICKS_PER_REV = new Key<Integer>(4096),//, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
@@ -58,7 +58,7 @@ public class RobotMap {
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
 		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
 		
-		DRIVE_PID_DISTANCE_KP = new Key<Double>(0.023, 0.05),
+		DRIVE_PID_DISTANCE_KP = new Key<Double>(0.023, 0.015),
 		DRIVE_PID_DISTANCE_KI = new Key<Double>(0.002, 0.0),
 		DRIVE_PID_DISTANCE_KD = new Key<Double>(0.02, 0.0),
 		DRIVE_PID_DISTANCE_MAX = new Key<Double>(1.0),
@@ -72,7 +72,7 @@ public class RobotMap {
 		DRIVE_PID_SMALL_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_SMALL_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.085, 0.05),
+		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.085, 0.02),
 		DRIVE_PID_ENCODERDIFF_KI = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_KD = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_I_ERROR_LIMIT = new Key<Double>(5.0),
