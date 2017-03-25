@@ -15,7 +15,7 @@ public class GearPlacerSetCommand extends Command {
 	
 	private final GearPlacer.State state;
 
-	public GearPlacerSetCommand(final GearPlacer.State state) {
+	public GearPlacerSetCommand(GearPlacer.State state) {
 		requires(Robot.gearPlacer);
 		this.state = state;
 	}
