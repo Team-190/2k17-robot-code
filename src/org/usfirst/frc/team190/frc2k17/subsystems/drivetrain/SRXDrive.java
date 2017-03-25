@@ -184,10 +184,13 @@ public class SRXDrive {
 				if (master.getStickyFaultUnderVoltage() != 0) {
 					Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
 				}
-				if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-					Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
-				} else {
-					Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+				if (RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.CtreMagEncoder_Relative) {
+					if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV
+							.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+						Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
+					} else {
+						Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+					}
 				}
 			} else {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
