@@ -78,9 +78,6 @@ public class Shooter extends Subsystem {
 			if (flywheelMotor1.getStickyFaultUnderVoltage() != 0) {
 				Logger.defaultLogger.warn("Shooter flywheel motor 1 has under-voltage sticky bit set.");
 			}
-			if (flywheelMotor1.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-				Logger.defaultLogger.warn("Shooter flywheel 1 encoder not present.");
-			}
 		} else {
 			Logger.defaultLogger.warn("Shooter flywheel motor 1 controller not reachable over CAN.");
 		}
@@ -90,12 +87,6 @@ public class Shooter extends Subsystem {
 			}
 			if (flywheelMotor2.getStickyFaultUnderVoltage() != 0) {
 				Logger.defaultLogger.warn("Shooter flywheel motor 2 has under-voltage sticky bit set.");
-			}
-			if (RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.CtreMagEncoder_Relative) {
-				if (flywheelMotor2
-						.isSensorPresent(FeedbackDevice.QuadEncoder) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-					Logger.defaultLogger.warn("Shooter flywheel 2 encoder not present.");
-				}
 			}
 		} else {
 			Logger.defaultLogger.warn("Shooter flywheel motor 2 controller not reachable over CAN.");
