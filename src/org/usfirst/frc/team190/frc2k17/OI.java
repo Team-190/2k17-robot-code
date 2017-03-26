@@ -156,16 +156,9 @@ public class OI {
 				gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
 			}
 			Command pegAssistCommand = new PegAssist();
-			if(idiotProof) {
-				pegOnButton.whileHeld(pegAssistCommand);
-				pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
-				pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
-			} else {
-				pegOnButton.whenPressed(pegAssistCommand);
-				pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
-				pegOffButton.cancelWhenPressed(pegAssistCommand);
-				pegOffButton.whenPressed(new SetAutoKickEnabledCommand(false));
-			} 
+			pegOnButton.whileHeld(pegAssistCommand);
+			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+			pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
 		
