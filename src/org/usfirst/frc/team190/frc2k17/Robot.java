@@ -191,7 +191,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	Logger.defaultLogger.info("Teleop mode started.");
-    	
+    	pegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
 
     	compressor.start();

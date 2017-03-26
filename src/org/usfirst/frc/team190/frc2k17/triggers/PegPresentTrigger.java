@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  */
 public class PegPresentTrigger extends Trigger {
 	
-	private static boolean enabled = false;
+	private static boolean enabled = true;
 	private static Instant lastTrigger = null; // Last time limit switch was triggered
 
 	public static void setEnabled(boolean enabled) {
