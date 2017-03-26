@@ -31,12 +31,16 @@ public class PegPresentTrigger extends Trigger {
     	if(Robot.gearPlacer.getPegPresent() && enabled) {
     		
     		if(lastTrigger == null || Duration.between(lastTrigger, Instant.now()).toMillis() > RobotMap.getInstance().PEG_PRESENT_COOLDOWN.get()) {
-    			lastTrigger = Instant.now();
+    			startCooldown();
     			return true;
     		}
     	}
     	
     	return false;
     	
+    }
+    
+    public void startCooldown() {
+    	lastTrigger = Instant.now();
     }
 }

@@ -92,7 +92,7 @@ public class OI {
 	private Button boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
 			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
 			pegOffButton, blinkLEDsButton;
-	private Trigger povUpTrigger, povDownTrigger, pegPresentTrigger;
+	private Trigger povUpTrigger, povDownTrigger;
 	
 	public OI() {
 		joystick0 = new FilteredJoystick(0);
@@ -161,9 +161,6 @@ public class OI {
 			pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
 		}
-		
-		pegPresentTrigger = new PegPresentTrigger();
-		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
 		
 		highShiftButton = new JoystickButton(joystick1, 3);
 		lowShiftButton = new JoystickButton(joystick1, 2);

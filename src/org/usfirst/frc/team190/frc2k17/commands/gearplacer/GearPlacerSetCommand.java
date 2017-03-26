@@ -21,6 +21,7 @@ public class GearPlacerSetCommand extends Command {
 	}
 
 	protected void initialize() {
+		Robot.pegPresentTrigger.startCooldown();
 		Robot.gearPlacer.set(state);
 	}
 

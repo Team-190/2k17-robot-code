@@ -9,6 +9,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -62,6 +64,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	
 	public static Command autoShiftCommand;
+	public static PegPresentTrigger pegPresentTrigger;
 	
     private Command autonomousCommand;
     SendableChooser<Command> autoChooser;
@@ -121,6 +124,9 @@ public class Robot extends IterativeRobot {
 		diagnose();
 		Diagnostics.start();
 		Robot.prefs.putBoolean("queue mode", false);
+		
+		pegPresentTrigger = new PegPresentTrigger();
+		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
     }
 	
 	/**
