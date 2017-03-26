@@ -3,6 +3,8 @@ package org.usfirst.frc.team190.frc2k17;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
@@ -31,6 +33,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -65,6 +68,7 @@ public class Robot extends IterativeRobot {
 	
 	public static Command autoShiftCommand;
 	public static PegPresentTrigger pegPresentTrigger;
+	private static List<CommandGroup> pegAfterwardsCommands;
 	
     private Command autonomousCommand;
     SendableChooser<Command> autoChooser;
@@ -78,7 +82,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
-		// RobotMap must be initialized before almost anything else.
+    	pegAfterwardsCommands = new ArrayList<CommandGroup>();
     	interceptOutputStream();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before everything else. Do not change order.
@@ -197,6 +201,9 @@ public class Robot extends IterativeRobot {
     	compressor.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
+        for(Command command : pegAfterwardsCommands) {
+        	command.cancel();
+        }
     }
 
     /**
@@ -333,8 +340,10 @@ public class Robot extends IterativeRobot {
     }
     
     public static void changeGearKickAfterwardsCommand(Command afterwards) {
+    	CommandGroup commandGroup = new GearPresentCommandGroup(afterwards);
     	pegPresentTrigger = new PegPresentTrigger();
-		pegPresentTrigger.whenActive(new GearPresentCommandGroup(afterwards));
+		pegPresentTrigger.whenActive(commandGroup);
+		pegAfterwardsCommands.add(commandGroup);
     }
     
     private void interceptOutputStream() {
