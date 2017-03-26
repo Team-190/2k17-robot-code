@@ -177,7 +177,6 @@ public class Robot extends IterativeRobot {
     	
         autonomousCommand = autoChooser.getSelected();
         
-    	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -193,6 +192,7 @@ public class Robot extends IterativeRobot {
     	Logger.defaultLogger.info("Teleop mode started.");
     	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
+    	changeGearKickAfterwardsCommand(null);
 
     	compressor.start();
     	
@@ -330,6 +330,11 @@ public class Robot extends IterativeRobot {
     
     public static void resetNavxErrorCount() {
     	CustomStream.resetNavxErrorCount();
+    }
+    
+    public static void changeGearKickAfterwardsCommand(Command afterwards) {
+    	pegPresentTrigger = new PegPresentTrigger();
+		pegPresentTrigger.whenActive(new GearPresentCommandGroup(afterwards));
     }
     
     private void interceptOutputStream() {
