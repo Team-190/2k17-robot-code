@@ -172,7 +172,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
-    	
+    	PegPresentTrigger.setEnabled(true);
     	compressor.start();
     	
         autonomousCommand = autoChooser.getSelected();
@@ -191,7 +191,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	Logger.defaultLogger.info("Teleop mode started.");
-    	pegPresentTrigger.setEnabled(false);
+    	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
 
     	compressor.start();
