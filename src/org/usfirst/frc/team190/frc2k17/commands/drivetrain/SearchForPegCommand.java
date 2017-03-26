@@ -9,19 +9,24 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SearchForPegCommand extends Command {
 
+	private boolean wasPegVisible;
+	
     public SearchForPegCommand() {
     	requires(Robot.drivetrain);
     }
 
     protected void initialize() {
+    	wasPegVisible = Robot.gearCamera.isPegVisible();
     }
 
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(0, 0.25);
+    	if(!wasPegVisible) {
+    		Robot.drivetrain.arcadeDrive(0, 0.25);
+    	}
     }
 
     protected boolean isFinished() {
-        return Robot.gearCamera.isPegVisible();
+        return wasPegVisible || Robot.gearCamera.isPegVisible();
     }
 
     protected void end() {

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 public class DriveStraightForTimeCommand extends TimedCommand {
 	
 	private double speed;
+	private boolean stop = true;
 	
 	/**
 	 * @param seconds time to drive in seconds
@@ -29,6 +30,18 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     	requires(Robot.drivetrain);
     	this.speed = speed;
     }
+    
+    /**
+	 * @param seconds time to drive in seconds
+	 * @param speed the speed to drive
+	 * @param stop whether to stop at the end of the command
+	 */
+    public DriveStraightForTimeCommand(double seconds, double speed, boolean stop) {
+    	super(seconds);
+    	this.stop = stop;
+    	requires(Robot.drivetrain);
+    	this.speed = speed;
+    }
 
     protected void initialize() {
     	Robot.drivetrain.enableCoast(false);
@@ -39,7 +52,9 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     }
 
     protected void end() {
-    	Robot.drivetrain.arcadeDrive(0, 0);
+		if (stop) {
+			Robot.drivetrain.arcadeDrive(0, 0);
+		}
     }
 
     protected void interrupted() {

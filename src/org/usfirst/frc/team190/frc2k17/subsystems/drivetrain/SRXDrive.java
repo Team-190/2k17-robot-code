@@ -21,12 +21,13 @@ public class SRXDrive {
 		private boolean motorInverted;
 		private boolean encoderInverted;
 		private boolean inSpeedControlMode;
-		private double setpoint;
+		private double setpoint, encoderOffset;
 
 		public DriveMotorPair(String name, int masterID, int slaveID, boolean motorInverted, boolean encoderInverted) {
 			this.name = name;
 			this.motorInverted = motorInverted;
 			this.encoderInverted = encoderInverted;
+			encoderOffset = 0;
 			
 			master = new CANTalon(masterID);
 			
@@ -34,7 +35,7 @@ public class SRXDrive {
 			if(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.QuadEncoder)
 			{
 				//you don't have to configure encoder ticks if using the ctr encoders but do for quad encoders
-				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+				master.configEncoderCodesPerRev(RobotMap.getInstance().DRIVE_TICKS_PER_REV2.get());
 			}
 			
 			master.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -88,17 +89,14 @@ public class SRXDrive {
 		 * @param mode control mode, either Speed or PercentVbus
 		 */
 		public void setControlMode(TalonControlMode mode) {
+			master.changeControlMode(mode);
 			if (mode == TalonControlMode.Speed) {
-				master.changeControlMode(TalonControlMode.Speed);
 				inSpeedControlMode = true;
-				
 				master.setInverted(false);
 				master.reverseOutput(motorInverted);
 				master.reverseSensor(encoderInverted);
-			} else if (mode == TalonControlMode.PercentVbus){
-				master.changeControlMode(TalonControlMode.PercentVbus);
+			} else {
 				inSpeedControlMode = false;
-				
 				master.setInverted(motorInverted);
 				master.reverseOutput(false);
 				master.reverseSensor(encoderInverted);
@@ -151,8 +149,11 @@ public class SRXDrive {
 		 * @return encoder position in inches
 		 */
 		public double getEncoderPosition() {
-			double pos = ticksToInches(master.getEncPosition());
-			return encoderInverted ? -pos : pos;
+			return ticksToInches(getEncoderPositionTicks());
+		}
+		
+		public double getEncoderPositionTicks() {
+			return encoderInverted ? -master.getEncPosition() + encoderOffset : master.getEncPosition() + encoderOffset;
 		}
 		
 		/**
@@ -160,16 +161,7 @@ public class SRXDrive {
 		 * @param position position in inches
 		 */
 		public void setEncoderPosition(int position) {
-			master.setEncPosition(position);
-		}
-		
-		/**
-		 * Converts inches to encoder ticks
-		 * @param inches
-		 * @return encoder ticks
-		 */
-		private double inchesToTicks(double inches) {
-			return inches / (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+			encoderOffset += position - getEncoderPositionTicks();
 		}
 		
 		/**
@@ -178,7 +170,7 @@ public class SRXDrive {
 		 * @return inches
 		 */
 		private double ticksToInches(double ticks) {
-			return ticks * (Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get());
+			return ticks * RobotMap.getInstance().DRIVE_WHEEL_DIAMETER.get() * Math.PI / RobotMap.getInstance().DRIVE_TICKS_PER_REV.get();
 		}
 		
 		/**
@@ -192,10 +184,13 @@ public class SRXDrive {
 				if (master.getStickyFaultUnderVoltage() != 0) {
 					Logger.defaultLogger.warn(name + " - front drivetrain motor has under-voltage sticky bit set.");
 				}
-				if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
-					Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
-				} else {
-					Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+				if (RobotMap.getInstance().DRIVE_FEEDBACK_DEV.get() == FeedbackDevice.CtreMagEncoder_Relative) {
+					if (master.isSensorPresent(RobotMap.getInstance().DRIVE_FEEDBACK_DEV
+							.get()) != FeedbackDeviceStatus.FeedbackStatusPresent) {
+						Logger.defaultLogger.warn(name + " - drivetrain encoder not present.");
+					} else {
+						Logger.defaultLogger.debug(name + " - drivetrain encoder is present.");
+					}
 				}
 			} else {
 				Logger.defaultLogger.warn(name + " - front drivetrain motor controller not reachable over CAN.");
@@ -324,6 +319,8 @@ public class SRXDrive {
 		SmartDashboard.putNumber("Left Drivetrain Encoder Position", left.getEncoderPosition());
 		SmartDashboard.putNumber("Right Drivetrain Encoder Position", right.getEncoderPosition());
 		if(Robot.debug()) {
+			SmartDashboard.putNumber("Left Drivetrain Encoder Position (ticks)", left.getEncoderPositionTicks());
+			SmartDashboard.putNumber("Right Drivetrain Encoder Position (ticks)", right.getEncoderPositionTicks());
 			SmartDashboard.putNumber("Left Velocity Error", left.getClosedLoopError());
 			SmartDashboard.putNumber("Right Velocity Error", right.getClosedLoopError());
 		}

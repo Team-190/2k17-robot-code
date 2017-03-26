@@ -2,8 +2,7 @@ package org.usfirst.frc.team190.frc2k17.subsystems;
 
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -11,20 +10,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Handle the front camera to see the peg.
- * 
- * @author bradmiller This class can get the distance and angle to the peg
  */
 public class GearCamera extends Subsystem {
 
-	private final Relay spike;
-	private NetworkTable grip;
+	private final DigitalOutput spike;
 	private double degreesToTurn;
 	private double inchesToDrive;
 	private boolean pegIsVisible;
 
 	public GearCamera() {
-		spike = new Relay(RobotMap.getInstance().RELAY_CAMERA_LIGHT.get());
-		grip = NetworkTable.getTable("/GRIP/frontCameraReport");
+		spike = new DigitalOutput(RobotMap.getInstance().DIO_CAMERA_LIGHT.get());
+		spike.disablePWM();
 		LiveWindow.addActuator("gear and boopers", "camera light", spike);
 	}
 
@@ -32,24 +28,24 @@ public class GearCamera extends Subsystem {
 	 * turn on the front ring light
 	 */
 	public void lightOn() {
-		spike.set(Value.kForward);
+		spike.set(true);
 	}
 
 	/**
 	 * turn off the front ring light
 	 */
 	public void lightOff() {
-		spike.set(Value.kOff);
+		spike.set(false);
 	}
 
 	/**
 	 * Toggle the status of the ring light.
 	 */
 	public void lightToggle() {
-		if (spike.get() == Value.kOff) {
-			spike.set(Value.kForward);
+		if (spike.get() == false) {
+			spike.set(true);
 		} else {
-			spike.set(Value.kOff);
+			spike.set(false);
 		}
 	}
 

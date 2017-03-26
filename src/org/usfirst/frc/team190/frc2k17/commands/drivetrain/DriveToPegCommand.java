@@ -16,6 +16,7 @@ public class DriveToPegCommand extends Command {
 	private DriveStraightForDistanceHeadingCorrectionCommand driveCommand;
 	private double speedLimit;
 	private double dist;
+	private boolean wasPegVisible;
 	private boolean useNavx;
 	
 	public DriveToPegCommand() {
@@ -32,29 +33,36 @@ public class DriveToPegCommand extends Command {
      * get the distance to the peg and drive for that distance
      */
     protected void initialize() {
-    	Logger.defaultLogger.info("Drive halfway to peg.");
-    	dist = Robot.gearCamera.getDistanceToPeg();
-    	Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
-    	dist += 18;
-    	Robot.drivetrain.enableCoast(false);
-    	useNavx = Robot.drivetrain.isNavxPresent();
-    	Robot.drivetrain.enableDistanceControl(dist);
-    	Robot.drivetrain.enableEncoderDiffControl(0);
-    	if(useNavx) {
-    		Robot.drivetrain.enableTurningControl(0);
-    	}
+		wasPegVisible = Robot.gearCamera.isPegVisible();
+		if (wasPegVisible) {
+			Logger.defaultLogger.info("Drive halfway to peg.");
+			dist = Robot.gearCamera.getDistanceToPeg();
+			Logger.defaultLogger.debug("Distance to peg: " + dist + " inches.");
+			dist += 18;
+			Robot.drivetrain.enableCoast(false);
+			useNavx = Robot.drivetrain.isNavxPresent();
+			Robot.drivetrain.enableDistanceControl(dist);
+			Robot.drivetrain.enableEncoderDiffControl(0);
+			if (useNavx) {
+				Robot.drivetrain.enableTurningControl(0);
+			}
+		} else {
+			Logger.defaultLogger.warn("Peg not visible.");
+		}
     }
     
     protected void execute() {
-    	if(useNavx) {
-    		Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
-    	} else {
-    		Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+    	if(wasPegVisible) {
+    		if(useNavx) {
+    			Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
+    		} else {
+    			Robot.drivetrain.controlEncoderDiffAndDistance(speedLimit);
+    		}
     	}
     }
 
     protected boolean isFinished() {
-        return Robot.drivetrain.isDistanceControlOnTarget();
+        return !wasPegVisible || Robot.drivetrain.isDistanceControlOnTarget();
     }
     
     protected void end() {

@@ -15,17 +15,17 @@ public class GearPlacerSetCommand extends Command {
 	
 	private final GearPlacer.State state;
 
-	public GearPlacerSetCommand(final GearPlacer.State state) {
+	public GearPlacerSetCommand(GearPlacer.State state) {
 		requires(Robot.gearPlacer);
 		this.state = state;
 	}
 
 	protected void initialize() {
+		Robot.pegPresentTrigger.startCooldown();
 		Robot.gearPlacer.set(state);
-		setTimeout(RobotMap.getInstance().GEAR_PLACER_SET_TIMEOUT.get());
 	}
 
 	protected boolean isFinished() {
-		return true;//isTimedOut();
+		return true;
 	}
 }

@@ -5,9 +5,11 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
@@ -18,13 +20,16 @@ import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -59,11 +64,13 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	
 	public static Command autoShiftCommand;
+	public static PegPresentTrigger pegPresentTrigger;
 	
     private Command autonomousCommand;
     SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
+    private static boolean firstTimeDisabled = true;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -103,7 +110,8 @@ public class Robot extends IterativeRobot {
 		
         autoChooser = new SendableChooser<Command>();
         autoChooser.addObject("Left peg", new LeftPegAuto());
-        autoChooser.addObject("Center peg", new DriveStraightForTimeCommand(6, 0.25));
+        autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
+        autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
         autoChooser.addObject("Right peg", new RightPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
         SmartDashboard.putData("Autonomous", autoChooser);
@@ -115,7 +123,10 @@ public class Robot extends IterativeRobot {
 		
 		diagnose();
 		Diagnostics.start();
-		gearCamera.lightOn();
+		Robot.prefs.putBoolean("queue mode", false);
+		
+		pegPresentTrigger = new PegPresentTrigger();
+		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
     }
 	
 	/**
@@ -126,6 +137,17 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
     	Logger.defaultLogger.info("Robot Disabled.");
     	
+    	if(queueMode()) {
+    		leftLEDs.setColor(0);
+    		rightLEDs.setColor(0);
+    		gearCamera.lightOff();
+    	} else if (firstTimeDisabled) {
+    		gearCamera.lightOn();
+    	} else {
+    		gearCamera.lightOff();
+    	}
+    	firstTimeDisabled = false; 
+    	
     	compressor.stop();
     }
 	
@@ -133,8 +155,10 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		Diagnostics.resetDisconnected();
 		
-		leftLEDs.updateRainbow();
-    	rightLEDs.updateRainbow();
+		if(!queueMode()) {
+			leftLEDs.updateRainbow();
+			rightLEDs.updateRainbow();
+		}
 	}
 
 	/**
@@ -148,7 +172,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	Logger.defaultLogger.info("Autonomous mode started.");
-    	
+    	PegPresentTrigger.setEnabled(true);
     	compressor.start();
     	
         autonomousCommand = autoChooser.getSelected();
@@ -167,11 +191,10 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	Logger.defaultLogger.info("Teleop mode started.");
-    	
+    	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
 
     	compressor.start();
-    	autoShiftCommand.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
     }
@@ -198,7 +221,10 @@ public class Robot extends IterativeRobot {
      * @return whether the robot is the kit bot
      */
     public static boolean isKitBot() {
-    	boolean isKitBot  = Robot.prefs.getBoolean("Is kit bot", false);
+    	if(prefs == null) {
+    		return true;
+    	}
+    	boolean isKitBot  = prefs.getBoolean("Is kit bot", false);
     	if(wasKitBot == null) {
     		wasKitBot = isKitBot;
     	} else if(wasKitBot != isKitBot) {
@@ -207,7 +233,7 @@ public class Robot extends IterativeRobot {
 			// the robot code must restart. It is not safe to just start
 			// returning the new value from this method; we would get a
 			// frankenstein robot using constants from both modes.
-    		Robot.prefs.putBoolean("Is kit bot", isKitBot);
+    		prefs.putBoolean("Is kit bot", isKitBot);
 			Logger.defaultLogger.critical("The \"Is kit bot\" setting on the smart dashboard has changed value. "
 					+ "In order to apply the new setting, the robot code must restart.");
 			Logger.defaultLogger.info("ROBOT CODE IS NOW INTENTIONALLY RESTARTING");
@@ -226,7 +252,7 @@ public class Robot extends IterativeRobot {
      * @return whether to enable debug mode
      */
     public static boolean debug() {
-    	return false;
+    	return true;
     }
     
     /**
@@ -234,6 +260,22 @@ public class Robot extends IterativeRobot {
      */
     public static boolean usingXboxController() {
     	return false;
+    }
+    
+    /**
+     * @return whether the robot should run in queue mode
+     */
+    public static boolean queueMode() {
+    	if(Utility.getUserButton() && !Robot.prefs.getBoolean("queue mode", false)) {
+    		Robot.prefs.putBoolean("queue mode", true);
+    		if(DriverStation.getInstance().isDisabled()) {
+    			gearCamera.lightOff();
+    			leftLEDs.setColor(0);
+    			rightLEDs.setColor(0);
+    		}
+    		Logger.defaultLogger.info("Queue mode enabled by user button on RoboRIO.");
+    	}
+    	return Robot.prefs.getBoolean("queue mode", false);
     }
     
     /**

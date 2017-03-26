@@ -1,29 +1,28 @@
-package org.usfirst.frc.team190.frc2k17.commands.gearplacer;
+package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class GearDriveBackCommand extends Command {
+public class BackfeedShooterCommand extends Command {
 
-    public GearDriveBackCommand() {
+    public BackfeedShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.drivetrain);
+    	requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	setTimeout(RobotMap.getInstance().GEAR_PRESENT_DRIVE_BACK_TIME.get());
+    	Robot.shooter.shooterOn(-1000);
+    	setTimeout(0.1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.tankDrive(-1, -1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,7 +32,7 @@ public class GearDriveBackCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.tankDrive(0.0, 0.0);
+    	Robot.shooter.shooterOff();
     }
 
     // Called when another command which requires one or more of the same

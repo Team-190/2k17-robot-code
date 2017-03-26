@@ -11,7 +11,7 @@ import com.ctre.CANTalon.FeedbackDevice;
  */
 public class RobotMap {
 	public final Key<Integer>
-		RELAY_CAMERA_LIGHT = new Key<Integer>(3),
+		DIO_CAMERA_LIGHT = new Key<Integer>(9),
 		DIO_LEDS_LEFT_R = new Key<Integer>(1),
 		DIO_LEDS_LEFT_G = new Key<Integer>(2),
 		DIO_LEDS_LEFT_B = new Key<Integer>(3),
@@ -37,7 +37,9 @@ public class RobotMap {
 		CAN_PCM = new Key<Integer>(20),
 		CAN_PDP = new Key<Integer>(1),
 		DIO_PEG_LIMIT_SWITCH = new Key<Integer>(0),
-		DRIVE_TICKS_PER_REV = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		// TODO Why do we need two different DRIVE_TICKS_PER_REV?!!!!
+		DRIVE_TICKS_PER_REV2 = new Key<Integer>(4096, (int)(256.0 * (36.0 / 12.0) * (50.0 / 34.0))), // For Real bot, 256 quadrature ticks / rev Gear Ratio: 36:12 50:34
+		DRIVE_TICKS_PER_REV = new Key<Integer>(4096),
 		CAMERA_RESOLUTION_X = new Key<Integer>(320),
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
@@ -52,9 +54,9 @@ public class RobotMap {
 	
 		ROBOT_MAIN_LOOP_RATE = new  Key<Double>(50.0), // hz
 	
-		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.017),
-		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.002),
-		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.005),
+		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.02),
+		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.01),
+		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.01),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
 		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
 		
@@ -65,7 +67,14 @@ public class RobotMap {
 		DRIVE_PID_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
 		DRIVE_PID_DISTANCE_TOLERANCE = new Key<Double>(0.5),
 		
-		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.1, 0.05),
+		DRIVE_PID_SMALL_DISTANCE_KP = new Key<Double>(DRIVE_PID_DISTANCE_KP.get() * 3),
+		DRIVE_PID_SMALL_DISTANCE_KI = new Key<Double>(DRIVE_PID_DISTANCE_KI.get()),
+		DRIVE_PID_SMALL_DISTANCE_KD = new Key<Double>(DRIVE_PID_DISTANCE_KD.get()),
+		DRIVE_PID_SMALL_DISTANCE_MAX = new Key<Double>(0.5),
+		DRIVE_PID_SMALL_DISTANCE_I_ERROR_LIMIT = new Key<Double>(4.0),
+		DRIVE_PID_SMALL_DISTANCE_TOLERANCE = new Key<Double>(0.5),
+		
+		DRIVE_PID_ENCODERDIFF_KP = new Key<Double>(0.085, 0.05),
 		DRIVE_PID_ENCODERDIFF_KI = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_KD = new Key<Double>(0.0),
 		DRIVE_PID_ENCODERDIFF_I_ERROR_LIMIT = new Key<Double>(5.0),
@@ -76,19 +85,21 @@ public class RobotMap {
 		DRIVE_PID_SPEED_KD = new Key<Double>(0.5, 0.8),
 		DRIVE_PID_SPEED_KF = new Key<Double>(0.3188372672, 0.34),
 		
-		DRIVE_WHEEL_DIAMETER_INCHES = new Key<Double>(4.0),
+		DRIVE_WHEEL_DIAMETER = new Key<Double>(4.0), // inches
 		
-		DRIVE_PID_INCHES_PER_TICK = new Key<Double>(0.003, 1.0), // For real bot, 4 * pi circumference / 3072 ticks per rev
 		DRIVE_MAX_SPEED_LOW = new Key<Double>(450.0, 390.0),
 		DRIVE_MAX_SPEED_HIGH = new Key<Double>(600.0),
 		CAMERA_HFOV = new Key<Double>(54.8),
 		DRIVE_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(0.1),
 		DRIVE_TO_PEG_MAX_SPEED = new Key<Double>(0.5),
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
-		GEAR_PLACER_SET_TIMEOUT = new Key<Double>(5.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.5),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
+		
+		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
+		DRIVE_CURVE_TRACK_WIDTH = new Key<Double>(19.5),
+		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_WHEEL_DIAMETER.get()),
 		
 		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
 		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
@@ -122,7 +133,6 @@ public class RobotMap {
 		SHOOTER_PID_KP = new Key<Double>(0.0),
 		SHOOTER_PID_KI = new Key<Double>(0.0),
 		SHOOTER_PID_KD = new Key<Double>(0.0);
-		
 
 	public final Key<FeedbackDevice> 
 		DRIVE_FEEDBACK_DEV = new Key<FeedbackDevice>(FeedbackDevice.CtreMagEncoder_Relative, FeedbackDevice.QuadEncoder);
@@ -132,12 +142,16 @@ public class RobotMap {
 		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true,false),
 		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(true, false),
 		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(false, false),
+		SHOOTER_LEFT_INVERTED = new Key<Boolean>(true),
+		SHOOTER_RIGHT_INVERTED = new Key<Boolean>(false),
 		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>(true),
 		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>(true);
 	
 	public final Key<Long>
 		ROBOT_COMMS_TIMEOUT = new Key<Long>(250L), // milliseconds
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
+		DRIVE_PID_DIST_WAIT = new Key<Long>(100L), //milliseconds
+		PEG_PRESENT_COOLDOWN = new Key<Long>(2000L), //milliseconds
 		PEGASSIST_REFRESH_TIME = new Key<Long>(200L); // milliseconds
 			
 	private static RobotMap instance = null;
