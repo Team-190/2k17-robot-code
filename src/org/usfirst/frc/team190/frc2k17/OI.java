@@ -190,7 +190,6 @@ public class OI {
 			SmartDashboard.putData("Drive to Hopper (curve)", new AutoDriveToHopperCurveCommand(10.0));
 			SmartDashboard.putData("Auto Curve Threaded", new AutoCurveThreaded(7));
 			SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
-			SmartDashboard.putData("Place Gear Command", new RightPegAuto());
 			SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
 		}
 		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());

@@ -19,7 +19,7 @@ public class RightPegAuto extends CommandGroup {
 	
 	Alliance alliance = DriverStation.getInstance().getAlliance();
 
-    public RightPegAuto() {
+    public RightPegAuto(boolean driveAcrossField) {
     	double distanceToDrive = alliance == Alliance.Red ? 66.5 : 64.666;
     	
     	addSequential(new GearCameraLightOnCommand());
@@ -27,7 +27,9 @@ public class RightPegAuto extends CommandGroup {
     	addSequential(new TurnToDegreesCommand(-60));
     	addSequential(new WaitCommand(0.2));
     	addSequential(new TurnTowardPegCommand());
-    	addSequential(new ChangeGearKickAfterwardsCommand(ShooterSpinCommand.class));
+    	if(driveAcrossField) {
+    		addSequential(new ChangeGearKickAfterwardsCommand(RightPegAutoDriveAcrossField.class));
+    	}
     	addSequential(new DriveToPegCommand(0.5));
     	addSequential(new GearCameraLightOffCommand());
     	addSequential(new DriveStraightForTimeCommand(6, 0.25));
