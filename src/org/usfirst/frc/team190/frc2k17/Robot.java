@@ -21,6 +21,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder.State;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
@@ -135,6 +136,8 @@ public class Robot extends IterativeRobot {
 		
 		pegPresentTrigger = new PegPresentTrigger();
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
+		
+		shooterFeeder.set(State.CLOSED);
     }
 	
 	/**
