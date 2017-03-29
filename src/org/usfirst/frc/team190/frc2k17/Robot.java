@@ -306,7 +306,6 @@ public class Robot extends IterativeRobot {
     	}
     	drivetrain.diagnose();
     	shooter.diagnose();
-    	shooterFeeder.diagnose();
     	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
@@ -330,7 +329,6 @@ public class Robot extends IterativeRobot {
 		Robot.pdp.clearStickyFaults();
 		drivetrain.clearStickyFaults();
     	shooter.clearStickyFaults();
-    	shooterFeeder.clearStickyFaults();
     	agitator.clearStickyFaults();
     	climber.clearStickyFaults();
 	}
