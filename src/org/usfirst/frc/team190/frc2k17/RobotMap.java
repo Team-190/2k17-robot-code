@@ -21,6 +21,8 @@ public class RobotMap {
 		PCM_SHIFTER = new Key<Integer>(0),
 		PCM_GEAR_PUSHER = new Key<Integer>(1),
 		PCM_BOOPERS = new Key<Integer>(4),
+		PCM_FEEDDOOR_OPEN = new Key<Integer>(8),
+		PCM_FEEDDOOR_CLOSED = new Key<Integer>(9),
 		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
 		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
 		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(2),
@@ -44,7 +46,7 @@ public class RobotMap {
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
 		
-		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
+		SHOOTER_RPM_TOLERANCE = new Key<Integer>(100);
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
