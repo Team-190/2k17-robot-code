@@ -9,7 +9,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAutoCurve;
 public class PlotPaths {
 	
 	private static AutoCurveThreaded hopperCommand = new AutoCurveThreaded(5);
-	private static LeftPegAutoCurve leftPegCommand = new LeftPegAutoCurve(4);
+	private static LeftPegAutoCurve leftPegCommand = new LeftPegAutoCurve(3.0);
 
 	public static void main(String[] args) {
 		if(!GraphicsEnvironment.isHeadless())
@@ -33,8 +33,8 @@ public class PlotPaths {
 		FalconLinePlot plot1 = new FalconLinePlot(hopperCommand.path.nodeOnlyPath,Color.blue,Color.green);
 		plot1.yGridOn();
 		plot1.xGridOn();
-		plot1.setYLabel("Y (feet)");
-		plot1.setXLabel("X (feet)");
+		plot1.setYLabel("Y (in)");
+		plot1.setXLabel("X (in)");
 		plot1.setTitle("Top Down View of FRC Field (24ft x 27ft) \n shows global position of robot path, along with left and right wheel trajectories");
 
 		//force graph to show 1/2 field dimensions of 24ft x 27 feet
@@ -59,13 +59,12 @@ public class PlotPaths {
 		FalconLinePlot plot1 = new FalconLinePlot(leftPegCommand.path.nodeOnlyPath,Color.blue,Color.green);
 		plot1.yGridOn();
 		plot1.xGridOn();
-		plot1.setYLabel("Y (feet)");
-		plot1.setXLabel("X (feet)");
+		plot1.setYLabel("Y (in)");
+		plot1.setXLabel("X (in)");
 		plot1.setTitle("Top Down View of FRC Field (24ft x 27ft) \n shows global position of robot path, along with left and right wheel trajectories");
 
-		//force graph to show 1/2 field dimensions of 24ft x 27 feet
-		plot1.setXTic(0, 27*12, 24);
-		plot1.setYTic(0, 24*12, 24);
+		plot1.setXTic(0, 65.27, 12);
+		plot1.setYTic(0, 101.98, 12);
 		plot1.addData(leftPegCommand.path.smoothPath, Color.red, Color.blue);
 
 		plot1.addData(leftPegCommand.path.leftPath, Color.magenta);
