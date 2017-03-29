@@ -46,7 +46,7 @@ public class RobotMap {
 		CAMERA_RESOLUTION_Y = new Key<Integer>(240),
 		CAMERA_EXPOSURE = new Key<Integer>(0),
 		
-		SHOOTER_RPM_TOLERANCE = new Key<Integer>(10);
+		SHOOTER_RPM_TOLERANCE = new Key<Integer>(100);
 
 	public final Key<String>
 		NETWORKTABLE_KANGAROO_TABLE_NAME = new Key<String>("kangaroo"),
