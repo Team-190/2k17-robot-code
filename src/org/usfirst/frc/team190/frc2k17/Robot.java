@@ -9,9 +9,8 @@ import java.util.List;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAutoCurve;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
@@ -73,10 +72,15 @@ public class Robot extends IterativeRobot {
 	private static List<CommandGroup> pegAfterwardsCommands;
 	
     private Command autonomousCommand;
-    SendableChooser<Command> autoChooser;
+    private static SendableChooser<String> pegChooser;
+    private static SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
     private static boolean firstTimeDisabled = true;
+    
+    public enum Peg {
+		LEFT, RIGHT;
+	}
     
     /**
      * This function is run when the robot is first started up and should be
@@ -114,14 +118,17 @@ public class Robot extends IterativeRobot {
 		// OI must be initialized last
 		oi = new OI();
 		
+		pegChooser = new SendableChooser<String>();
+		pegChooser.addObject("Left", Peg.LEFT.toString());
+		pegChooser.addObject("Right", Peg.RIGHT.toString());
+        SmartDashboard.putData("Peg", pegChooser);
+		
         autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Left peg", new LeftPegAuto(false));
-        autoChooser.addObject("Left peg (turn) & drive across field", new LeftPegAuto(true));
-        autoChooser.addObject("Left peg (curve) & drive across field", new LeftPegAutoCurve(4));
+        autoChooser.addObject("Peg", new PegAuto(false));
+        autoChooser.addObject("Peg (turn) & drive across field", new PegAuto(true));
+        autoChooser.addObject("Peg (curve) & drive across field", new LeftPegAutoCurve(4));
         autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
-        autoChooser.addObject("Right peg", new RightPegAuto(false));
-        autoChooser.addObject("Right peg & drive across field", new RightPegAuto(true));
         autoChooser.addObject("Look pretty", new TimedCommand(0));
         SmartDashboard.putData("Autonomous", autoChooser);
 		
@@ -229,6 +236,10 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
         Diagnostics.resetDisconnected();
+    }
+    
+    public static Peg getPeg() {
+    	return pegChooser.getSelected() == Peg.LEFT.toString() ? Peg.LEFT : Peg.RIGHT;
     }
     
 	/**

@@ -17,7 +17,6 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
