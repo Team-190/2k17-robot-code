@@ -20,7 +20,6 @@ public class LeftPegAuto extends CommandGroup {
 	Alliance alliance = DriverStation.getInstance().getAlliance();
 
     public LeftPegAuto(boolean driveAcrossField) {
-    	Logger.defaultLogger.info("Left peg auto");
     	double distanceToDrive = alliance == Alliance.Red ? 64.666 : 66.5;
     	
     	addSequential(new GearCameraLightOnCommand());
