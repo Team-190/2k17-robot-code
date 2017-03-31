@@ -15,13 +15,16 @@ public class ChangeGearKickAfterwardsCommand extends Command {
 	
     public ChangeGearKickAfterwardsCommand(Class<? extends Command> afterwardsClass) {
     	this.afterwardsClass = afterwardsClass;
+    	afterwards = null;
     }
 
     protected void initialize() {
-    	try {
-			this.afterwards = afterwardsClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			Logger.defaultLogger.error("Error instantiating " + this.getClass().getSimpleName(), e);
+		if (afterwardsClass != null) {
+			try {
+				afterwards = afterwardsClass.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				Logger.defaultLogger.error("Error instantiating " + this.getClass().getSimpleName(), e);
+			}
 		}
     	Robot.changeGearKickAfterwardsCommand(afterwards);
     }
