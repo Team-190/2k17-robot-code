@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
@@ -21,8 +22,16 @@ public class PegAuto extends CommandGroup {
 	Alliance alliance = DriverStation.getInstance().getAlliance();
 
     public PegAuto(boolean driveAcrossField) {
-    	double distanceToDrive = Robot.getPeg() == Peg.LEFT ? alliance == Alliance.Red ? 64.666 : 66.5 : alliance == Alliance.Red ? 66.5 : 64.666;
-    	double degreesToTurn = Robot.getPeg() == Peg.LEFT ? 60 : -60;
+    	double distanceToDrive, degreesToTurn;
+    	if(Robot.getPeg() == Peg.LEFT) {
+    		distanceToDrive = alliance == Alliance.Red ? 64.666 : 66.5;
+    		degreesToTurn = 60;
+    		Logger.defaultLogger.info("Left peg.");
+    	} else {
+    		distanceToDrive = alliance == Alliance.Red ? 66.5 : 64.666;
+    		degreesToTurn = -60;
+    		Logger.defaultLogger.info("Right peg.");
+    	}
     	
     	addSequential(new GearCameraLightOnCommand());
     	addSequential(new DriveStraightForDistanceCommand(distanceToDrive), 3);
