@@ -13,6 +13,6 @@ public class ShooterShootCommandGroup extends CommandGroup {
 
     public ShooterShootCommandGroup() {
     	addSequential(new ShooterSpinToSpeedCommand());
-    	addSequential(new OpenFeederCommand());
+    	addSequential(new FeederFeedCommand());
     }
 }

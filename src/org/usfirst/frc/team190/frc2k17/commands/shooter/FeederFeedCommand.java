@@ -1,34 +1,32 @@
 package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder.State;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class StopShooterCommand extends Command {
+public class FeederFeedCommand extends Command {
 
-    public StopShooterCommand() {
-    	requires(Robot.shooter);
+    public FeederFeedCommand() {
     	requires(Robot.shooterFeeder);
     }
 
     protected void initialize() {
-    	Robot.shooterFeeder.set(State.CLOSED);
-    	setTimeout(0.5);
+    	Robot.shooterFeeder.set(ShooterFeeder.State.OPEN);
+    }
+
+    protected void execute() {
     }
 
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     protected void end() {
-    	Robot.shooter.shooterOff();
+    	Robot.shooterFeeder.set(ShooterFeeder.State.CLOSED);
     }
 
     protected void interrupted() {
