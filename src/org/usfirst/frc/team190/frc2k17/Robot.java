@@ -124,9 +124,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Peg", pegChooser);
 		
         autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Peg", new PegAuto(false));
-        autoChooser.addObject("Peg (turn) & drive across field", new PegAuto(true));
-        autoChooser.addObject("Peg (curve) & drive across field", new LeftPegAutoCurve(4));
+        autoChooser.addObject("Side peg", new PegAuto(false));
+        autoChooser.addObject("Side peg (turn) & drive across field", new PegAuto(true));
+        autoChooser.addObject("Side peg (curve) & drive across field", new LeftPegAutoCurve(4));
         autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
