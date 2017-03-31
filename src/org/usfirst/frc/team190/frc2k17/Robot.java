@@ -119,8 +119,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		pegChooser = new SendableChooser<String>();
-		pegChooser.addObject("Left", Peg.LEFT.toString());
-		pegChooser.addObject("Right", Peg.RIGHT.toString());
+		pegChooser.addObject("Left peg", Peg.LEFT.toString());
+		pegChooser.addObject("Right peg", Peg.RIGHT.toString());
         SmartDashboard.putData("Peg", pegChooser);
 		
         autoChooser = new SendableChooser<Command>();
