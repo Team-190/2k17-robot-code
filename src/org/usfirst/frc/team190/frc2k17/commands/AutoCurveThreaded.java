@@ -8,7 +8,7 @@ import org.usfirst.frc.team190.frc2k17.FalconPathPlanner;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.command.Command;

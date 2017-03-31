@@ -17,7 +17,6 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForDistanceHeadingCorrectionCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveToPegCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.ShiftersToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnToDegreesCommand;
@@ -31,7 +30,7 @@ import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.OpenFeederCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.FeederFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterShootCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
@@ -115,7 +114,7 @@ public class OI {
 			backButton.whenPressed(new GearCameraLightToggleCommand());
 			povUpTrigger.whileActive(new ClimberClimbCommand());
 			yButton.toggleWhenPressed(new ShooterSpinCommand());
-			aButton.whileHeld(new OpenFeederCommand());
+			aButton.whileHeld(new FeederFeedCommand());
 			xButton.whenPressed(new KickGearCommand());
 			startButton.whenPressed(new GearPlacerToggleCommand());
 			bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
@@ -147,7 +146,7 @@ public class OI {
 			shooterSpinButton.whenPressed(shooterShootCommand);
 			shooterStopButton.cancelWhenPressed(shooterShootCommand);
 			boopButton.cancelWhenPressed(shooterShootCommand);
-			shooterFeedButton.whileHeld(new OpenFeederCommand());
+			shooterFeedButton.whileHeld(new FeederFeedCommand());
 			if(idiotProof) { 
 				gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 				gearOutButton.whenReleased(new GearPlacerSetCommand(State.RETRACTED));
