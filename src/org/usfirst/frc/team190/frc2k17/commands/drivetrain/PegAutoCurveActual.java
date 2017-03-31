@@ -26,11 +26,13 @@ public class PegAutoCurveActual extends Command {
 	private int step;
 	private DecimalFormat df = new DecimalFormat("#.00"); 
 	private boolean splineDone;
+	private Peg peg;
 
     public PegAutoCurveActual(double duration, Peg peg) {
     	if(Robot.drivetrain != null) {
     		requires(Robot.drivetrain);
     	}
+    	this.peg = peg;
     	double[][] waypoints;
     	// generated points using Mathematica
     	if(peg == Peg.LEFT) {
@@ -131,7 +133,11 @@ public class PegAutoCurveActual extends Command {
 			}
 		}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
     	// drive across the field after the gear is placed
-    	Robot.changeGearKickAfterwardsCommand(new LeftPegAutoDriveAcrossField());
+    	if(peg == Peg.LEFT) {
+    		Robot.changeGearKickAfterwardsCommand(new LeftPegAutoDriveAcrossField());
+    	} else {
+    		Robot.changeGearKickAfterwardsCommand(new RightPegAutoDriveAcrossField());
+    	}
     }
 
     protected void execute() {
