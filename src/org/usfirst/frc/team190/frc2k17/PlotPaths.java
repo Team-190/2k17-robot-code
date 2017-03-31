@@ -3,13 +3,14 @@ package org.usfirst.frc.team190.frc2k17;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 
+import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.commands.AutoCurveThreaded;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAutoCurve;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurveActual;
 
 public class PlotPaths {
 	
 	private static AutoCurveThreaded hopperCommand = new AutoCurveThreaded(5);
-	private static LeftPegAutoCurve leftPegCommand = new LeftPegAutoCurve(3.0);
+	private static PegAutoCurveActual leftPegCommand = new PegAutoCurveActual(3.0, Peg.LEFT);
 
 	public static void main(String[] args) {
 		if(!GraphicsEnvironment.isHeadless())

@@ -7,6 +7,7 @@ import java.util.Timer;
 import org.usfirst.frc.team190.frc2k17.FalconPathPlanner;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
 
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LeftPegAutoCurve extends Command {
+public class PegAutoCurveActual extends Command {
 	
 	private double distanceCorrectionP = 1;
 	
@@ -26,15 +27,23 @@ public class LeftPegAutoCurve extends Command {
 	private DecimalFormat df = new DecimalFormat("#.00"); 
 	private boolean splineDone;
 
-    public LeftPegAutoCurve(double duration) {
+    public PegAutoCurveActual(double duration, Peg peg) {
     	if(Robot.drivetrain != null) {
     		requires(Robot.drivetrain);
     	}
+    	double[][] waypoints;
     	// generated points using Mathematica
-		double[][] waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
-				{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 54.184 }, { 21.7567, 65.5111 },
-				{ 29.0089, 74.4924 }, { 36.2611, 81.8898 }, { 43.5133, 88.0966 }, { 50.7656, 93.3471 },
-				{ 58.0178, 97.7931 }, { 65.27, 101.539 } }; 
+    	if(peg == Peg.LEFT) {
+			waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
+					{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 54.184 }, { 21.7567, 65.5111 },
+					{ 29.0089, 74.4924 }, { 36.2611, 81.8898 }, { 43.5133, 88.0966 }, { 50.7656, 93.3471 },
+					{ 58.0178, 97.7931 }, { 65.27, 101.539 } };
+    	} else {
+    		waypoints = new double[][] { { 0.0, 0.0 }, { -1, 13.6833 }, { -2, 19.8516 }, { -3, 24.5596 },
+				{ -4, 28.5039 }, { -5, 31.9562 }, { -7.25222, 38.5663 }, { -14.5044, 54.184 }, { -21.7567, 65.5111 },
+				{ -29.0089, 74.4924 }, { -36.2611, 81.8898 }, { -43.5133, 88.0966 }, { -50.7656, 93.3471 },
+				{ -58.0178, 97.7931 }, { -65.27, 101.539 } };
+    	}
     	path = new FalconPathPlanner(waypoints);
     	path.setVelocityAlpha(0.001);
     	path.setVelocityBeta(0.9);

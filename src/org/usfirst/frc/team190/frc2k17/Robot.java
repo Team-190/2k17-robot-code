@@ -10,7 +10,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAutoCurve;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurve;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
@@ -126,7 +126,7 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser<Command>();
         autoChooser.addObject("Side peg", new PegAuto(false));
         autoChooser.addObject("Side peg (turn) & drive across field", new PegAuto(true));
-        autoChooser.addObject("Side peg (curve) & drive across field", new LeftPegAutoCurve(4));
+        autoChooser.addObject("Side peg (curve) & drive across field", new PegAutoCurve(3));
         autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
