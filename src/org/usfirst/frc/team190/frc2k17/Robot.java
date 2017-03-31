@@ -12,7 +12,6 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeC
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAutoCurve;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
-import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
@@ -55,7 +54,6 @@ public class Robot extends IterativeRobot {
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
 	public static ShooterFeeder shooterFeeder;
-	public static Agitator agitator;
 	public static Climber climber;
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
@@ -107,7 +105,6 @@ public class Robot extends IterativeRobot {
     	gearCamera = new GearCamera();
     	shooter = new Shooter();
     	shooterFeeder = new ShooterFeeder();
-    	agitator = new Agitator();
     	climber = new Climber();
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
@@ -320,7 +317,6 @@ public class Robot extends IterativeRobot {
     	}
     	drivetrain.diagnose();
     	shooter.diagnose();
-    	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
     	if(compressor.getCompressorCurrentTooHighStickyFault()) {
@@ -343,7 +339,6 @@ public class Robot extends IterativeRobot {
 		Robot.pdp.clearStickyFaults();
 		drivetrain.clearStickyFaults();
     	shooter.clearStickyFaults();
-    	agitator.clearStickyFaults();
     	climber.clearStickyFaults();
 	}
     
