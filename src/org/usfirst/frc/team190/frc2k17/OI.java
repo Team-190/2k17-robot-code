@@ -31,6 +31,7 @@ import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripBlink;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.CloseFeederCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.OpenFeederCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterShootCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
@@ -147,7 +148,8 @@ public class OI {
 			shooterSpinButton.whenPressed(shooterShootCommand);
 			shooterStopButton.cancelWhenPressed(shooterShootCommand);
 			boopButton.cancelWhenPressed(shooterShootCommand);
-			shooterFeedButton.whileHeld(new OpenFeederCommand());
+			shooterFeedButton.whenPressed(new OpenFeederCommand());
+			shooterFeedButton.whenReleased(new CloseFeederCommand());
 			if(idiotProof) { 
 				gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 				gearOutButton.whenReleased(new GearPlacerSetCommand(State.RETRACTED));

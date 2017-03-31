@@ -1,15 +1,7 @@
 package org.usfirst.frc.team190.frc2k17.subsystems;
 
-import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.CloseFeederCommand;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.FeedbackDeviceStatus;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -18,25 +10,24 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class ShooterFeeder extends Subsystem {
 	
-	private final DoubleSolenoid sol;
+	private final Solenoid sol;
 	
 	public enum State {
-		OPEN(Value.kForward), CLOSED(Value.kReverse);
+		OPEN(true), CLOSED(false);
 		
-		private final Value value;
+		private final boolean value;
 		
-		private State(Value value) {
+		private State(boolean value) {
 			this.value = value;
 		}
 		
-		private Value get() {
+		private boolean get() {
 			return value;
 		}
 	}
 	
 	public ShooterFeeder() {
-		sol = new DoubleSolenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_FEEDDOOR_OPEN.get(),
-				RobotMap.getInstance().PCM_FEEDDOOR_CLOSED.get());
+		sol = new Solenoid(RobotMap.getInstance().CAN_PCM.get(), RobotMap.getInstance().PCM_FEEDER_DOOR.get());
 		LiveWindow.addActuator("shooting", "feeder", sol);
 	}
 	
