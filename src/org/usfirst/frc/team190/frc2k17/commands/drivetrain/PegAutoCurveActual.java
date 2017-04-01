@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class PegAutoCurveActual extends Command {
 	
 	private double distanceCorrectionP = 1;
-	private double headingCorrectionP = 0.01;
 	
 	public final FalconPathPlanner path;
 	private double runningSumLeft, runningSumRight, leftPreSum, rightPreSum;
@@ -57,7 +56,6 @@ public class PegAutoCurveActual extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	splineDone = false;
-    	Robot.drivetrain.resetGyroAngle();
     	Robot.drivetrain.zeroEncoderPositions();
     	runningSumLeft = 0;
     	runningSumRight = 0;
@@ -109,15 +107,13 @@ public class PegAutoCurveActual extends Command {
 					assert leftError == 0;
 					assert rightError == 0;
 				}
-				
-				double angleError = Robot.drivetrain.getGyroAngle() - path.heading[step][1];
 
 				runningSumLeft += path.smoothLeftVelocity[step][1] * RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 				runningSumRight += path.smoothRightVelocity[step][1]
 						* RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 
-				double leftVel = path.smoothLeftVelocity[step][1] - (leftError * distanceCorrectionP) + (angleError * headingCorrectionP);
-				double rightVel = path.smoothRightVelocity[step][1] - (rightError * distanceCorrectionP) - (angleError * headingCorrectionP);
+				double leftVel = path.smoothLeftVelocity[step][1] - (leftError * distanceCorrectionP);
+				double rightVel = path.smoothRightVelocity[step][1] - (rightError * distanceCorrectionP);
 
 				double leftRPM = leftVel / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
 				double rightRPM = rightVel / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
