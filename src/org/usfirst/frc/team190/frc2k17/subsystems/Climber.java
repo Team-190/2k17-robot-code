@@ -47,7 +47,7 @@ public class Climber extends Subsystem {
 	
     public void set(State state) {
     	if(motor.getControlMode() == TalonControlMode.PercentVbus) {
-    		Logger.defaultLogger.debug("Setting climber to " + state.getPercentVbusMode() + "%.");
+    		Logger.defaultLogger.debug("Setting climber to " + (state.getPercentVbusMode() * 100) + "%.");
     		motor.set(state.getPercentVbusMode());
     	} else if(motor.getControlMode() == TalonControlMode.Current) {
     		Logger.defaultLogger.debug("Setting climber to " + state.getCurrentMode() + "A.");

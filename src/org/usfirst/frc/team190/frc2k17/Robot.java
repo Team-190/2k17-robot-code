@@ -3,14 +3,16 @@ package org.usfirst.frc.team190.frc2k17;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShootingPlusGearCommandGroup;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.LeftPegAuto;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.RightPegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurve;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
-import org.usfirst.frc.team190.frc2k17.subsystems.Agitator;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearCamera;
@@ -18,6 +20,7 @@ import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 import org.usfirst.frc.team190.frc2k17.subsystems.LEDStrip;
 import org.usfirst.frc.team190.frc2k17.subsystems.Shooter;
 import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
+import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder.State;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Drivetrain;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
 import org.usfirst.frc.team190.frc2k17.triggers.PegPresentTrigger;
@@ -31,6 +34,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -51,7 +55,6 @@ public class Robot extends IterativeRobot {
 	public static GearCamera gearCamera;
 	public static Shooter shooter;
 	public static ShooterFeeder shooterFeeder;
-	public static Agitator agitator;
 	public static Climber climber;
 	public static Boopers boopers;
 	public static GearPlacer gearPlacer;
@@ -65,12 +68,18 @@ public class Robot extends IterativeRobot {
 	
 	public static Command autoShiftCommand;
 	public static PegPresentTrigger pegPresentTrigger;
+	private static List<CommandGroup> pegAfterwardsCommands;
 	
     private Command autonomousCommand;
-    SendableChooser<Command> autoChooser;
+    private static SendableChooser<String> pegChooser;
+    private static SendableChooser<Command> autoChooser;
     
     private static Boolean wasKitBot = null;
     private static boolean firstTimeDisabled = true;
+    
+    public enum Peg {
+		LEFT, RIGHT;
+	}
     
     /**
      * This function is run when the robot is first started up and should be
@@ -78,7 +87,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	Logger.defaultLogger.info("Robot initializing.");
-		// RobotMap must be initialized before almost anything else.
+    	pegAfterwardsCommands = new ArrayList<CommandGroup>();
     	interceptOutputStream();
     	// prefs must not be initialized statically. Do not move from robotInit().
     	// prefs MUST be initialized before everything else. Do not change order.
@@ -97,7 +106,6 @@ public class Robot extends IterativeRobot {
     	gearCamera = new GearCamera();
     	shooter = new Shooter();
     	shooterFeeder = new ShooterFeeder();
-    	agitator = new Agitator();
     	climber = new Climber();
     	boopers = new Boopers();
     	gearPlacer = new GearPlacer();
@@ -108,11 +116,17 @@ public class Robot extends IterativeRobot {
 		// OI must be initialized last
 		oi = new OI();
 		
+		pegChooser = new SendableChooser<String>();
+		pegChooser.addObject("Left peg", Peg.LEFT.toString());
+		pegChooser.addObject("Right peg", Peg.RIGHT.toString());
+        SmartDashboard.putData("Peg", pegChooser);
+		
         autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Left peg", new LeftPegAuto());
+        autoChooser.addObject("Side peg (turn) & drive across field", new PegAuto(true));
+        autoChooser.addObject("Side peg (curve) & drive across field", new PegAutoCurve(3));
+        autoChooser.addObject("Shoot boiler, side peg, & drive across field", new AutoShootingPlusGearCommandGroup());
         autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
-        autoChooser.addObject("Right peg", new RightPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
         SmartDashboard.putData("Autonomous", autoChooser);
 		
@@ -127,6 +141,8 @@ public class Robot extends IterativeRobot {
 		
 		pegPresentTrigger = new PegPresentTrigger();
 		pegPresentTrigger.whenActive(new GearPresentCommandGroup());
+		
+		shooterFeeder.set(State.CLOSED);
     }
 	
 	/**
@@ -177,7 +193,6 @@ public class Robot extends IterativeRobot {
     	
         autonomousCommand = autoChooser.getSelected();
         
-    	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -193,10 +208,14 @@ public class Robot extends IterativeRobot {
     	Logger.defaultLogger.info("Teleop mode started.");
     	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
+    	changeGearKickAfterwardsCommand(null);
 
     	compressor.start();
     	
         if (autonomousCommand != null) autonomousCommand.cancel();
+        for(Command command : pegAfterwardsCommands) {
+        	command.cancel();
+        }
     }
 
     /**
@@ -215,6 +234,10 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
         Diagnostics.resetDisconnected();
+    }
+    
+    public static Peg getPeg() {
+    	return pegChooser.getSelected() == Peg.LEFT.toString() ? Peg.LEFT : Peg.RIGHT;
     }
     
 	/**
@@ -295,8 +318,6 @@ public class Robot extends IterativeRobot {
     	}
     	drivetrain.diagnose();
     	shooter.diagnose();
-    	shooterFeeder.diagnose();
-    	agitator.diagnose();
     	climber.diagnose();
     	gearPlacer.diagnose();
     	if(compressor.getCompressorCurrentTooHighStickyFault()) {
@@ -319,8 +340,6 @@ public class Robot extends IterativeRobot {
 		Robot.pdp.clearStickyFaults();
 		drivetrain.clearStickyFaults();
     	shooter.clearStickyFaults();
-    	shooterFeeder.clearStickyFaults();
-    	agitator.clearStickyFaults();
     	climber.clearStickyFaults();
 	}
     
@@ -330,6 +349,13 @@ public class Robot extends IterativeRobot {
     
     public static void resetNavxErrorCount() {
     	CustomStream.resetNavxErrorCount();
+    }
+    
+    public static void changeGearKickAfterwardsCommand(Command afterwards) {
+    	CommandGroup commandGroup = new GearPresentCommandGroup(afterwards);
+    	pegPresentTrigger = new PegPresentTrigger();
+		pegPresentTrigger.whenActive(commandGroup);
+		pegAfterwardsCommands.add(commandGroup);
     }
     
     private void interceptOutputStream() {

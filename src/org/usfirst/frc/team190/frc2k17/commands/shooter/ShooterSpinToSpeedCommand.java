@@ -1,24 +1,23 @@
 package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.subsystems.ShooterFeeder;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class StopFeederCommand extends Command {
+public class ShooterSpinToSpeedCommand extends Command {
 
-    public StopFeederCommand() {
+    public ShooterSpinToSpeedCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterFeeder);
+    	requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooterFeeder.set(ShooterFeeder.State.OFF);
+    	Robot.shooter.shooterOn(5285);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +26,7 @@ public class StopFeederCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return Robot.shooter.isAtSpeed();
     }
 
     // Called once after isFinished returns true
@@ -37,5 +36,6 @@ public class StopFeederCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

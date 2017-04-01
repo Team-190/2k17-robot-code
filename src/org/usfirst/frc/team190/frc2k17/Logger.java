@@ -73,6 +73,15 @@ public class Logger {
 		output(new Message(Level.ERROR, msg));
 	}
 	
+	public void error(String msg, Throwable e) {
+		if(e != null) {
+			error(msg + ":" + e.toString());
+			e.printStackTrace();
+		} else {
+			error(msg);
+		}
+	}
+	
 	public void severe(String msg) {
 		output(new Message(Level.SEVERE, msg));
 	}

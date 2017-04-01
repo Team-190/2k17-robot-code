@@ -12,22 +12,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TurnTowardPegCommand extends Command {
 	
-	private boolean wasPegVisible;
+	private boolean navxPresent, wasPegVisible;
 
     public TurnTowardPegCommand() {
         requires(Robot.drivetrain);
     }
 
     protected void initialize() {
-    	Logger.defaultLogger.info("Turn towards peg.");
-    	Robot.drivetrain.enableCoast(false);
-    	wasPegVisible = Robot.gearCamera.isPegVisible();
-    	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());
+    	// assignment inside if-statement is intentional
+    	if(navxPresent = Robot.drivetrain.isNavxPresent()) {
+	    	Logger.defaultLogger.info("Turn towards peg.");
+	    	Robot.drivetrain.enableCoast(false);
+	    	wasPegVisible = Robot.gearCamera.isPegVisible();
+	    	Robot.drivetrain.enableTurningControl(Robot.gearCamera.getAngleToPeg());
+    	}
     }
 
     protected void execute() {
-    	SmartDashboard.putNumber("Camera Theoretical Angle", Robot.gearCamera.getAngleToPeg());
-    	Robot.drivetrain.controlTurning();
+    	if(navxPresent) {
+	    	SmartDashboard.putNumber("Camera Theoretical Angle", Robot.gearCamera.getAngleToPeg());
+	    	Robot.drivetrain.controlTurning();
+    	}
     }
 
     /**
@@ -36,11 +41,13 @@ public class TurnTowardPegCommand extends Command {
      * - the robot has turned to the angle to the peg
      */
     protected boolean isFinished() {
-    	return !wasPegVisible || Robot.drivetrain.isTurningControlOnTarget();
+    	return !navxPresent || !wasPegVisible || Robot.drivetrain.isTurningControlOnTarget();
     }
 
     protected void end() {
-    	Robot.drivetrain.disableTurningControl();
+    	if(navxPresent) {
+    		Robot.drivetrain.disableTurningControl();
+    	}
     }
 
     protected void interrupted() {

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team190.frc2k17.commands;
+package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import java.text.DecimalFormat;
 import java.util.TimerTask;
@@ -7,49 +7,54 @@ import java.util.Timer;
 import org.usfirst.frc.team190.frc2k17.FalconPathPlanner;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
+import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
+import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class AutoCurveThreaded extends Command {
+public class PegAutoCurveActual extends Command {
 	
-	private ADXRS450_Gyro gyro;
-	private double gyrofudge = 1.125;
-	private double headingCorrectionP = 0.0095;
 	private double distanceCorrectionP = 1;
 	
 	public final FalconPathPlanner path;
-	private double duration, runningSumLeft, runningSumRight, leftPreSum, rightPreSum;
+	private double runningSumLeft, runningSumRight, leftPreSum, rightPreSum;
 	private Timer timer;
 	private int step;
 	private DecimalFormat df = new DecimalFormat("#.00"); 
 	private boolean splineDone;
+	private Peg peg;
 
-    public AutoCurveThreaded(double duration) {
+    public PegAutoCurveActual(double duration, Peg peg) {
     	if(Robot.drivetrain != null) {
     		requires(Robot.drivetrain);
-    		gyro = new ADXRS450_Gyro();
     	}
-    	this.duration = duration;
-    	double[][] waypoints = new double[][]{
-        	{0,0},
-        	{0,12},
-        	{42.2,125},
-    		{42.2 + 6,192.1}
-        }; 
+    	this.peg = peg;
+    	double[][] waypoints;
+    	// generated points using Mathematica
+    	if(peg == Peg.LEFT) {
+			waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
+					{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 50 }, { 21.7567, 50 },
+					{ 29.0089, 50 }, { 36.2611, 50 }, { 43.5133, 50 }, { 50.7656, 50 },
+					{ 58.0178, 50 }, { 65.27, 50 } };
+    	} else {
+    		waypoints = new double[][] { { 0.0, 0.0 }, { -1, 13.6833 }, { -2, 19.8516 }, { -3, 24.5596 },
+				{ -4, 28.5039 }, { -5, 31.9562 }, { -7.25222, 38.5663 }, { -14.5044, 50 }, { -21.7567, 50 },
+				{ -29.0089, 50 }, { -36.2611, 50 }, { -43.5133, 50 }, { -50.7656, 50 },
+				{ -58.0178, 50 }, { -65.27, 50 } };
+    	}
     	path = new FalconPathPlanner(waypoints);
+    	path.setVelocityAlpha(0.001);
+    	path.setVelocityBeta(0.9);
     	path.calculate(duration, RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get(),
 				RobotMap.getInstance().DRIVE_CURVE_TRACK_WIDTH.get());
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	gyro.reset();
     	splineDone = false;
     	Robot.drivetrain.zeroEncoderPositions();
     	runningSumLeft = 0;
@@ -81,20 +86,8 @@ public class AutoCurveThreaded extends Command {
 							+ df.format(Robot.drivetrain.getLeftEncoderPosition() - leftPreSum));
 					Logger.defaultLogger.debug("Right side error with respect to precalculated distance: "
 							+ df.format(Robot.drivetrain.getRightEncoderPosition() - rightPreSum));
-					Logger.defaultLogger.debug("Falcon has finished. Now running distance PID.");
-					Robot.drivetrain.enableLeftDistanceControl(leftPreSum - Robot.drivetrain.getLeftEncoderPosition());
-					Robot.drivetrain.enableRightDistanceControl(rightPreSum - Robot.drivetrain.getRightEncoderPosition());
-					Robot.drivetrain.zeroEncoderPositions();
+					Logger.defaultLogger.debug("Falcon has finished. Now driving forward.");
 					timer.cancel();
-					timer = new Timer();
-					timer.schedule(new TimerTask() {
-
-						@Override
-						public void run() {
-							Robot.drivetrain.controlLeftRightDistance();
-						}
-						
-					}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
 					splineDone = true;
 					return;
 				}
@@ -119,23 +112,9 @@ public class AutoCurveThreaded extends Command {
 				runningSumRight += path.smoothRightVelocity[step][1]
 						* RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get();
 
-				double angleError = gyro.getAngle() * gyrofudge - path.heading[step][1];
+				double leftVel = path.smoothLeftVelocity[step][1] - (leftError * distanceCorrectionP);
+				double rightVel = path.smoothRightVelocity[step][1] - (rightError * distanceCorrectionP);
 
-				double leftVel = path.smoothLeftVelocity[step][1] - (leftError * distanceCorrectionP);// +
-																										// (angleError
-																										// *
-																										// headingCorrectionP);
-				double rightVel = path.smoothRightVelocity[step][1] - (rightError * distanceCorrectionP);// -
-																											// (angleError
-																											// *
-																											// headingCorrectionP);
-
-				// double leftRPM = path.smoothLeftVelocity[step][1] /
-				// RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get()
-				// * 60;
-				// double rightRPM = path.smoothRightVelocity[step][1] /
-				// RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get()
-				// * 60;
 				double leftRPM = leftVel / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
 				double rightRPM = rightVel / RobotMap.getInstance().DRIVE_CURVE_WHEEL_CIRCUMFERENCE.get() * 60;
 				double leftRatio = leftRPM / RobotMap.getInstance().DRIVE_MAX_SPEED_LOW.get();
@@ -144,7 +123,7 @@ public class AutoCurveThreaded extends Command {
 						+ " in/sec, " + df.format(leftRPM) + " RPM, " + df.format(leftRatio * 100) + " percent; right "
 						+ df.format(path.smoothRightVelocity[step][1]) + " in/sec, " + df.format(rightRPM) + " RPM, "
 						+ df.format(rightRatio * 100) + " percent. Left error: " + df.format(leftError)
-						+ " Right error: " + df.format(rightError) + " Angle error: " + df.format(angleError));
+						+ " Right error: " + df.format(rightError));
 				if (Math.abs(leftRatio) > 1 || Math.abs(rightRatio) > 1) {
 					Logger.defaultLogger.error("Falcon output has exceeded robot capability.");
 				}
@@ -153,14 +132,22 @@ public class AutoCurveThreaded extends Command {
 
 			}
 		}, 0, (long) (RobotMap.getInstance().DRIVE_CURVE_TIME_STEP.get() * 1000));
-    	  	
+    	// drive across the field after the gear is placed
+    	if(peg == Peg.LEFT) {
+    		Robot.changeGearKickAfterwardsCommand(new LeftPegAutoDriveAcrossField());
+    	} else {
+    		Robot.changeGearKickAfterwardsCommand(new RightPegAutoDriveAcrossField());
+    	}
     }
 
     protected void execute() {
+    	if(splineDone) {
+    		Robot.drivetrain.tankDrive(0.25, 0.25);
+    	}
     }
 
     protected boolean isFinished() {
-        return splineDone && Robot.drivetrain.isLeftDistanceControlOnTarget() && Robot.drivetrain.isRightDistanceControlOnTarget();
+        return false;
     }
 
     protected void end() {
