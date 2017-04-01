@@ -10,10 +10,16 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class FeederFeedCommand extends Command {
 
+    public FeederFeedCommand(double timeOut) {
+    	requires(Robot.shooterFeeder);
+    	setTimeout(timeOut);
+    }
+
+    
     public FeederFeedCommand() {
     	requires(Robot.shooterFeeder);
     }
-
+    
     protected void initialize() {
     	Robot.shooterFeeder.set(ShooterFeeder.State.OPEN);
     }
@@ -22,7 +28,7 @@ public class FeederFeedCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     protected void end() {
