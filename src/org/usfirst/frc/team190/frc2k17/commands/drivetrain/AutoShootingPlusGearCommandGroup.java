@@ -37,10 +37,10 @@ public class AutoShootingPlusGearCommandGroup extends CommandGroup {
     	addSequential(new FeederFeedCommand(2));
     	addSequential(new ShooterStopCommand());
     	if(DriverStation.getInstance().getAlliance()  == Alliance.Blue) {
-    		addSequential(new TankDriveValueCommand(-0.5, 0, 1));
+    		addSequential(new TankDriveValueCommand(-0.5, 0, 2));
     		addSequential(new LeftPegAuto(true));
     	} else {
-    		addSequential(new TankDriveValueCommand(0, -0.5, 1));
+    		addSequential(new TankDriveValueCommand(0, -0.5, 2));
     		addSequential(new RightPegAuto(true));
     	}
     	   	
