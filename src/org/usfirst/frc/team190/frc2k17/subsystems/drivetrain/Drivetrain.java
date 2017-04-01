@@ -245,6 +245,14 @@ public class Drivetrain extends Subsystem {
 		}
 	}
 	
+	public void resetGyroAngle() {
+		navx.reset();
+	}
+	
+	public double getGyroAngle() {
+		return navx.getAngle();
+	}
+	
 	public boolean isMoving() {
 		if(isNavxPresent()) {
 			return navx.isMoving();
