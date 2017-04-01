@@ -12,6 +12,7 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurve;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
@@ -209,9 +210,9 @@ public class Robot extends IterativeRobot {
     	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
     	changeGearKickAfterwardsCommand(null);
-
     	compressor.start();
-    	
+
+    	(new GearPlacerSetCommand(GearPlacer.State.RETRACTED)).start();
         if (autonomousCommand != null) autonomousCommand.cancel();
         for(Command command : pegAfterwardsCommands) {
         	command.cancel();
@@ -275,7 +276,7 @@ public class Robot extends IterativeRobot {
      * @return whether to enable debug mode
      */
     public static boolean debug() {
-    	return true;
+    	return false;
     }
     
     /**
