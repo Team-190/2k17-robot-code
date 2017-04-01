@@ -11,6 +11,7 @@ import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -28,23 +29,36 @@ public class PegAutoCurveActual extends Command {
 	private boolean splineDone;
 	private Peg peg;
 
-    public PegAutoCurveActual(double duration, Peg peg) {
+    public PegAutoCurveActual(double duration, Alliance alliance, Peg peg) {
     	if(Robot.drivetrain != null) {
     		requires(Robot.drivetrain);
     	}
     	this.peg = peg;
     	double[][] waypoints;
-    	// generated points using Mathematica
-    	if(peg == Peg.LEFT) {
-			waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
-					{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 50 }, { 21.7567, 50 },
-					{ 29.0089, 50 }, { 36.2611, 50 }, { 43.5133, 50 }, { 50.7656, 50 },
-					{ 58.0178, 50 }, { 65.27, 50 } };
+    	if(alliance == Alliance.Red) {
+    		if(peg == Peg.LEFT) {
+    			waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
+    				{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 50 }, { 21.7567, 50 },
+    				{ 29.0089, 50 }, { 36.2611, 50 }, { 43.5133, 50 }, { 50.7656, 50 },
+    				{ 58.0178, 50 }, { 65.27, 50 } };
+    		} else {
+    			waypoints = new double[][] { { 0.0, 0.0 }, { -1, 13.6833 }, { -2, 19.8516 }, { -3, 24.5596 },
+    				{ -4, 28.5039 }, { -5, 31.9562 }, { -7.25222, 38.5663 }, { -14.5044, 50 }, { -21.7567, 50 },
+    				{ -29.0089, 50 }, { -36.2611, 50 }, { -43.5133, 50 }, { -50.7656, 50 },
+    				{ -58.0178, 50 }, { -65.27, 50 } };
+    		}
     	} else {
-    		waypoints = new double[][] { { 0.0, 0.0 }, { -1, 13.6833 }, { -2, 19.8516 }, { -3, 24.5596 },
-				{ -4, 28.5039 }, { -5, 31.9562 }, { -7.25222, 38.5663 }, { -14.5044, 50 }, { -21.7567, 50 },
-				{ -29.0089, 50 }, { -36.2611, 50 }, { -43.5133, 50 }, { -50.7656, 50 },
-				{ -58.0178, 50 }, { -65.27, 50 } };
+    		if(peg == Peg.LEFT) {
+    			waypoints = new double[][] { { 0.0, 0.0 }, { 1, 13.6833 }, { 2, 19.8516 }, { 3, 24.5596 },
+    				{ 4, 28.5039 }, { 5, 31.9562 }, { 7.25222, 38.5663 }, { 14.5044, 50 }, { 21.7567, 50 },
+    				{ 29.0089, 50 }, { 36.2611, 50 }, { 43.5133, 50 }, { 50.7656, 50 },
+    				{ 58.0178, 50 }, { 65.27, 50 } };
+    		} else {
+    			waypoints = new double[][] { { 0.0, 0.0 }, { -1, 13.6833 }, { -2, 19.8516 }, { -3, 24.5596 },
+    				{ -4, 28.5039 }, { -5, 31.9562 }, { -7.25222, 38.5663 }, { -14.5044, 50 }, { -21.7567, 50 },
+    				{ -29.0089, 50 }, { -36.2611, 50 }, { -43.5133, 50 }, { -50.7656, 50 },
+    				{ -58.0178, 50 }, { -65.27, 50 } };
+    		}
     	}
     	path = new FalconPathPlanner(waypoints);
     	path.setVelocityAlpha(0.001);
