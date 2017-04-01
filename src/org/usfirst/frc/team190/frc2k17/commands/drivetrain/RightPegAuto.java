@@ -5,6 +5,7 @@ import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,6 +31,7 @@ public class RightPegAuto extends CommandGroup {
     	if(driveAcrossField) {
     		addSequential(new ChangeGearKickAfterwardsCommand(RightPegAutoDriveAcrossField.class));
     	}
+    	addSequential(new SetAutoKickEnabledCommand(true));
     	addSequential(new DriveToPegCommand(0.5));
     	addSequential(new GearCameraLightOffCommand());
     	addSequential(new DriveStraightForTimeCommand(6, 0.25));

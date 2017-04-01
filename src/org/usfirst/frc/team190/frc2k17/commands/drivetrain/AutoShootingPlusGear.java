@@ -1,5 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.FeederFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinToSpeedCommand;
@@ -28,15 +29,16 @@ public class AutoShootingPlusGear extends ConditionalCommand {
 	private static class InternalCommandGroup extends CommandGroup {
 
 		public InternalCommandGroup(Alliance alliance) {
+			addSequential(new SetAutoKickEnabledCommand(false));
 			addParallel(new ShooterSpinCommand());
 			addSequential(new TimedCommand(0.5));
 			addSequential(new FeederFeedCommand(2));
 			addSequential(new ShooterStopCommand());
 			if (alliance == Alliance.Blue) {
-				addSequential(new TankDriveValueCommand(-0.5, 0, 2));
+				addSequential(new TankDriveValueCommand(-1, 0, 1.5));
 				addSequential(new LeftPegAuto(true));
 			} else {
-				addSequential(new TankDriveValueCommand(0, -0.5, 2));
+				addSequential(new TankDriveValueCommand(0, -1, 1.5));
 				addSequential(new RightPegAuto(true));
 			}
 
