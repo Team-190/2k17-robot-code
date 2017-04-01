@@ -102,14 +102,14 @@ public class RobotMap {
 		DRIVE_CURVE_TRACK_WIDTH = new Key<Double>(19.5),
 		DRIVE_CURVE_WHEEL_CIRCUMFERENCE = new Key<Double>(Math.PI * DRIVE_WHEEL_DIAMETER.get()),
 		
-		CLIMBER_KILL_CURRENT = new Key<Double>(40.0),
+		CLIMBER_KILL_CURRENT = new Key<Double>(50.0),
 		CLIMBER_SAMPLE_RATE = new Key<Double>(50.0), // hz
 		CLIMBER_FREQ_CUTOFF = new Key<Double>(15.0), // hz
 		CLIMBER_PID_KP = new Key<Double>(0.15),
 		CLIMBER_PID_KI = new Key<Double>(0.0),
 		CLIMBER_PID_KD = new Key<Double>(0.0),
 		CLIMBER_PID_KF = new Key<Double>(0.0),
-		CLIMBER_MAX_CURRENT = new Key<Double>(45.0),
+		CLIMBER_MAX_CURRENT = new Key<Double>(55.0),
 		
 		AUTOSHIFT_SAMPLE_RATE = ROBOT_MAIN_LOOP_RATE, // hz
 		AUTOSHIFT_RPM_FREQ_CUTOFF = new Key<Double>(10.0), //hz; Max is 25 hz because 50 hz sampling

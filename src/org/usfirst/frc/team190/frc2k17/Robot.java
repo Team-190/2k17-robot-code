@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShiftCommand;
-import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShootingPlusGearCommandGroup;
+import org.usfirst.frc.team190.frc2k17.commands.drivetrain.AutoShootingPlusGear;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.CenterPegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.DriveStraightForTimeCommand;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAuto;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurve;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPresentCommandGroup;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;
@@ -124,7 +125,7 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser<Command>();
         autoChooser.addObject("Side peg (turn) & drive across field", new PegAuto(true));
         autoChooser.addObject("Side peg (curve) & drive across field", new PegAutoCurve(3));
-        autoChooser.addObject("Shoot boiler, side peg, & drive across field", new AutoShootingPlusGearCommandGroup());
+        autoChooser.addObject("Shoot boiler, side peg, & drive across field", new AutoShootingPlusGear());
         autoChooser.addObject("Center peg (slow)", new DriveStraightForTimeCommand(6, 0.25));
         autoChooser.addObject("Center peg (fast)", new CenterPegAuto());
         autoChooser.addObject("Look pretty", new TimedCommand(0));
@@ -209,9 +210,9 @@ public class Robot extends IterativeRobot {
     	PegPresentTrigger.setEnabled(false);
     	gearCamera.lightOff();
     	changeGearKickAfterwardsCommand(null);
-
     	compressor.start();
-    	
+
+    	(new GearPlacerSetCommand(GearPlacer.State.RETRACTED)).start();
         if (autonomousCommand != null) autonomousCommand.cancel();
         for(Command command : pegAfterwardsCommands) {
         	command.cancel();
@@ -275,7 +276,7 @@ public class Robot extends IterativeRobot {
      * @return whether to enable debug mode
      */
     public static boolean debug() {
-    	return true;
+    	return false;
     }
     
     /**
