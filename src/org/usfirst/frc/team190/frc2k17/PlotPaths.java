@@ -7,10 +7,12 @@ import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.commands.AutoCurveThreaded;
 import org.usfirst.frc.team190.frc2k17.commands.drivetrain.PegAutoCurveActual;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 public class PlotPaths {
 	
 	private static AutoCurveThreaded hopperCommand = new AutoCurveThreaded(5);
-	private static PegAutoCurveActual leftPegCommand = new PegAutoCurveActual(3.0, Peg.LEFT);
+	private static PegAutoCurveActual leftPegCommand = new PegAutoCurveActual(3.0, Alliance.Red, Peg.LEFT);
 
 	public static void main(String[] args) {
 		if(!GraphicsEnvironment.isHeadless())
