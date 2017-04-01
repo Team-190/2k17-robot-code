@@ -14,7 +14,7 @@ public class ShooterSpinCommand extends Command {
     }
 
     protected void initialize() {
-    	Robot.shooter.shooterOn(4600);
+    	Robot.shooter.shooterOn(5285);
     }
     
     protected void execute() {
