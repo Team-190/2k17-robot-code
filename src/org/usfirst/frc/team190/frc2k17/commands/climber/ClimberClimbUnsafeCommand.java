@@ -43,12 +43,10 @@ public class ClimberClimbUnsafeCommand extends Command {
     protected void end() {
     	Robot.climber.set(Climber.State.STOP);
     	Logger.defaultLogger.info("Climbing canceled after " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
-    	(new SetAutoKickEnabledCommand(true)).start();
     }
 
     protected void interrupted() {
     	Robot.climber.set(Climber.State.STOP);
     	Logger.defaultLogger.info("Climbing finished in " + Duration.between(start, Instant.now()).toMillis() + " milliseconds.");
-    	(new SetAutoKickEnabledCommand(true)).start();
     }
 }
