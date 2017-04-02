@@ -14,6 +14,6 @@ public class LeftPegAutoDriveAcrossField extends CommandGroup {
     	addSequential(new ChangeGearKickAfterwardsCommand(null));
     	addSequential(new GearCameraLightOffCommand());
     	addSequential(new TurnToDegreesCommand(-60));
-    	addSequential(new DriveStraightForDistanceCommand(197.65));
+    	addSequential(new DriveStraightForDistanceCommand(247.65));
     }
 }
