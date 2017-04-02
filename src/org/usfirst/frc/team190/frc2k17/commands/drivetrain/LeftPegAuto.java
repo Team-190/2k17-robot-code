@@ -24,6 +24,7 @@ public class LeftPegAuto extends CommandGroup {
     	double distanceToDrive = alliance == Alliance.Red ? 64.666 : 66.5;
     	
     	addSequential(new GearCameraLightOnCommand());
+    	addSequential(new SetAutoKickEnabledCommand(false));
     	addSequential(new DriveStraightForDistanceCommand(distanceToDrive), 3);
     	addSequential(new TurnToDegreesCommand(60));
     	addSequential(new WaitCommand(0.2));
