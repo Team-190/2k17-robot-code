@@ -153,6 +153,7 @@ public class RobotMap {
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
 		DRIVE_PID_DIST_WAIT = new Key<Long>(100L), //milliseconds
 		PEG_PRESENT_COOLDOWN = new Key<Long>(2000L), //milliseconds
+		PEG_PRESENT_TRIGGER_DELAY = new Key<Long>(100L), //milliseconds
 		PEGASSIST_REFRESH_TIME = new Key<Long>(200L); // milliseconds
 			
 	private static RobotMap instance = null;

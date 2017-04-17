@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 public class PegPresentTrigger extends Trigger {
 	
 	private static boolean enabled = true;
-	private static Instant lastTrigger = null; // Last time limit switch was triggered
+	private static Instant lastTrigger = null; // Last time this trigger returned true or the gear placer was otherwise activated
+	private static Instant pressedSince = null; // the instant since which the limit switch has been continuously pressed; null if the limit
+												// switch is not currently pressed
 
 	public static void setEnabled(boolean enabled) {
 		PegPresentTrigger.enabled = enabled;
@@ -28,12 +30,18 @@ public class PegPresentTrigger extends Trigger {
 	
     public boolean get() {
     	
-    	if(Robot.gearPlacer.getPegPresent() && enabled) {
-    		
-    		if(lastTrigger == null || Duration.between(lastTrigger, Instant.now()).toMillis() > RobotMap.getInstance().PEG_PRESENT_COOLDOWN.get()) {
+    	if(Robot.gearPlacer.getPegPresent()) {
+    		if (pressedSince == null) {
+    			pressedSince = Instant.now();
+    		}
+			if (enabled && Duration.between(pressedSince, Instant.now()).toMillis() > RobotMap.getInstance().PEG_PRESENT_TRIGGER_DELAY.get()
+					&& (lastTrigger == null || Duration.between(lastTrigger, Instant.now())
+							.toMillis() > RobotMap.getInstance().PEG_PRESENT_COOLDOWN.get())) {
     			startCooldown();
     			return true;
     		}
+    	} else {
+    		pressedSince = null;
     	}
     	
     	return false;
