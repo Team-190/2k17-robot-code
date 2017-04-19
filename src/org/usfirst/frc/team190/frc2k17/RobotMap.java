@@ -130,6 +130,7 @@ public class RobotMap {
 		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
 		PEGASSIST_TOLERANCE = new Key<Double>(2.0), // degrees
 		
+		SHOOTER_TARGET_SPEED = new Key<Double>(5285.0),
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
 		SHOOTER_PID_KP = new Key<Double>(0.0),
 		SHOOTER_PID_KI = new Key<Double>(0.0),

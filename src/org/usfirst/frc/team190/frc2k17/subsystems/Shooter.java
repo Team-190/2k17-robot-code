@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends Subsystem {
     
 	private final CANTalon flywheelMotor1, flywheelMotor2;
-	private double requestedSpeed;
+	private double requestedSpeed, smartDashboardSpeed;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -64,6 +64,7 @@ public class Shooter extends Subsystem {
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
 		Robot.prefs.putDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
 		Robot.prefs.putDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+		Robot.prefs.putDouble("Shooter target speed", RobotMap.getInstance().SHOOTER_TARGET_SPEED.get());
 
 	}
 	
@@ -109,6 +110,11 @@ public class Shooter extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
+    public void shooterOn() {
+    	getSmartDashboardPidValues();
+    	shooterOn(smartDashboardSpeed);
+    }
+    
     public void shooterOn(double flywheelSpeed){
     	getSmartDashboardPidValues();
     	
@@ -139,6 +145,7 @@ public class Shooter extends Subsystem {
     	double p = Robot.prefs.getDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
     	double i = Robot.prefs.getDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
     	double d = Robot.prefs.getDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+    	smartDashboardSpeed = Robot.prefs.getDouble("Shooter target speed", RobotMap.getInstance().SHOOTER_TARGET_SPEED.get());
     	flywheelMotor1.setPID(p, i, d);
     	flywheelMotor1.setF(f);
     	flywheelMotor2.setPID(p, i, d);
