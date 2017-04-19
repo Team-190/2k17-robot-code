@@ -17,7 +17,7 @@ public class ShooterSpinCommand extends Command {
     }
     
     protected void execute() {
-    	//Robot.shooter.printEncoderValues();
+    	Robot.shooter.outputEncoderValues();
     }
 
     protected boolean isFinished() {
