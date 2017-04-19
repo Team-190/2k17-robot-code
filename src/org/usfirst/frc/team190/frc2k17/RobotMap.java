@@ -144,8 +144,8 @@ public class RobotMap {
 		DRIVE_RIGHT_MOTOR_INVERTED = new Key<Boolean>(true,false),
 		DRIVE_LEFT_ENC_INVERTED = new Key<Boolean>(true, false),
 		DRIVE_RIGHT_ENC_INVERTED = new Key<Boolean>(false, false),
-		SHOOTER_LEFT_INVERTED = new Key<Boolean>(false, true),
-		SHOOTER_RIGHT_INVERTED = new Key<Boolean>(true, false),
+		SHOOTER_LEFT_INVERTED = new Key<Boolean>(true),
+		SHOOTER_RIGHT_INVERTED = new Key<Boolean>(false),
 		OI_INVERT_DRIVER_JOSTICK_1 = new Key<Boolean>(true),
 		OI_INVERT_DRIVER_JOSTICK_2 = new Key<Boolean>(true);
 	
