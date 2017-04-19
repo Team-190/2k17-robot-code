@@ -49,7 +49,6 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
 		flywheelMotor1.setInverted(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
-		flywheelMotor1.reverseSensor(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
 		
 		flywheelMotor2.setProfile(0);
 		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
@@ -58,7 +57,6 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
 		flywheelMotor2.setInverted(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
-		flywheelMotor2.reverseSensor(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
 		
 		Robot.prefs.putDouble("Shooter PID F", RobotMap.getInstance().SHOOTER_PID_KF.get());
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
@@ -136,6 +134,8 @@ public class Shooter extends Subsystem {
     }
     
     public void shooterOff() {
+    	flywheelMotor1.changeControlMode(TalonControlMode.PercentVbus);
+    	flywheelMotor2.changeControlMode(TalonControlMode.PercentVbus);
     	flywheelMotor1.set(0);
     	flywheelMotor2.set(0);
     }
@@ -153,11 +153,10 @@ public class Shooter extends Subsystem {
     }
     
     public void outputEncoderValues() {
-    	// invert both encoder outputs
-    	double speed1 = -flywheelMotor1.getSpeed();
-    	double speed2 = -flywheelMotor2.getSpeed();
-    	SmartDashboard.putNumber("Flywheel1 Speed", speed1);
-    	SmartDashboard.putNumber("Flywheel2 Speed", speed2);
+    	SmartDashboard.putNumber("Flywheel1 Speed", RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get() ? flywheelMotor1.getSpeed() : -flywheelMotor1.getSpeed());
+    	SmartDashboard.putNumber("Flywheel2 Speed", RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get() ? flywheelMotor2.getSpeed() : -flywheelMotor2.getSpeed());
+    	SmartDashboard.putNumber("Flywheel1 setpoint", flywheelMotor1.getSetpoint());
+    	SmartDashboard.putNumber("Flywheel2 setpoint", flywheelMotor2.getSetpoint());
     }
 }
 
