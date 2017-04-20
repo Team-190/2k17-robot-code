@@ -133,7 +133,7 @@ public class RobotMap {
 		SHOOTER_TARGET_SPEED_LEFT = new Key<Double>(4200.0),
 		SHOOTER_TARGET_SPEED_RIGHT = new Key<Double>(4400.0),
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
-		SHOOTER_PID_KP = new Key<Double>(0.0),
+		SHOOTER_PID_KP = new Key<Double>(1.0),
 		SHOOTER_PID_KI = new Key<Double>(0.0),
 		SHOOTER_PID_KD = new Key<Double>(0.0);
 
