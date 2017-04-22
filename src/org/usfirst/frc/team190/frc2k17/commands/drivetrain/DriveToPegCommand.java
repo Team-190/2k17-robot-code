@@ -52,7 +52,9 @@ public class DriveToPegCommand extends Command {
     }
     
     protected void execute() {
-    	if(wasPegVisible) {
+    	if(Robot.gearPlacer.getPegPresent()) {
+    		Robot.drivetrain.tankDrive(0, 0);
+    	} else if(wasPegVisible) {
     		if(useNavx) {
     			Robot.drivetrain.controlTurningAndEncoderDiffAndDistance(speedLimit);
     		} else {
