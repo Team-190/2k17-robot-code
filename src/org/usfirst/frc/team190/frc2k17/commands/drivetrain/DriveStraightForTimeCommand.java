@@ -48,11 +48,7 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     }
 
     protected void execute() {
-    	if(Robot.gearPlacer.getPegPresent()) {
-    		Robot.drivetrain.tankDrive(0, 0);
-    	} else {
-    		Robot.drivetrain.arcadeDrive(speed, 0);
-    	}
+    	Robot.drivetrain.tankDrive(0, 0);
     }
 
     protected void end() {
