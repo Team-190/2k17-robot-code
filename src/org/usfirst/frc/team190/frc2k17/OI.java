@@ -182,13 +182,13 @@ public class OI {
 			SmartDashboard.putData("Auto Curve Threaded", new AutoCurveThreaded(7));
 			SmartDashboard.putData("Turn towards Peg", new TurnTowardPegCommand());
 			SmartDashboard.putData("Drive to Peg", new DriveToPegCommand());
+			SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
+			SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
+			SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		}
-		SmartDashboard.putData("Camera light on", new GearCameraLightOnCommand());
-		SmartDashboard.putData("Camera light off", new GearCameraLightOffCommand());
 		SmartDashboard.putData("Climb", new ClimberClimbCommand());
 		SmartDashboard.putData("Blink LEDs", new LEDStripsBlink(Color.MAGENTA));
 		SmartDashboard.putData("Peg Assist", new PegAssist());
-		SmartDashboard.putData("Random LEDs", new LEDStripRandom(Robot.leftLEDs));
 		SmartDashboard.putData("Disable automatic gear placing", new SetAutoKickEnabledCommand(false));
 		SmartDashboard.putData("Start Shooter", new ShooterSpinCommand());
 		SmartDashboard.putData("Clear Sticky Faults", new ClearStickyFaultsCommand());
