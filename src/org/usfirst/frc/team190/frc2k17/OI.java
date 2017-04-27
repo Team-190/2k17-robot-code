@@ -80,7 +80,7 @@ public class OI {
 
 	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Button boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
+	private Button driveTwentySix, boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
 			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
 			pegOffButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger;
@@ -116,6 +116,7 @@ public class OI {
 			
 			joystick2 = new FilteredJoystick(2);
 			
+			driveTwentySix = new JoystickButton(joystick2, 8);
 			boopButton = new JoystickButton(joystick2, 1);
 			climbButton = new JoystickButton(joystick2, 2);
 			climbUnsafeButton = new JoystickButton(joystick2, 7);
@@ -128,6 +129,7 @@ public class OI {
 			pegOffButton = new JoystickButton(joystick2, 5);
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
+			driveTwentySix.whenPressed(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5));
 			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
