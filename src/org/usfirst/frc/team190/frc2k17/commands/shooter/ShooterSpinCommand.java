@@ -8,12 +8,26 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShooterSpinCommand extends Command {
 
+	private Double leftFlywheel, rightFlywheel;
+	
     public ShooterSpinCommand() {
     	requires(Robot.shooter);
+    	leftFlywheel = null;
+    	rightFlywheel = null;
+    }
+    
+    public ShooterSpinCommand(double leftFlywheel, double rightFlywheel) {
+    	requires(Robot.shooter);
+    	this.leftFlywheel = leftFlywheel;
+    	this.rightFlywheel = rightFlywheel;
     }
 
     protected void initialize() {
-    	Robot.shooter.shooterOn();
+    	if(leftFlywheel == null || rightFlywheel == null) {
+    		Robot.shooter.shooterOn();
+    	} else {
+    		Robot.shooter.shooterOn(leftFlywheel, rightFlywheel);
+    	}
     }
     
     protected void execute() {

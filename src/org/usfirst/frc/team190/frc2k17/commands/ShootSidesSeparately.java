@@ -17,10 +17,13 @@ public class ShootSidesSeparately extends CommandGroup {
 
     public ShootSidesSeparately() {
     	addSequential(new SetAutoKickEnabledCommand(false));
-		addParallel(new ShooterSpinLeftCommand());
+		addParallel(new ShooterSpinCommand(1,0));
 		addSequential(new TimedCommand(0.5));
-		addSequential(new FeederFeedCommand(2));
-		addParallel(new ShooterSpinRightCommand());
+		addParallel(new FeederFeedCommand(2));
+		addSequential(new TimedCommand(1.9));
+		addParallel(new ShooterSpinCommand(1,-1));
+		addSequential(new TimedCommand(0.2));
+		addParallel(new ShooterSpinCommand(1,1));
 		addSequential(new TimedCommand(0.5));
 		addSequential(new FeederFeedCommand(2));
 		addSequential(new ShooterStopCommand());

@@ -113,20 +113,25 @@ public class Shooter extends Subsystem {
     
     public void shooterOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(smartDashboardSpeedLeft, smartDashboardSpeedRight);
+    	spin(smartDashboardSpeedLeft, smartDashboardSpeedRight);
     }
     
     public void shooterLeftOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(smartDashboardSpeedLeft, 0);
+    	spin(smartDashboardSpeedLeft, 0);
     }
     
     public void shooterRightOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(0, smartDashboardSpeedRight);
+    	spin(0, smartDashboardSpeedRight);
     }
     
-    public void shooterOn(double leftFlywheelSpeed, double rightFlywheelSpeed){
+    public void shooterOn(double leftFlywheel, double rightFlywheel) {
+    	getSmartDashboardPidValues();
+    	spin(Math.max(leftFlywheel * smartDashboardSpeedLeft, 1), Math.max(rightFlywheel * smartDashboardSpeedRight, 1));
+    }
+    
+    private void spin(double leftFlywheelSpeed, double rightFlywheelSpeed){
     	getSmartDashboardPidValues();
     	
     	requestedSpeedLeft = leftFlywheelSpeed;
