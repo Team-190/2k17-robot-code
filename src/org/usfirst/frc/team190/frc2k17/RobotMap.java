@@ -55,7 +55,7 @@ public class RobotMap {
 	
 		ROBOT_MAIN_LOOP_RATE = new  Key<Double>(50.0), // hz
 	
-		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.02),
+		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.025),
 		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.01),
 		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.01),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
