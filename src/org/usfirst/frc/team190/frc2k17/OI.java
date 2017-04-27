@@ -6,6 +6,7 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ClearStickyFaultsCommand;
+import org.usfirst.frc.team190.frc2k17.commands.ShootSidesSeparately;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
@@ -80,9 +81,9 @@ public class OI {
 
 	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
-	private Button driveTwentySix, boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
+	private Button driveTwentySixButton, boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
 			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
-			pegOffButton, blinkLEDsButton;
+			shootSidesSeparatelyButton, blinkLEDsButton;
 	private Trigger povUpTrigger, povDownTrigger;
 	
 	public OI() {
@@ -116,7 +117,7 @@ public class OI {
 			
 			joystick2 = new FilteredJoystick(2);
 			
-			driveTwentySix = new JoystickButton(joystick2, 8);
+			driveTwentySixButton = new JoystickButton(joystick2, 8);
 			boopButton = new JoystickButton(joystick2, 1);
 			climbButton = new JoystickButton(joystick2, 2);
 			climbUnsafeButton = new JoystickButton(joystick2, 7);
@@ -126,10 +127,10 @@ public class OI {
 			gearOutButton = new JoystickButton(joystick2, 6);
 			gearInButton = new JoystickButton(joystick2, 4);
 			pegOnButton = new JoystickButton(joystick2, 3);
-			pegOffButton = new JoystickButton(joystick2, 5);
+			shootSidesSeparatelyButton = new JoystickButton(joystick2, 5);
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
-			driveTwentySix.whenPressed(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5));
+			driveTwentySixButton.whenPressed(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5));
 			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
@@ -153,6 +154,7 @@ public class OI {
 			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
 			pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
+			shootSidesSeparatelyButton.whileHeld(new ShootSidesSeparately());
 		}
 		
 		highShiftButton = new JoystickButton(joystick1, 3);

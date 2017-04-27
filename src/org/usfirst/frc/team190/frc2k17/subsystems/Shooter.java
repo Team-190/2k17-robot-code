@@ -116,6 +116,16 @@ public class Shooter extends Subsystem {
     	shooterOn(smartDashboardSpeedLeft, smartDashboardSpeedRight);
     }
     
+    public void shooterLeftOn() {
+    	getSmartDashboardPidValues();
+    	shooterOn(smartDashboardSpeedLeft, 0);
+    }
+    
+    public void shooterRightOn() {
+    	getSmartDashboardPidValues();
+    	shooterOn(0, smartDashboardSpeedRight);
+    }
+    
     public void shooterOn(double leftFlywheelSpeed, double rightFlywheelSpeed){
     	getSmartDashboardPidValues();
     	
