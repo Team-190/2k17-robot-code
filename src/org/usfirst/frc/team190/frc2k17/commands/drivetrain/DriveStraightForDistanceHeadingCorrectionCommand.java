@@ -31,6 +31,11 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
     	this.inches = inches;
     	this.speedLimit = speedLimit;
     }
+    
+    public DriveStraightForDistanceHeadingCorrectionCommand(double inches, double speedLimit, double timeout) {
+    	this(inches, speedLimit);
+    	setTimeout(timeout);
+    }
 
     protected void initialize() {
     	Robot.drivetrain.enableCoast(false);
@@ -51,7 +56,7 @@ public class DriveStraightForDistanceHeadingCorrectionCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return Robot.drivetrain.isDistanceControlOnTarget();
+        return Robot.drivetrain.isDistanceControlOnTarget() || isTimedOut();
     }
 
     protected void end() {

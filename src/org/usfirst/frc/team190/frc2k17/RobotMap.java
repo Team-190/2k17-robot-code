@@ -55,9 +55,12 @@ public class RobotMap {
 	
 		ROBOT_MAIN_LOOP_RATE = new  Key<Double>(50.0), // hz
 	
-		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.025),
-		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.01),
-		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.01),
+		DRIVE_PID_TURN1_KP = new Key<Double>(0.015, 0.025),
+		DRIVE_PID_TURN1_KI = new Key<Double>(0.005, 0.01),
+		DRIVE_PID_TURN1_KD = new Key<Double>(0.012, 0.01),
+		DRIVE_PID_TURN2_KP = new Key<Double>(0.015, 0.02),
+		DRIVE_PID_TURN2_KI = new Key<Double>(0.005, 0.01),
+		DRIVE_PID_TURN2_KD = new Key<Double>(0.012, 0.01),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
 		DRIVE_PID_TURN_TOLERANCE = new Key<Double>(0.75),
 		
@@ -96,7 +99,7 @@ public class RobotMap {
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.5),
-		GEAR_PRESENT_KICK_TIMEOUT_AUTO = new Key<Double>(1.5),
+		GEAR_PRESENT_KICK_TIMEOUT_AUTO = new Key<Double>(1.0),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
 		
 		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
