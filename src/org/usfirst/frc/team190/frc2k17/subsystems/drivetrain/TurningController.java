@@ -23,14 +23,17 @@ public class TurningController implements DriveController {
 	public TurningController(AHRS navx) {
 		this.navx = navx;
 		// the RobotMap PID values are only defaults
-		turningPID = new PIDController(RobotMap.getInstance().DRIVE_PID_TURN_KP.get(),
-				RobotMap.getInstance().DRIVE_PID_TURN_KI.get(), RobotMap.getInstance().DRIVE_PID_TURN_KD.get(), navx,
+		turningPID = new PIDController(RobotMap.getInstance().DRIVE_PID_TURN1_KP.get(),
+				RobotMap.getInstance().DRIVE_PID_TURN1_KI.get(), RobotMap.getInstance().DRIVE_PID_TURN1_KD.get(), navx,
 				output -> this.loopOutput = output);
 		turningPID.setMaxErrorToIntegrate(RobotMap.getInstance().DRIVE_PID_TURN_I_ERROR_LIMIT.get());
 		// reset SmartDashboard values to the RobotMap values
-		Robot.prefs.putDouble("Turning PID P", RobotMap.getInstance().DRIVE_PID_TURN_KP.get());
-		Robot.prefs.putDouble("Turning PID I", RobotMap.getInstance().DRIVE_PID_TURN_KI.get());
-		Robot.prefs.putDouble("Turning PID D", RobotMap.getInstance().DRIVE_PID_TURN_KD.get());
+		Robot.prefs.putDouble("Turning1 PID P", RobotMap.getInstance().DRIVE_PID_TURN1_KP.get());
+		Robot.prefs.putDouble("Turning1 PID I", RobotMap.getInstance().DRIVE_PID_TURN1_KI.get());
+		Robot.prefs.putDouble("Turning1 PID D", RobotMap.getInstance().DRIVE_PID_TURN1_KD.get());
+		Robot.prefs.putDouble("Turning2 PID P", RobotMap.getInstance().DRIVE_PID_TURN2_KP.get());
+		Robot.prefs.putDouble("Turning2 PID I", RobotMap.getInstance().DRIVE_PID_TURN2_KI.get());
+		Robot.prefs.putDouble("Turning2 PID D", RobotMap.getInstance().DRIVE_PID_TURN2_KD.get());
 		turningPID.setAbsoluteTolerance(RobotMap.getInstance().DRIVE_PID_TURN_TOLERANCE.get());
 	}
 
@@ -62,14 +65,23 @@ public class TurningController implements DriveController {
 		}
 		return -loopOutput;
 	}
+	
+	/**
+	 * Enables the control loop
+	 * @param degrees degrees to turn
+	 */
+	public void enable(double degrees) {
+		enable(degrees, degrees == 0);
+	}
 
 	/**
 	 * Enables the control loop
-	 * @param degrees
+	 * @param degrees degrees to turn
+	 * @param values which set of PID values to use
 	 */
-	public void enable(double degrees) {
+	public void enable(double degrees, boolean values) {
 		navx.reset();
-		getSmartDashboardPidValues();
+		getSmartDashboardPidValues(values);
 		loopOutput = 0;
 		// reset *before* enabling
 		turningPID.reset();
@@ -93,11 +105,19 @@ public class TurningController implements DriveController {
 	
 	/**
 	 * Get and use PID values from SmartDashboard.
+	 * @param values which set of values to use
 	 */
-	public void getSmartDashboardPidValues() {
-		turningPID.setPID(
-				Robot.prefs.getDouble("Turning PID P", RobotMap.getInstance().DRIVE_PID_TURN_KP.get()),
-				Robot.prefs.getDouble("Turning PID I", RobotMap.getInstance().DRIVE_PID_TURN_KI.get()),
-				Robot.prefs.getDouble("Turning PID D", RobotMap.getInstance().DRIVE_PID_TURN_KD.get()));
+	public void getSmartDashboardPidValues(boolean values) {
+		if(values) {
+			turningPID.setPID(
+					Robot.prefs.getDouble("Turning2 PID P", RobotMap.getInstance().DRIVE_PID_TURN2_KP.get()),
+					Robot.prefs.getDouble("Turning2 PID I", RobotMap.getInstance().DRIVE_PID_TURN2_KI.get()),
+					Robot.prefs.getDouble("Turning2 PID D", RobotMap.getInstance().DRIVE_PID_TURN2_KD.get()));
+		} else {
+			turningPID.setPID(
+				Robot.prefs.getDouble("Turning1 PID P", RobotMap.getInstance().DRIVE_PID_TURN1_KP.get()),
+				Robot.prefs.getDouble("Turning1 PID I", RobotMap.getInstance().DRIVE_PID_TURN1_KI.get()),
+				Robot.prefs.getDouble("Turning1 PID D", RobotMap.getInstance().DRIVE_PID_TURN1_KD.get()));
+		}
 	}
 }
