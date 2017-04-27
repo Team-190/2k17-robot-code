@@ -48,7 +48,7 @@ public class DriveStraightForTimeCommand extends TimedCommand {
     }
 
     protected void execute() {
-    	Robot.drivetrain.arcadeDrive(speed, 0);
+    	Robot.drivetrain.tankDrive(0, 0);
     }
 
     protected void end() {

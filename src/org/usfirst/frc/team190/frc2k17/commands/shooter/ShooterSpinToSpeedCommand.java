@@ -1,7 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -17,7 +16,7 @@ public class ShooterSpinToSpeedCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.shooterOn(5285);
+    	Robot.shooter.shooterOn();
     }
 
     // Called repeatedly when this Command is scheduled to run

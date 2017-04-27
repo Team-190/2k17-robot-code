@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends Subsystem {
     
 	private final CANTalon flywheelMotor1, flywheelMotor2;
-	private double requestedSpeed;
+	private double requestedSpeedLeft, requestedSpeedRight, smartDashboardSpeedLeft, smartDashboardSpeedRight;
 	
 	/**
 	 * Constructor initializes private fields.
@@ -48,8 +48,8 @@ public class Shooter extends Subsystem {
 		flywheelMotor1.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
 		flywheelMotor1.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
-		flywheelMotor1.setInverted(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
 		flywheelMotor1.reverseSensor(RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
+		flywheelMotor1.reverseOutput(!RobotMap.getInstance().SHOOTER_LEFT_INVERTED.get());
 		
 		flywheelMotor2.setProfile(0);
 		flywheelMotor2.setF(RobotMap.getInstance().SHOOTER_PID_KF.get());
@@ -57,13 +57,15 @@ public class Shooter extends Subsystem {
 		flywheelMotor2.setI(RobotMap.getInstance().SHOOTER_PID_KI.get());
 		flywheelMotor2.setD(RobotMap.getInstance().SHOOTER_PID_KD.get());
 		
-		flywheelMotor2.setInverted(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
 		flywheelMotor2.reverseSensor(RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
+		flywheelMotor2.reverseOutput(!RobotMap.getInstance().SHOOTER_RIGHT_INVERTED.get());
 		
 		Robot.prefs.putDouble("Shooter PID F", RobotMap.getInstance().SHOOTER_PID_KF.get());
 		Robot.prefs.putDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
 		Robot.prefs.putDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
 		Robot.prefs.putDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+		Robot.prefs.putDouble("Shooter target speed left", RobotMap.getInstance().SHOOTER_TARGET_SPEED_LEFT.get());
+		Robot.prefs.putDouble("Shooter target speed right", RobotMap.getInstance().SHOOTER_TARGET_SPEED_RIGHT.get());
 
 	}
 	
@@ -109,16 +111,22 @@ public class Shooter extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void shooterOn(double flywheelSpeed){
+    public void shooterOn() {
+    	getSmartDashboardPidValues();
+    	shooterOn(smartDashboardSpeedLeft, smartDashboardSpeedRight);
+    }
+    
+    public void shooterOn(double leftFlywheelSpeed, double rightFlywheelSpeed){
     	getSmartDashboardPidValues();
     	
-    	requestedSpeed = flywheelSpeed;
+    	requestedSpeedLeft = leftFlywheelSpeed;
+    	requestedSpeedRight = rightFlywheelSpeed;
     	
     	flywheelMotor1.changeControlMode(TalonControlMode.Speed);
     	flywheelMotor2.changeControlMode(TalonControlMode.Speed);
     	
-    	flywheelMotor1.set(flywheelSpeed);
-    	flywheelMotor2.set(flywheelSpeed);
+    	flywheelMotor1.set(leftFlywheelSpeed);
+    	flywheelMotor2.set(rightFlywheelSpeed);
     }
     
     public boolean isAtSpeed() {
@@ -126,10 +134,12 @@ public class Shooter extends Subsystem {
     	double speed2 = flywheelMotor2.getSpeed();
     	int rpmTolerance = RobotMap.getInstance().SHOOTER_RPM_TOLERANCE.get();
     	outputEncoderValues();
-    	return (Math.abs(speed1 - requestedSpeed) <= rpmTolerance) && (Math.abs(speed2 - requestedSpeed) <= rpmTolerance);
+    	return (Math.abs(speed1 - requestedSpeedLeft) <= rpmTolerance) && (Math.abs(speed2 - requestedSpeedRight) <= rpmTolerance);
     }
     
     public void shooterOff() {
+    	flywheelMotor1.changeControlMode(TalonControlMode.PercentVbus);
+    	flywheelMotor2.changeControlMode(TalonControlMode.PercentVbus);
     	flywheelMotor1.set(0);
     	flywheelMotor2.set(0);
     }
@@ -139,6 +149,8 @@ public class Shooter extends Subsystem {
     	double p = Robot.prefs.getDouble("Shooter PID P", RobotMap.getInstance().SHOOTER_PID_KP.get());
     	double i = Robot.prefs.getDouble("Shooter PID I", RobotMap.getInstance().SHOOTER_PID_KI.get());
     	double d = Robot.prefs.getDouble("Shooter PID D", RobotMap.getInstance().SHOOTER_PID_KD.get());
+    	smartDashboardSpeedLeft = Robot.prefs.getDouble("Shooter target speed left", RobotMap.getInstance().SHOOTER_TARGET_SPEED_LEFT.get());
+    	smartDashboardSpeedRight = Robot.prefs.getDouble("Shooter target speed right", RobotMap.getInstance().SHOOTER_TARGET_SPEED_RIGHT.get());
     	flywheelMotor1.setPID(p, i, d);
     	flywheelMotor1.setF(f);
     	flywheelMotor2.setPID(p, i, d);
@@ -146,11 +158,10 @@ public class Shooter extends Subsystem {
     }
     
     public void outputEncoderValues() {
-    	// invert both encoder outputs
-    	double speed1 = -flywheelMotor1.getSpeed();
-    	double speed2 = -flywheelMotor2.getSpeed();
-    	SmartDashboard.putNumber("Flywheel1 Speed", speed1);
-    	SmartDashboard.putNumber("Flywheel2 Speed", speed2);
+    	SmartDashboard.putNumber("Flywheel1 Speed", flywheelMotor1.getSpeed());
+    	SmartDashboard.putNumber("Flywheel2 Speed", flywheelMotor2.getSpeed());
+    	SmartDashboard.putNumber("Flywheel1 setpoint", flywheelMotor1.getSetpoint());
+    	SmartDashboard.putNumber("Flywheel2 setpoint", flywheelMotor2.getSetpoint());
     }
 }
 

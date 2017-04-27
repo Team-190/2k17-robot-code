@@ -1,7 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.shooter;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -14,11 +13,11 @@ public class ShooterSpinCommand extends Command {
     }
 
     protected void initialize() {
-    	Robot.shooter.shooterOn(5285);
+    	Robot.shooter.shooterOn();
     }
     
     protected void execute() {
-    	//Robot.shooter.printEncoderValues();
+    	Robot.shooter.outputEncoderValues();
     }
 
     protected boolean isFinished() {

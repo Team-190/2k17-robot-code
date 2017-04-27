@@ -23,15 +23,15 @@ public class RobotMap {
 		PCM_BOOPERS = new Key<Integer>(6),
 		PCM_FEEDER_DOOR = new Key<Integer>(4),
 		CAN_DRIVE_MOTOR_LEFT_FRONT = new Key<Integer>(6),
-		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(3),
+		CAN_DRIVE_MOTOR_LEFT_REAR = new Key<Integer>(50, 3),
 		CAN_DRIVE_MOTOR_RIGHT_FRONT = new Key<Integer>(2),
-		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>(5),
+		CAN_DRIVE_MOTOR_RIGHT_REAR = new Key<Integer>(51, 5),
 		CAN_DRIVE_MOTOR_LEFT_MASTER = CAN_DRIVE_MOTOR_LEFT_FRONT,
 		CAN_DRIVE_MOTOR_LEFT_SLAVE = CAN_DRIVE_MOTOR_LEFT_REAR,
 		CAN_DRIVE_MOTOR_RIGHT_MASTER = CAN_DRIVE_MOTOR_RIGHT_FRONT,
 		CAN_DRIVE_MOTOR_RIGHT_SLAVE = CAN_DRIVE_MOTOR_RIGHT_REAR,
-		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(4),
-		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(7),
+		CAN_SHOOTER_MOTOR_FLYWHEEL1 = new Key<Integer>(3, 7),
+		CAN_SHOOTER_MOTOR_FLYWHEEL2 = new Key<Integer>(5, 4),
 		CAN_SHOOTER_MOTOR_FEED = new Key<Integer>(8),
 		CAN_AGITATOR_MOTOR = new Key<Integer>(9),
 		CAN_CLIMBER_MOTOR = new Key<Integer>(10),
@@ -55,7 +55,7 @@ public class RobotMap {
 	
 		ROBOT_MAIN_LOOP_RATE = new  Key<Double>(50.0), // hz
 	
-		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.02),
+		DRIVE_PID_TURN_KP = new Key<Double>(0.015, 0.025),
 		DRIVE_PID_TURN_KI = new Key<Double>(0.005, 0.01),
 		DRIVE_PID_TURN_KD = new Key<Double>(0.012, 0.01),
 		DRIVE_PID_TURN_I_ERROR_LIMIT = new Key<Double>(5.0),
@@ -96,6 +96,7 @@ public class RobotMap {
 		TURN_TO_PEG_OUTPUT_TOLERANCE = new Key<Double>(1.0),
 		GEAR_PRESENT_DRIVE_BACK_TIME = new Key<Double>(0.3),
 		GEAR_PRESENT_KICK_TIMEOUT = new Key<Double>(0.5),
+		GEAR_PRESENT_KICK_TIMEOUT_AUTO = new Key<Double>(1.5),
 		JOYSTICK_DEADBAND = new Key<Double>(0.05),
 		
 		DRIVE_CURVE_TIME_STEP = new Key<Double>(0.02),
@@ -130,8 +131,10 @@ public class RobotMap {
 		LED_CLIMBING_SIGNAL_TIME = new Key<Double>(10.0),
 		PEGASSIST_TOLERANCE = new Key<Double>(2.0), // degrees
 		
+		SHOOTER_TARGET_SPEED_LEFT = new Key<Double>(4150.0),
+		SHOOTER_TARGET_SPEED_RIGHT = new Key<Double>(4725.0),
 		SHOOTER_PID_KF = new Key<Double>(0.10455),
-		SHOOTER_PID_KP = new Key<Double>(0.0),
+		SHOOTER_PID_KP = new Key<Double>(1.0),
 		SHOOTER_PID_KI = new Key<Double>(0.0),
 		SHOOTER_PID_KD = new Key<Double>(0.0);
 
@@ -153,6 +156,7 @@ public class RobotMap {
 		DRIVE_PID_TURN_WAIT = new Key<Long>(100L), // milliseconds
 		DRIVE_PID_DIST_WAIT = new Key<Long>(100L), //milliseconds
 		PEG_PRESENT_COOLDOWN = new Key<Long>(2000L), //milliseconds
+		PEG_PRESENT_TRIGGER_DELAY = new Key<Long>(100L), //milliseconds
 		PEGASSIST_REFRESH_TIME = new Key<Long>(200L); // milliseconds
 			
 	private static RobotMap instance = null;
