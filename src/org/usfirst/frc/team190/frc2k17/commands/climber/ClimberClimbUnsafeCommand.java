@@ -3,10 +3,8 @@ package org.usfirst.frc.team190.frc2k17.commands.climber;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.usfirst.frc.team190.frc2k17.DSPFilter;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Climber;

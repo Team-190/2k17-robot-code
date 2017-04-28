@@ -5,7 +5,6 @@ import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 
 public class PegAutoCurve extends ConditionalCommand {
