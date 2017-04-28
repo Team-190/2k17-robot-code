@@ -132,7 +132,7 @@ public class OI {
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
 			driveTwentySixButton.whenPressed(new ShiftersShiftCommand(Gear.LOW));
-			driveTwentySixButton.whenReleased(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5, 1.5));
+			driveTwentySixButton.whenReleased(new DriveStraightForDistanceHeadingCorrectionCommand(32, 0.5, 1.5));
 			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
