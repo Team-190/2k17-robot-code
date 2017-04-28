@@ -31,6 +31,7 @@ import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer.State;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters.Gear;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
@@ -130,7 +131,8 @@ public class OI {
 			shootSidesSeparatelyButton = new JoystickButton(joystick2, 5);
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
-			driveTwentySixButton.whenPressed(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5, 1.5));
+			driveTwentySixButton.whenPressed(new ShiftersShiftCommand(Gear.LOW));
+			driveTwentySixButton.whenReleased(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5, 1.5));
 			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
