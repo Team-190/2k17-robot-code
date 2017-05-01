@@ -3,7 +3,6 @@ package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.FeederFeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
-import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinToSpeedCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterStopCommand;
 
 import edu.wpi.first.wpilibj.DriverStation;

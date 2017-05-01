@@ -1,7 +1,6 @@
 package org.usfirst.frc.team190.frc2k17.commands.gearplacer;
 
 import org.usfirst.frc.team190.frc2k17.Robot;
-import org.usfirst.frc.team190.frc2k17.RobotMap;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer;
 
 import edu.wpi.first.wpilibj.command.Command;

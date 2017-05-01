@@ -1,15 +1,14 @@
 package org.usfirst.frc.team190.frc2k17.commands.drivetrain;
 
 import java.text.DecimalFormat;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import org.usfirst.frc.team190.frc2k17.FalconPathPlanner;
 import org.usfirst.frc.team190.frc2k17.Logger;
 import org.usfirst.frc.team190.frc2k17.Robot;
 import org.usfirst.frc.team190.frc2k17.Robot.Peg;
 import org.usfirst.frc.team190.frc2k17.RobotMap;
-import org.usfirst.frc.team190.frc2k17.commands.ChangeGearKickAfterwardsCommand;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.command.Command;

@@ -6,7 +6,6 @@ import org.usfirst.frc.team190.frc2k17.RobotMap;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.FeedbackDeviceStatus;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -113,20 +112,26 @@ public class Shooter extends Subsystem {
     
     public void shooterOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(smartDashboardSpeedLeft, smartDashboardSpeedRight);
+    	spin(smartDashboardSpeedLeft, smartDashboardSpeedRight);
     }
     
     public void shooterLeftOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(smartDashboardSpeedLeft, 0);
+    	spin(smartDashboardSpeedLeft, 0);
     }
     
     public void shooterRightOn() {
     	getSmartDashboardPidValues();
-    	shooterOn(0, smartDashboardSpeedRight);
+    	spin(0, smartDashboardSpeedRight);
     }
     
-    public void shooterOn(double leftFlywheelSpeed, double rightFlywheelSpeed){
+    public void shooterOn(double leftFlywheel, double rightFlywheel) {
+    	getSmartDashboardPidValues();
+		spin(Math.max(Math.abs(leftFlywheel), 1) * smartDashboardSpeedLeft * Math.signum(leftFlywheel),
+				Math.max(Math.abs(rightFlywheel), 1) * smartDashboardSpeedRight * Math.signum(rightFlywheel));
+    }
+    
+    private void spin(double leftFlywheelSpeed, double rightFlywheelSpeed){
     	getSmartDashboardPidValues();
     	
     	requestedSpeedLeft = leftFlywheelSpeed;

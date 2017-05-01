@@ -6,7 +6,6 @@ import org.usfirst.frc.team190.frc2k17.commands.AutoDriveBoxCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperCurveCommand;
 import org.usfirst.frc.team190.frc2k17.commands.AutoDriveToHopperTurnCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ClearStickyFaultsCommand;
-import org.usfirst.frc.team190.frc2k17.commands.ShootSidesSeparately;
 import org.usfirst.frc.team190.frc2k17.commands.boopers.BooperSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOffCommand;
 import org.usfirst.frc.team190.frc2k17.commands.cameraLight.GearCameraLightOnCommand;
@@ -22,15 +21,17 @@ import org.usfirst.frc.team190.frc2k17.commands.drivetrain.TurnTowardPegCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerSetCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.GearPlacerToggleCommand;
 import org.usfirst.frc.team190.frc2k17.commands.gearplacer.KickGearCommand;
+import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripRandom;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.LEDStripsBlink;
 import org.usfirst.frc.team190.frc2k17.commands.ledstrip.PegAssist;
-import org.usfirst.frc.team190.frc2k17.commands.gearplacer.SetAutoKickEnabledCommand;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.FeederFeedCommand;
+import org.usfirst.frc.team190.frc2k17.commands.shooter.ShootSidesSeparately;
 import org.usfirst.frc.team190.frc2k17.commands.shooter.ShooterSpinCommand;
 import org.usfirst.frc.team190.frc2k17.subsystems.Boopers;
 import org.usfirst.frc.team190.frc2k17.subsystems.GearPlacer.State;
 import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters;
+import org.usfirst.frc.team190.frc2k17.subsystems.drivetrain.Shifters.Gear;
 import org.usfirst.frc.team190.frc2k17.triggers.PovDownTrigger;
 import org.usfirst.frc.team190.frc2k17.triggers.PovUpTrigger;
 
@@ -130,7 +131,8 @@ public class OI {
 			shootSidesSeparatelyButton = new JoystickButton(joystick2, 5);
 			blinkLEDsButton = new JoystickButton(joystick2, 10);
 			
-			driveTwentySixButton.whenPressed(new DriveStraightForDistanceHeadingCorrectionCommand(26, 0.5, 1.5));
+			driveTwentySixButton.whenPressed(new ShiftersShiftCommand(Gear.LOW));
+			driveTwentySixButton.whenReleased(new DriveStraightForDistanceHeadingCorrectionCommand(34, 0.5, 1.5));
 			//boopButton.whenPressed(new BooperSetCommand(Boopers.State.EXTENDED));
 			//boopButton.whenReleased(new BooperSetCommand(Boopers.State.RETRACTED));
 			climbButton.whenPressed(new ClimberClimbCommand());
