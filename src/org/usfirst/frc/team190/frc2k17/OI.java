@@ -114,7 +114,7 @@ public class OI {
 			bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		} else {
-			boolean idiotProof = false;
+			boolean idiotProof = true;
 			
 			joystick2 = new FilteredJoystick(2);
 			
