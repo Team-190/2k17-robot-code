@@ -80,7 +80,7 @@ public class OI {
 	private FilteredJoystick joystick1;
 	private GenericHID joystick2;
 
-	private Button driverAutoShiftButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
+	private Button driverAutoShiftButton, driverPegOnButton, driverClimbButton, highShiftButton, lowShiftButton, gearKickButton, driveToPegButton;
 	private Button aButton, bButton, xButton, yButton, lbButton, rbButton, backButton, startButton;
 	private Button driveTwentySixButton, boopButton, climbButton, climbUnsafeButton, autoShiftButton, cancelAutoShiftButton,
 			shooterSpinButton, shooterFeedButton, shooterStopButton, gearOutButton, gearInButton, pegOnButton,
@@ -114,7 +114,7 @@ public class OI {
 			bButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 			bButton.whenReleased(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		} else {
-			boolean idiotProof = false;
+			boolean idiotProof = true;
 			
 			joystick2 = new FilteredJoystick(2);
 			
@@ -151,8 +151,7 @@ public class OI {
 				gearOutButton.whenPressed(new GearPlacerSetCommand(State.EXTENDED));
 				gearInButton.whenPressed(new GearPlacerSetCommand(State.RETRACTED));
 			}
-			Command pegAssistCommand = new PegAssist();
-			pegOnButton.whileHeld(pegAssistCommand);
+			pegOnButton.whileHeld(new PegAssist());
 			pegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
 			pegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
 			blinkLEDsButton.whileHeld(new LEDStripsBlink(Color.MAGENTA));
@@ -161,13 +160,20 @@ public class OI {
 		
 		highShiftButton = new JoystickButton(joystick1, 3);
 		lowShiftButton = new JoystickButton(joystick1, 2);
-		driverAutoShiftButton = new JoystickButton(joystick1, 1);
+		//driverAutoShiftButton = new JoystickButton(joystick1, 1);
+		driverPegOnButton = new JoystickButton(joystick1,1);
+		driverClimbButton = new JoystickButton(joystick0, 1);
 		//driveToPegButton = new JoystickButton(joystick0, 3);
 		//gearKickButton = new JoystickButton(joystick0, 2);
 		
 		highShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.HIGH));
 		highShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
-		driverAutoShiftButton.whenPressed(Robot.autoShiftCommand);
+		//driverAutoShiftButton.whenPressed(Robot.autoShiftCommand);
+		driverPegOnButton.whileHeld(new PegAssist());
+		driverPegOnButton.whenPressed(new SetAutoKickEnabledCommand(true));
+		driverPegOnButton.whenReleased(new SetAutoKickEnabledCommand(false));
+		driverClimbButton.whenPressed(new ClimberClimbCommand());
+		driverClimbButton.whenReleased(new ClimberStopCommand());
 		lowShiftButton.whenPressed(new ShiftersShiftCommand(Shifters.Gear.LOW));
 		lowShiftButton.cancelWhenPressed(Robot.autoShiftCommand);
 		//driveToPegButton.whenPressed(new PlaceGearCommand());
